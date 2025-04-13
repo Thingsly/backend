@@ -1,0 +1,453 @@
+definitions:
+  errcode.Error:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        description: Used to store custom messages
+        type: string
+    type: object
+  model.LoginReq:
+    properties:
+      email:
+        description: Login account (enter email or phone number)
+        example: test@test.vn
+        maxLength: 255
+        minLength: 5
+        type: string
+      password:
+        description: Login password
+        example: "123456"
+        maxLength: 512
+        minLength: 6
+        type: string
+      salt:
+        description: Random salt (if RSA encryption is set in the admin interface, this must be included)
+        maxLength: 512
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.LoginRsp:
+    properties:
+      expires_in:
+        description: "Expiration time (unit: seconds)"
+        type: integer
+      token:
+        description: Login token
+        type: string
+    type: object
+host: localhost:9999
+info:
+  contact: {}
+  description: Mitras API.
+  title: Mitras API
+  version: v1.1.6
+paths:
+  /api/v1/attribute/datas/{id}:
+    delete:
+      responses: {}
+    get:
+      responses: {}
+  /api/v1/attribute/datas/set/logs:
+    get:
+      responses: {}
+  /api/v1/board:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/board/{id}:
+    delete:
+      responses: {}
+    get:
+      responses: {}
+  /api/v1/board/device:
+    get:
+      responses: {}
+  /api/v1/board/device/total:
+    get:
+      responses: {}
+  /api/v1/board/home:
+    get:
+      responses: {}
+  /api/v1/board/tenant:
+    get:
+      responses: {}
+  /api/v1/board/tenant/device/info:
+    get:
+      responses: {}
+  /api/v1/board/tenant/user/info:
+    get:
+      responses: {}
+  /api/v1/board/trend:
+    get:
+      responses: {}
+  /api/v1/board/user/info:
+    get:
+      responses: {}
+  /api/v1/board/user/update:
+    post:
+      responses: {}
+  /api/v1/board/user/update/password:
+    post:
+      responses: {}
+  /api/v1/casbin/function:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/casbin/function/{id}:
+    delete:
+      responses: {}
+  /api/v1/casbin/user:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/casbin/user/{id}:
+    delete:
+      responses: {}
+  /api/v1/command/datas/set/logs:
+    get:
+      responses: {}
+  /api/v1/data_script:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/data_script/{id}:
+    delete:
+      responses: {}
+  /api/v1/datapolicy:
+    get:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/device:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/device/{id}:
+    delete:
+      responses: {}
+  /api/v1/device/active:
+    put:
+      responses: {}
+  /api/v1/device/check/{deviceNumber}:
+    get:
+      responses: {}
+      tags:
+      - Device Management
+  /api/v1/device/detail/{id}:
+    get:
+      responses: {}
+  /api/v1/device/group:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/device/group/{id}:
+    delete:
+      responses: {}
+  /api/v1/device/group/detail/{id}:
+    get:
+      responses: {}
+  /api/v1/device/group/relation:
+    delete:
+      responses: {}
+    get:
+      responses: {}
+    post:
+      responses: {}
+  /api/v1/device/group/relation/list:
+    get:
+      responses: {}
+  /api/v1/device/group/tree:
+    get:
+      responses: {}
+  /api/v1/device/online/status/ws:
+    get:
+      consumes:
+      - application/json
+      description: Obtain real-time device online status via WebSocket connection
+      produces:
+      - application/json
+      responses: {}
+      summary: Get Device Online Status
+      tags:
+      - Device
+  /api/v1/device/template:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/device/template/{id}:
+    delete:
+      responses: {}
+  /api/v1/device/template/chart:
+    get:
+      responses: {}
+  /api/v1/device/template/detail/{id}:
+    get:
+      responses: {}
+  /api/v1/device/template/menu:
+    get:
+      responses: {}
+  /api/v1/device_config:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/device_config/{id}:
+    delete:
+      responses: {}
+    get:
+      responses: {}
+  /api/v1/device_config/batch:
+    put:
+      responses: {}
+  /api/v1/device_config/menu:
+    get:
+      responses: {}
+  /api/v1/dict:
+    get:
+      responses: {}
+  /api/v1/dict/column:
+    post:
+      responses: {}
+  /api/v1/dict/column/{id}:
+    delete:
+      responses: {}
+  /api/v1/dict/enum:
+    get:
+      responses: {}
+  /api/v1/dict/language:
+    post:
+      responses: {}
+  /api/v1/dict/language/{id}:
+    delete:
+      responses: {}
+    get:
+      responses: {}
+  /api/v1/event/datas:
+    get:
+      responses: {}
+  /api/v1/file/up:
+    post:
+      responses: {}
+      tags:
+      - File Upload
+  /api/v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in using email or phone number and password
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/model.LoginRsp'
+        "400":
+          description: Error response
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: User login
+      tags:
+      - User Authentication
+  /api/v1/logo:
+    get:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/notification/services/config:
+    post:
+      responses: {}
+  /api/v1/notification/services/config/{type}:
+    get:
+      responses: {}
+  /api/v1/notification/services/config/e-mail/test:
+    post:
+      responses: {}
+  /api/v1/notification_group:
+    post:
+      responses: {}
+  /api/v1/notification_group/{id}:
+    delete:
+      responses: {}
+    get:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/notification_group/list:
+    get:
+      responses: {}
+  /api/v1/notification_history/list:
+    get:
+      responses: {}
+  /api/v1/open/keys:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/open/keys/{id}:
+    delete:
+      responses: {}
+  /api/v1/operation_logs:
+    get:
+      responses: {}
+  /api/v1/ota/package:
+    get:
+      responses: {}
+    post:
+      responses: {}
+  /api/v1/ota/package/:
+    put:
+      responses: {}
+  /api/v1/ota/package/{id}:
+    delete:
+      responses: {}
+  /api/v1/ota/task:
+    get:
+      responses: {}
+    post:
+      responses: {}
+  /api/v1/ota/task/{id}:
+    delete:
+      responses: {}
+  /api/v1/ota/task/detail:
+    get:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/protocol_plugin:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/protocol_plugin/{id}:
+    delete:
+      responses: {}
+  /api/v1/protocol_plugin/config_form:
+    get:
+      responses: {}
+  /api/v1/protocol_plugin/device_config_form:
+    get:
+      responses: {}
+  /api/v1/role:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/role/{id}:
+    delete:
+      responses: {}
+  /api/v1/telemetry/datas:
+    delete:
+      responses: {}
+  /api/v1/telemetry/datas/current/{id}:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/current/detail/{id}:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/current/keys:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/current/keys/ws:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/current/ws:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/history:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/history/page:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/history/pagination:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/set/logs:
+    get:
+      responses: {}
+  /api/v1/telemetry/datas/statistic:
+    get:
+      responses: {}
+  /api/v1/ui_elements:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/ui_elements/{id}:
+    delete:
+      responses: {}
+  /api/v1/ui_elements/menu:
+    get:
+      responses: {}
+  /api/v1/user:
+    get:
+      responses: {}
+    post:
+      responses: {}
+    put:
+      responses: {}
+  /api/v1/user/{id}:
+    delete:
+      responses: {}
+    get:
+      responses: {}
+  /api/v1/user/detail:
+    get:
+      responses: {}
+  /api/v1/user/tenant/id:
+    get:
+      responses: {}
+  /api/v1/user/update:
+    put:
+      responses: {}
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: x-token
+    type: apiKey
+swagger: "2.0"

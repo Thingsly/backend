@@ -26,7 +26,7 @@ const (
 	ResponseSStatusFailed                
 )
 
-// DeviceModelSource 模型数据源类型
+// DeviceModelSource
 type DeviceModelSource string
 
 const (
