@@ -177,7 +177,7 @@ const docTemplate = `{
         "/api/v1/device/check/{deviceNumber}": {
             "get": {
                 "tags": [
-                    "设备管理"
+                    "Device Management"
                 ],
                 "responses": {}
             }
@@ -231,7 +231,7 @@ const docTemplate = `{
         },
         "/api/v1/device/online/status/ws": {
             "get": {
-                "description": "通过WebSocket连接获取实时设备在线状态",
+                "description": "Obtain real-time device online status via WebSocket connection",
                 "consumes": [
                     "application/json"
                 ],
@@ -239,9 +239,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "设备"
+                    "Device"
                 ],
-                "summary": "获取设备在线状态",
+                "summary": "Get Device Online Status",
                 "responses": {}
             }
         },
@@ -351,14 +351,14 @@ const docTemplate = `{
         "/api/v1/file/up": {
             "post": {
                 "tags": [
-                    "文件上传"
+                    "File Upload"
                 ],
                 "responses": {}
             }
         },
         "/api/v1/login": {
             "post": {
-                "description": "使用邮箱或手机号和密码登录",
+                "description": "Log in using email or phone number and password",
                 "consumes": [
                     "application/json"
                 ],
@@ -366,12 +366,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户认证"
+                    "User Authentication"
                 ],
-                "summary": "用户登录",
+                "summary": "User Login",
                 "parameters": [
                     {
-                        "description": "登录凭证",
+                        "description": "Login credentials",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -382,13 +382,13 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "成功",
+                        "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/model.LoginRsp"
                         }
                     },
                     "400": {
-                        "description": "错误响应",
+                        "description": "Error Response",
                         "schema": {
                             "$ref": "#/definitions/errcode.Error"
                         }
@@ -667,7 +667,7 @@ const docTemplate = `{
                 },
                 "data": {},
                 "message": {
-                    "description": "用于存储自定义消息",
+                    "description": "Used to store custom messages",
                     "type": "string"
                 }
             }
