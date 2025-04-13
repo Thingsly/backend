@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   postgres:
@@ -69,7 +67,7 @@ services:
       - mitras_network
 
   backend:
-    image: hantdev1/mitras-go:latest
+    image: hantdev1/mitras-go:v1.0.1
     ports:
       - "9999:9999"
     environment:
