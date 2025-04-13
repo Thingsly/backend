@@ -31,11 +31,10 @@ The offline detection of specific devices is implemented based on Redis expirati
 - **MQTT Message Handling:**
   1. Get device configuration type
   2. Heartbeat device:
-    - Only update to online if it is offline
-    - Set heartbeat expiration key
+     - Only update to online if it is offline
+     - Set heartbeat expiration key
   3. Timeout device:
-
-    - Set timeout expiration key
+     - Set timeout expiration key
 
 - **Redis Expiration Handling:**
   - When corresponding key expires → update device to offline status
