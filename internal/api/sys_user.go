@@ -21,7 +21,7 @@ type UserApi struct{}
 // @Success      200 {object} model.LoginRsp "Success"
 // @Failure      400 {object} errcode.Error "Error response"
 // @Router       /api/v1/login [post]
-// @example request - "Request example" {"email":"test@hust.edu.vn","password":"123456"}
+// @example request - "Request example" {"email":"test@test.vn","password":"123456"}
 func (*UserApi) Login(c *gin.Context) {
 	var loginReq model.LoginReq
 	if !BindAndValidate(c, &loginReq) {
@@ -115,7 +115,7 @@ func (*UserApi) ResetPassword(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// CreateUser 
+// CreateUser
 // @Router   /api/v1/user [post]
 func (*UserApi) CreateUser(c *gin.Context) {
 	var createUserReq model.CreateUserReq
@@ -175,7 +175,7 @@ func (*UserApi) UpdateUser(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// DeleteUser 
+// DeleteUser
 // @Router   /api/v1/user/{id} [delete]
 func (*UserApi) DeleteUser(c *gin.Context) {
 	id := c.Param("id")
@@ -191,7 +191,7 @@ func (*UserApi) DeleteUser(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// GetUser 
+// GetUser
 // @Router   /api/v1/user/{id} [get]
 func (*UserApi) HandleUser(c *gin.Context) {
 	id := c.Param("id")
@@ -223,7 +223,7 @@ func (*UserApi) HandleUserDetail(c *gin.Context) {
 	c.Set("data", user)
 }
 
-// UpdateUsers 
+// UpdateUsers
 // @Router   /api/v1/user/update [put]
 func (*UserApi) UpdateUsers(c *gin.Context) {
 	var updateUserInfoReq model.UpdateUserInfoReq

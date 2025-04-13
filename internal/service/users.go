@@ -30,7 +30,7 @@ func (*UsersService) GetTenant(ctx context.Context) (model.GetTenantRes, error) 
 		user = query.User
 		db   = dal.UserQuery{}
 	)
-	
+
 	total, err := db.Count(ctx)
 	if err != nil {
 		logrus.Error(ctx, "[GetTenant]Users data failed:", err)
@@ -38,7 +38,7 @@ func (*UsersService) GetTenant(ctx context.Context) (model.GetTenantRes, error) 
 			"sql_error": err.Error(),
 		})
 	}
-	
+
 	yesterday, err := db.CountByWhere(ctx, user.CreatedAt.Gte(common.GetYesterdayBegin()))
 	if err != nil {
 		logrus.Error(ctx, "[GetTenant]Users data failed:", err)
@@ -46,7 +46,7 @@ func (*UsersService) GetTenant(ctx context.Context) (model.GetTenantRes, error) 
 			"sql_error": err.Error(),
 		})
 	}
-	
+
 	month, err := db.CountByWhere(ctx, user.CreatedAt.Gte(common.GetMonthStart()))
 	if err != nil {
 		logrus.Error(ctx, "[GetTenant]Users data failed:", err)
@@ -54,7 +54,7 @@ func (*UsersService) GetTenant(ctx context.Context) (model.GetTenantRes, error) 
 			"sql_error": err.Error(),
 		})
 	}
-	
+
 	list = db.GroupByMonthCount(ctx, nil)
 
 	if err != nil {
@@ -84,7 +84,7 @@ func (*UsersService) GetTenantUserInfo(ctx context.Context, email string) (model
 		user = query.User
 		db   = dal.UserQuery{}
 	)
-	
+
 	total, err = db.CountByWhere(ctx, user.Email.Eq(email))
 	if err != nil {
 		logrus.Error(ctx, "[GetTenant]Users data failed:", err)
@@ -92,7 +92,7 @@ func (*UsersService) GetTenantUserInfo(ctx context.Context, email string) (model
 			"sql_error": err.Error(),
 		})
 	}
-	
+
 	yesterday, err = db.CountByWhere(ctx, user.CreatedAt.Gte(common.GetYesterdayBegin()), user.Email.Eq(email))
 	if err != nil {
 		logrus.Error(ctx, "[GetTenant]Users data failed:", err)
@@ -100,7 +100,7 @@ func (*UsersService) GetTenantUserInfo(ctx context.Context, email string) (model
 			"sql_error": err.Error(),
 		})
 	}
-	
+
 	month, err = db.CountByWhere(ctx, user.CreatedAt.Gte(common.GetMonthStart()), user.Email.Eq(email))
 	if err != nil {
 		logrus.Error(ctx, "[GetTenant]Users data failed:", err)
@@ -108,7 +108,7 @@ func (*UsersService) GetTenantUserInfo(ctx context.Context, email string) (model
 			"sql_error": err.Error(),
 		})
 	}
-	
+
 	list = db.GroupByMonthCount(ctx, &email)
 
 	if err != nil {
@@ -135,7 +135,7 @@ func (*UsersService) GetTenantInfo(ctx context.Context, email string) (*model.Us
 		db   = dal.UserQuery{}
 		user = query.User
 	)
-	
+
 	UserInfo, err := db.First(ctx, user.Email.Eq(email))
 	if err != nil {
 		logrus.Error(ctx, "[GetTenantInfo]Users info failed:", err)
@@ -189,9 +189,9 @@ func (*UsersService) UpdateTenantInfo(ctx context.Context, userInfo *utils.UserC
 
 // UpdateTenantInfoPassword
 func (*UsersService) UpdateTenantInfoPassword(ctx context.Context, userInfo *utils.UserClaims, param *model.UsersUpdatePasswordReq) error {
-	
-	if userInfo.Email == "test@hust.edu.vn" {
-		return errcode.New(200044) 
+
+	if userInfo.Email == "test@test.vn" {
+		return errcode.New(200044)
 	}
 
 	err := utils.ValidatePassword(param.Password)
@@ -212,19 +212,17 @@ func (*UsersService) UpdateTenantInfoPassword(ctx context.Context, userInfo *uti
 		})
 	}
 
-	
 	if logic.UserIsEncrypt(ctx) {
 		password, err := initialize.DecryptPassword(param.Password)
 		if err != nil {
-			return errcode.New(200043) 
+			return errcode.New(200043)
 		}
 		passwords := strings.TrimSuffix(string(password), param.Salt)
 		param.Password = passwords
 	}
 
-	
 	if !utils.BcryptCheck(param.OldPassword, info.Password) {
-		return errcode.New(200045) 
+		return errcode.New(200045)
 	}
 
 	t := time.Now().UTC()
