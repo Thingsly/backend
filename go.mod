@@ -3,8 +3,8 @@ module github.com/HustIoTPlatform/backend
 go 1.24.2
 
 require (
-	github.com/casbin/casbin/v2 v2.104.0
-	github.com/casbin/gorm-adapter/v3 v3.32.0
+	github.com/casbin/casbin/v2 v2.82.0
+	github.com/casbin/gorm-adapter/v3 v3.31.0
 	github.com/eclipse/paho.mqtt.golang v1.5.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-basic/uuid v1.0.0
@@ -49,7 +49,6 @@ require (
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bmatcuk/doublestar/v4 v4.6.1 // indirect
 	github.com/bytedance/sonic v1.13.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
 	github.com/casbin/govaluate v1.3.0 // indirect
