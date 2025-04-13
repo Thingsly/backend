@@ -135,11 +135,11 @@ func successInfo() {
 	startTime := time.Now().Format("2006-01-02 15:04:05")
 
 	fmt.Println("----------------------------------------")
-	fmt.Println("        Mitras started successfully!")
+	fmt.Println("        Mitras Backend started successfully!")
 	fmt.Println("----------------------------------------")
 	fmt.Printf("Start time: %s\n", startTime)
-	fmt.Println("Version: v1.1.5")
+	fmt.Println("Version: v1.0.0")
 	fmt.Println("----------------------------------------")
-	fmt.Println("Welcome to Mitras!")
+	fmt.Println("Welcome to Mitras IoT Platform!")
 	fmt.Println("----------------------------------------")
 }
