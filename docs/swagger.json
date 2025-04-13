@@ -7,7 +7,7 @@
         "description": "Mitras API.",
         "title": "Mitras API",
         "contact": {},
-        "version": "v1.1.6"
+        "version": "v1.0.0"
     },
     "host": "localhost:9999",
     "paths": {
@@ -680,7 +680,7 @@
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 5,
-                    "example": "test@test.vn"
+                    "example": "test@hust.edu.vn"
                 },
                 "password": {
                     "description": "Password",

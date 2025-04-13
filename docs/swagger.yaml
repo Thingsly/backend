@@ -12,7 +12,7 @@ definitions:
     properties:
       email:
         description: Login account (enter email or phone number)
-        example: test@test.vn
+        example: test@hust.edu.vn
         maxLength: 255
         minLength: 5
         type: string
@@ -27,8 +27,8 @@ definitions:
         maxLength: 512
         type: string
     required:
-    - email
-    - password
+      - email
+      - password
     type: object
   model.LoginRsp:
     properties:
@@ -44,7 +44,7 @@ info:
   contact: {}
   description: Mitras API.
   title: Mitras API
-  version: v1.1.6
+  version: v1.0.0
 paths:
   /api/v1/attribute/datas/{id}:
     delete:
@@ -151,7 +151,7 @@ paths:
     get:
       responses: {}
       tags:
-      - Device Management
+        - Device Management
   /api/v1/device/detail/{id}:
     get:
       responses: {}
@@ -184,14 +184,14 @@ paths:
   /api/v1/device/online/status/ws:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Obtain real-time device online status via WebSocket connection
       produces:
-      - application/json
+        - application/json
       responses: {}
       summary: Get Device Online Status
       tags:
-      - Device
+        - Device
   /api/v1/device/template:
     get:
       responses: {}
@@ -256,33 +256,33 @@ paths:
     post:
       responses: {}
       tags:
-      - File Upload
+        - File Upload
   /api/v1/login:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Log in using email or phone number and password
       parameters:
-      - description: Login credentials
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.LoginReq'
+        - description: Login credentials
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.LoginReq"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/model.LoginRsp'
+            $ref: "#/definitions/model.LoginRsp"
         "400":
           description: Error response
           schema:
-            $ref: '#/definitions/errcode.Error'
+            $ref: "#/definitions/errcode.Error"
       summary: User login
       tags:
-      - User Authentication
+        - User Authentication
   /api/v1/logo:
     get:
       responses: {}
@@ -444,7 +444,7 @@ paths:
     put:
       responses: {}
 schemes:
-- http
+  - http
 securityDefinitions:
   ApiKeyAuth:
     in: header

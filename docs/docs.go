@@ -684,7 +684,7 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 5,
-                    "example": "test@test.vn"
+                    "example": "test@hust.edu.vn"
                 },
                 "password": {
                     "description": "Password",
@@ -725,7 +725,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "v1.1.6",
+	Version:          "v1.0.0",
 	Host:             "localhost:9999",
 	BasePath:         "",
 	Schemes:          []string{"http"},

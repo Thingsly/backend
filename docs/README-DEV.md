@@ -21,7 +21,7 @@
     - `TENANT_ADMIN`: Tenant Administrator
     - `TENANT_USER`: Tenant User
   - Each tenant has one Tenant Admin. Data is tenant-isolated using the `tenant_id` field.
-  - Default system admin account: `super@super.vn` / `123456`
+  - Default system admin account: `super@hust.edu.vn` / `123456`
   - SYS_ADMIN can create TENANT_ADMIN accounts. TENANT_ADMIN can create TENANT_USER accounts.
 
 - All newly added SQL statements should be updated in `/sql/1.sql`.
