@@ -142,13 +142,13 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ThingsPanelClient interface {
-	// 获取设备属性历史数据
+	
 	GetDeviceHistory(ctx context.Context, in *GetDeviceHistoryRequest, opts ...grpc.CallOption) (*GetDeviceHistoryReply, error)
 	GetDeviceHistoryWithPageAndPage(ctx context.Context, in *GetDeviceHistoryWithPageAndPageRequest, opts ...grpc.CallOption) (*GetDeviceHistoryWithPageAndPageReply, error)
 	GetDeviceAttributesHistory(ctx context.Context, in *GetDeviceAttributesHistoryRequest, opts ...grpc.CallOption) (*GetDeviceAttributesHistoryReply, error)
-	// 字典形式的当前数据
+	
 	GetDeviceAttributesCurrents(ctx context.Context, in *GetDeviceAttributesCurrentsRequest, opts ...grpc.CallOption) (*GetDeviceAttributesCurrentsReply, error)
-	// 列表形式的当前数据
+	
 	GetDeviceAttributesCurrentList(ctx context.Context, in *GetDeviceAttributesCurrentListRequest, opts ...grpc.CallOption) (*GetDeviceAttributesCurrentListReply, error)
 	GetDeviceKVDataWithNoAggregate(ctx context.Context, in *GetDeviceKVDataWithNoAggregateRequest, opts ...grpc.CallOption) (*GetDeviceKVDataWithNoAggregateReply, error)
 	GetDeviceKVDataWithAggregate(ctx context.Context, in *GetDeviceKVDataWithAggregateRequest, opts ...grpc.CallOption) (*GetDeviceKVDataWithAggregateReply, error)
@@ -229,13 +229,13 @@ func (c *thingsPanelClient) GetDeviceKVDataWithAggregate(ctx context.Context, in
 // All implementations must embed UnimplementedThingsPanelServer
 // for forward compatibility
 type ThingsPanelServer interface {
-	// 获取设备属性历史数据
+	
 	GetDeviceHistory(context.Context, *GetDeviceHistoryRequest) (*GetDeviceHistoryReply, error)
 	GetDeviceHistoryWithPageAndPage(context.Context, *GetDeviceHistoryWithPageAndPageRequest) (*GetDeviceHistoryWithPageAndPageReply, error)
 	GetDeviceAttributesHistory(context.Context, *GetDeviceAttributesHistoryRequest) (*GetDeviceAttributesHistoryReply, error)
-	// 字典形式的当前数据
+	
 	GetDeviceAttributesCurrents(context.Context, *GetDeviceAttributesCurrentsRequest) (*GetDeviceAttributesCurrentsReply, error)
-	// 列表形式的当前数据
+	
 	GetDeviceAttributesCurrentList(context.Context, *GetDeviceAttributesCurrentListRequest) (*GetDeviceAttributesCurrentListReply, error)
 	GetDeviceKVDataWithNoAggregate(context.Context, *GetDeviceKVDataWithNoAggregateRequest) (*GetDeviceKVDataWithNoAggregateReply, error)
 	GetDeviceKVDataWithAggregate(context.Context, *GetDeviceKVDataWithAggregateRequest) (*GetDeviceKVDataWithAggregateReply, error)
