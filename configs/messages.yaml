@@ -1,0 +1,272 @@
+# Error Code Message Configuration
+# configs/messages.yaml
+messages:
+  # Success Code
+  200:
+    vi_VN: "Thành công"
+    en_US: "Operation successful"
+
+  # System-Level Errors (1xxxxx)
+  # General System Errors (100xxx)
+  100000:
+    vi_VN: "Lỗi hệ thống nội bộ"
+    en_US: "Internal server error"
+  100001:
+    vi_VN: "Dịch vụ tạm thời không khả dụng"
+    en_US: "Service temporarily unavailable"
+  100002:
+    vi_VN: "Xác thực tham số yêu cầu thất bại"
+    en_US: "Request parameter validation failed"
+  100003:
+    vi_VN: "Giải mã mật khẩu thất bại"
+    en_US: "Password decryption failed"
+  100004:
+    vi_VN: "Tuần tự hóa dữ liệu thất bại"
+    en_US: "Data serialization failed"
+  100005:
+    vi_VN: "${field} không được để trống"
+    en_US: "${field} cannot be empty"
+
+  # Database Errors (101xxx)
+  101001:
+    vi_VN: "Lỗi cơ sở dữ liệu"
+    en_US: "Database error"
+  101002:
+    vi_VN: "Thao tác cơ sở dữ liệu quá thời gian"
+    en_US: "Database operation timeout"
+
+  # Cache Errors (102xxx)
+  102001:
+    vi_VN: "Dịch vụ bộ nhớ đệm không khả dụng"
+    en_US: "Cache service unavailable"
+  102002:
+    vi_VN: "Dữ liệu bộ nhớ đệm đã hết hạn"
+    en_US: "Cache data expired"
+
+  # Authentication Errors (103xxx)
+  103001:
+    vi_VN: "Tạo token thất bại"
+    en_US: "Token generation failed"
+  103002:
+    vi_VN: "Lưu token thất bại"
+    en_US: "Token saving failed"
+  103003:
+    vi_VN: "Đăng xuất thất bại: lỗi khi xóa token"
+    en_US: "Logout failed: error deleting token"
+
+  # Filesystem Errors (104xxx)
+  104001:
+    vi_VN: "Tạo đường dẫn tệp thất bại: ${error}"
+    en_US: "Failed to generate file path: ${error}"
+  104002:
+    vi_VN: "Lưu tệp thất bại: ${error}"
+    en_US: "Failed to save file: ${error}"
+
+  # Third-Party Service Errors (105xxx)
+  105001:
+    vi_VN: "Gọi dịch vụ bên thứ ba thất bại: ${error}"
+    en_US: "Third-party service call failed: ${error}"
+
+  # Business-Level Errors (2xxxxx)
+  # User Module Errors (200xxx)
+  200001:
+    vi_VN: "Người dùng chưa đăng nhập"
+    en_US: "User not logged in"
+  200002:
+    vi_VN: "Tên người dùng hoặc mật khẩu không đúng"
+    en_US: "Incorrect username or password"
+  200003:
+    vi_VN: "Tài khoản người dùng đã bị khóa"
+    en_US: "User account locked"
+  200005:
+    vi_VN: "Tài khoản người dùng đã bị vô hiệu hóa"
+    en_US: "User account disabled"
+  200006:
+    vi_VN: "Bạn đã đăng nhập thất bại ${attempts} lần, tài khoản bị khóa trong ${duration} phút. Thời gian mở khóa: ${unlock_time}"
+    en_US: "Account locked after ${attempts} failed login attempts. Locked for ${duration} minutes. Unlock time: ${unlock_time}"
+  200007:
+    vi_VN: "Email hoặc số điện thoại không tồn tại"
+    en_US: "Email or phone number does not exist"
+  200008:
+    vi_VN: "Email đã được đăng ký"
+    en_US: "Email already registered"
+  200009:
+    vi_VN: "Tạo mã xác minh thất bại"
+    en_US: "Verification code generation failed"
+  200010:
+    vi_VN: "Gửi email mã xác minh thất bại"
+    en_US: "Failed to send verification email"
+  200011:
+    vi_VN: "Mã xác minh đã hết hạn"
+    en_US: "Verification code expired"
+  200012:
+    vi_VN: "Mã xác minh không chính xác"
+    en_US: "Invalid verification code"
+  200013:
+    vi_VN: "Vui lòng nhập đúng email hoặc số điện thoại"
+    en_US: "Please enter a valid email or phone number"
+
+  # Password-Related Errors (200040–200049)
+  200040:
+    vi_VN: "Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ thường và số"
+    en_US: "Password must be at least 6 characters long and include lowercase letters and numbers"
+  200041:
+    vi_VN: "Hai lần nhập mật khẩu không khớp"
+    en_US: "Passwords do not match"
+  200042:
+    vi_VN: "Giá trị salt mã hóa không được để trống"
+    en_US: "Encryption salt cannot be empty"
+  200043:
+    vi_VN: "Giải mã mật khẩu thất bại"
+    en_US: "Password decryption failed"
+  200044:
+    vi_VN: "Không được phép thay đổi mật khẩu"
+    en_US: "Password modification not allowed"
+  200045:
+    vi_VN: "Xác minh mật khẩu cũ thất bại"
+    en_US: "Old password verification failed"
+  200050:
+    vi_VN: "Mẫu chức năng này đang được ${count} mẫu cấu hình tham chiếu, không thể xóa. Vui lòng hủy liên kết trước khi thử lại"
+    en_US: "This feature template is referenced by ${count} configuration templates and cannot be deleted. Please remove related associations first"
+  200051:
+    vi_VN: "Không thể xóa cấu hình thiết bị, còn ${count} thiết bị đang liên kết"
+    en_US: "Cannot delete device configuration; ${count} devices are still associated"
+  200052:
+    vi_VN: "Xử lý script thất bại: ${error}"
+    en_US: "Script processing failed: ${error}"
+  200053:
+    vi_VN: "Mật khẩu chứa ký tự không hợp lệ: ${invalid_chars}"
+    en_US: "Password contains invalid characters: ${invalid_chars}"
+  200054:
+    vi_VN: "Mật khẩu thiếu các thành phần sau: ${missing_elements}"
+    en_US: "Password is missing the following elements: ${missing_elements}"
+
+  # Device Condition Errors (200060–200069)
+  200060:
+    vi_VN: "Xung đột điều kiện thiết bị: không được đồng thời có thiết bị riêng lẻ và loại thiết bị trong cùng một nhóm điều kiện"
+    en_US: "Device condition conflict: individual devices and device types cannot coexist in the same condition group"
+  200061:
+    vi_VN: "Thiết bị này có thiết bị con, vui lòng hủy liên kết trước"
+    en_US: "This device has sub-devices. Please remove the associations first"
+  200062:
+    vi_VN: "Thiết bị này đang được liên kết với các kịch bản, vui lòng hủy liên kết trước"
+    en_US: "This device is associated with scenarios. Please remove those associations first"
+  200063:
+    vi_VN: "Thiết bị con đang có thiết bị cha, vui lòng hủy liên kết với thiết bị cha trước"
+    en_US: "Sub-device has a parent device. Please remove the parent device association first"
+
+  # Permission Module Errors (201xxx)
+  201001:
+    vi_VN: "Không có quyền truy cập"
+    en_US: "Access denied"
+  201002:
+    vi_VN: "Quyền thao tác không đủ"
+    en_US: "Insufficient permissions"
+
+  # File Upload Errors (202xxx)
+  202001:
+    vi_VN: "Vui lòng chọn tệp cần tải lên"
+    en_US: "Please select a file to upload"
+  202002:
+    vi_VN: "Loại tệp phải là ${expected_type}, hiện tại loại tệp là ${actual_type}"
+    en_US: "File type must be ${expected_type}, current type is ${actual_type}"
+  202003:
+    vi_VN: "Kích thước tệp không được vượt quá ${max_size}, hiện tại kích thước là ${current_size}"
+    en_US: "File size cannot exceed ${max_size}, current size is ${current_size}"
+
+  # Data Export Errors (202100–202199)
+  202100:
+    vi_VN: "Dữ liệu xuất khẩu không thể để trống"
+    en_US: "Export data cannot be empty"
+  202101:
+    vi_VN: "Tạo thư mục xuất khẩu thất bại: ${error}"
+    en_US: "Failed to create export directory: ${error}"
+  202102:
+    vi_VN: "Tạo tệp xuất khẩu thất bại: ${error}"
+    en_US: "Failed to create export file: ${error}"
+  202103:
+    vi_VN: "Ghi tiêu đề CSV thất bại: ${error}"
+    en_US: "Failed to write CSV header: ${error}"
+  202104:
+    vi_VN: "Ghi dữ liệu CSV thất bại: ${error}"
+    en_US: "Failed to write CSV data: ${error}"
+  202105:
+    vi_VN: "Định dạng dữ liệu không hợp lệ - lỗi định dạng dấu thời gian"
+    en_US: "Invalid data format - timestamp error"
+  202106:
+    vi_VN: "Định dạng dữ liệu không hợp lệ - lỗi định dạng giá trị"
+    en_US: "Invalid data format - value error"
+
+  # Device Group Errors (203xxx)
+  203001:
+    vi_VN: "Tên nhóm đã tồn tại"
+    en_US: "Group name already exists"
+  203002:
+    vi_VN: "Tên nhóm con '${group_name}' đã tồn tại trong nhóm cha"
+    en_US: "Sub-group name '${group_name}' already exists under the parent group"
+  203003:
+    vi_VN: "Tên nhóm cấp cao '${group_name}' đã tồn tại"
+    en_US: "Top-level group name '${group_name}' already exists"
+  203004:
+    vi_VN: "Bảng điều khiển trang chủ đã tồn tại"
+    en_US: "Home dashboard already exists"
+
+  # Device Code Validation
+  204001:
+    vi_VN: "Mã thiết bị không khả dụng: ${error}"
+    en_US: "Device number unavailable: ${error}"
+  204002:
+    vi_VN: "Thiết bị đã được kích hoạt. Vui lòng sử dụng mã thiết bị khác"
+    en_US: "Device already activated. Please use a different device number"
+  204003:
+    vi_VN: "Mã thiết bị khả dụng"
+    en_US: "Device number is available"
+  204004:
+    vi_VN: "Mã thiết bị đã tồn tại"
+    en_US: "Device number already exists"
+
+  # WebSocket Errors (205xxx)
+  205001:
+    vi_VN: "WebSocket kết nối nâng cấp thất bại: ${error}"
+    en_US: "WebSocket upgrade failed: ${error}"
+
+  # 206xxx - Product related (reserved)
+
+  # Device Data Errors (207xxx)
+  207001:
+    vi_VN: "Khoảng cách thời gian giữa thời gian bắt đầu và kết thúc của truy vấn không tổng hợp không được vượt quá một ngày"
+    en_US: "For non-aggregate queries, the time span between start and end time must not exceed one day"
+  207002:
+    vi_VN: "Khoảng thời gian không hợp lệ"
+    en_US: "Invalid time range"
+  207003:
+    vi_VN: "Khoảng thời gian không xác định: ${time_range}"
+    en_US: "Unknown time range: ${time_range}"
+  207004:
+    vi_VN: "Khoảng thời gian truy vấn vượt quá ${time_range}; khoảng thời gian tổng hợp không được nhỏ hơn ${min_interval}. Khoảng thời gian hiện tại: ${current_time_range}, khoảng thời gian tổng hợp: ${aggregate_window}"
+    en_US: "Query time range exceeds ${time_range}; aggregation interval must not be less than ${min_interval}. Current time range: ${current_time_range}, aggregation interval: ${aggregate_window}"
+
+  # Device Connect Field Keys (500xxx)
+  500001:
+    vi_VN: "Địa chỉ truy cập"
+    en_US: "Access address"
+  500002:
+    vi_VN: "MQTT ClientID (danh tính tùy chỉnh, phải đảm bảo tính duy nhất)"
+    en_US: "MQTT ClientID (custom identifier, must be unique)"
+  500003:
+    vi_VN: "Chủ đề báo cáo telemetry thiết bị (xem tài liệu MQTT để biết thêm chủ đề lên)"
+    en_US: "Device telemetry topic (see MQTT documentation for more upstream topics)"
+  500004:
+    vi_VN: "Chủ đề đăng ký điều khiển thiết bị (xem tài liệu MQTT để biết thêm chủ đề xuống)"
+    en_US: "Device control subscription topic (see MQTT documentation for more downstream topics)"
+  500005:
+    vi_VN: "Ví dụ dữ liệu báo cáo thiết bị"
+    en_US: "Device data report example"
+
+# Configuration Metadata
+metadata:
+  version: "1.0"
+  last_updated: "2024-12-11"
+  supported_languages:
+    - vi_VN
+    - en_US

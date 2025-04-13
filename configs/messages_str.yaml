@@ -1,0 +1,14 @@
+messages:
+  # Success Codes
+  Verification code login:
+    vi_VN: Đăng nhập bằng mã xác thực
+    en_US: Verification code login
+  Front-end RSA encryption:
+    vi_VN: Mã hóa RSA phía trước
+    en_US: Front-end RSA encryption
+  Shared account:
+    vi_VN: Tài khoản chia sẻ
+    en_US: Shared account
+  Tenant registration:
+    vi_VN: Đăng ký thuê bao
+    en_US: Tenant registration

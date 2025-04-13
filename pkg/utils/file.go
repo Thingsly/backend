@@ -21,13 +21,13 @@ func FileExist(path string) bool {
 // User input path security check
 func CheckPath(param string) error {
 	if count := strings.Count(param, "."); count > 0 {
-		return errors.New("Path cannot contain illegal character \".\"")
+		return errors.New("path cannot contain illegal character \".\"")
 	}
 	if count := strings.Count(param, "/"); count > 0 {
-		return errors.New("Path cannot contain illegal character \"/\"")
+		return errors.New("path cannot contain illegal character \"/\"")
 	}
 	if count := strings.Count(param, "\\"); count > 0 {
-		return errors.New("Path cannot contain illegal character \"\\\"")
+		return errors.New("path cannot contain illegal character \"\\\"")
 	}
 	return nil
 }
@@ -35,13 +35,13 @@ func CheckPath(param string) error {
 // User input filename security check
 func CheckFilename(param string) error {
 	if count := strings.Count(param, "."); count > 1 {
-		return errors.New("Filename cannot contain more than one \".\"")
+		return errors.New("filename cannot contain more than one \".\"")
 	}
 	if count := strings.Count(param, "/"); count > 0 {
-		return errors.New("Filename cannot contain illegal character \"/\"")
+		return errors.New("filename cannot contain illegal character \"/\"")
 	}
 	if count := strings.Count(param, "\\"); count > 0 {
-		return errors.New("Filename cannot contain illegal character \"\\\"")
+		return errors.New("filename cannot contain illegal character \"\\\"")
 	}
 	return nil
 }

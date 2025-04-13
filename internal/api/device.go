@@ -165,7 +165,7 @@ func (*DeviceApi) UpdateDeviceTemplate(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// GetDeviceTemplateListByPage 
+// GetDeviceTemplateListByPage
 // @Router   /api/v1/device/template [get]
 func (*DeviceApi) HandleDeviceTemplateListByPage(c *gin.Context) {
 	var req model.GetDeviceTemplateListByPageReq
@@ -301,7 +301,7 @@ func (*DeviceApi) UpdateDeviceGroup(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// GetDeviceGroupByPage 
+// GetDeviceGroupByPage
 // @Router   /api/v1/device/group [get]
 func (*DeviceApi) HandleDeviceGroupByPage(c *gin.Context) {
 	var req model.GetDeviceGroupsListByPageReq
@@ -387,7 +387,7 @@ func (*DeviceApi) HandleDeviceGroupRelation(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// GetDeviceGroupListByDeviceId 
+// GetDeviceGroupListByDeviceId
 // @Router   /api/v1/device/group/relation [get]
 func (*DeviceApi) HandleDeviceGroupListByDeviceId(c *gin.Context) {
 	var req model.GetDeviceGroupListByDeviceIdReq
@@ -487,7 +487,7 @@ func (*DeviceApi) DeviceConnect(c *gin.Context) {
 	// Get language settings
 	lang := c.Request.Header.Get("Accept-Language")
 	if lang == "" {
-		lang = "zh_CN"
+		lang = "vi_VN"
 	}
 
 	list, err := service.GroupApp.Device.DeviceConnect(c, &param, lang)

@@ -12,7 +12,7 @@ func FormatLangCode(acceptLanguage string) string {
 	langs := strings.Split(acceptLanguage, ",")
 	primaryLang := strings.TrimSpace(langs[0])
 
-	// Handle possible weight values like zh-CN;q=0.9
+	// Handle possible weight values like vi-VN;q=0.9
 	primaryLang = strings.Split(primaryLang, ";")[0]
 
 	// Replace "-" with "_"
@@ -20,8 +20,8 @@ func FormatLangCode(acceptLanguage string) string {
 
 	// Handle special cases
 	switch primaryLang {
-	case "zh":
-		return "zh_CN"
+	case "vi":
+		return "vi_VN"
 	case "en":
 		return "en_US"
 	}
@@ -32,5 +32,5 @@ func FormatLangCode(acceptLanguage string) string {
 	}
 
 	// In other cases, return the default value
-	return "en_US"
+	return "vi_VN"
 }

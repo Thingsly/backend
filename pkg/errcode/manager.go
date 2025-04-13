@@ -169,7 +169,7 @@ func (m *ErrorManager) getMessageForLanguage(code int, lang string) string {
 	}
 
 	// Use the default error message for the default language
-	defaultMsg := "Unknown Error"
+	defaultMsg := "Lỗi không xác định"
 	if lang != "en_US" {
 		defaultMsg = "Unknown Error"
 	}
@@ -234,26 +234,24 @@ func (m *ErrorManager) ClearCache() {
 }
 
 // Example usage:
-/*
-func main() {
-    // Create error code manager
-    manager := NewErrorManager("config/messages.yaml")
+// func main() {
+// 	// Create error code manager
+// 	manager := NewErrorManager("config/messages.yaml", "config/messages_str.yaml")
 
-    // Load configuration
-    if err := manager.LoadMessages(); err != nil {
-        log.Fatalf("Failed to load error code configuration: %v", err)
-    }
+// 	// Load configuration
+// 	if err := manager.LoadMessages(); err != nil {
+// 		log.Fatalf("Failed to load error code configuration: %v", err)
+// 	}
 
-    // Retrieve error message
-	msg := manager.GetMessage("100001", "zh_CN")
-	fmt.Println(msg) // Output: Service temporarily unavailable
+// 	// Retrieve error message
+// 	msg := manager.GetMessage(100001, "vi_VN")
+// 	fmt.Println(msg) // Output: Dịch vụ tạm thời không khả dụng
 
-	// Use default language
-	msg = manager.GetMessage("100001", "")
-	fmt.Println(msg) // Output: Service temporarily unavailable
+// 	// // Use default language
+// 	// msg = manager.GetMessage(100001, "")
+// 	// fmt.Println(msg) // Output: Service Temporarily Unavailable
 
-    // Use English
-    msg = manager.GetMessage("100001", "en_US")
-    fmt.Println(msg) // Output: Service Temporarily Unavailable
-}
-*/
+// 	// // Use English
+// 	// msg = manager.GetMessage(100001, "en_US")
+// 	// fmt.Println(msg) // Output: Service Temporarily Unavailable
+// }
