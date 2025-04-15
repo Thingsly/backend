@@ -5,4 +5,6 @@ The plug-in IoT platform developed by Go language has high performance, low entr
 ```cmd
 System Administrator: super@hust.edu.vn / 123456
 Tenant Administrator: tenant@hust.edu.vn / 123456
+
+psql -U postgres -d Mitras
 ```
