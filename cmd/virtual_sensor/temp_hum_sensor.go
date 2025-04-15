@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/internal/model"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )

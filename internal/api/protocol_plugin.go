@@ -1,15 +1,15 @@
 package api
 
 import (
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 type ProtocolPluginApi struct{}
 
-// CreateProtocolPlugin 
+// CreateProtocolPlugin
 // @Router   /api/v1/protocol_plugin [post]
 func (*ProtocolPluginApi) CreateProtocolPlugin(c *gin.Context) {
 	var req model.CreateProtocolPluginReq
@@ -24,7 +24,7 @@ func (*ProtocolPluginApi) CreateProtocolPlugin(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// DeleteProtocolPlugin 
+// DeleteProtocolPlugin
 // @Router   /api/v1/protocol_plugin/{id} [delete]
 func (*ProtocolPluginApi) DeleteProtocolPlugin(c *gin.Context) {
 	id := c.Param("id")
@@ -69,7 +69,7 @@ func (*ProtocolPluginApi) HandleProtocolPluginListByPage(c *gin.Context) {
 	c.Set("data", list)
 }
 
-// GetProtocolPluginForm 
+// GetProtocolPluginForm
 // @Router   /api/v1/protocol_plugin/device_config_form [get]
 func (*ProtocolPluginApi) HandleProtocolPluginForm(c *gin.Context) {
 	var req model.GetProtocolPluginFormReq

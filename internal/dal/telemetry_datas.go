@@ -7,15 +7,15 @@ import (
 	"strconv"
 	"time"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	global "github.com/Thingsly/backend/pkg/global"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	tptodb "github.com/HustIoTPlatform/backend/third_party/grpc/tptodb_client"
-	pb "github.com/HustIoTPlatform/backend/third_party/grpc/tptodb_client/grpc_tptodb"
+	tptodb "github.com/Thingsly/backend/third_party/grpc/tptodb_client"
+	pb "github.com/Thingsly/backend/third_party/grpc/tptodb_client/grpc_tptodb"
 )
 
 func CreateTelemetrData(data *model.TelemetryData) error {
@@ -48,7 +48,7 @@ func GetCurrentTelemetrDetailData(deviceId string) (*model.TelemetryData, error)
 	dbType := viper.GetString("grpc.tptodb_type")
 	if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
 		var data []model.TelemetryData
-		
+
 		request := &pb.GetDeviceAttributesCurrentsRequest{
 			DeviceId: deviceId,
 		}
@@ -196,7 +196,7 @@ func CreateTelemetrDataBatch(data []*model.TelemetryData) error {
 }
 
 func UpdateTelemetrDataBatch(data []*model.TelemetryData) error {
-	
+
 	for _, d := range data {
 		var dc model.TelemetryCurrentData
 		dc.DeviceID = d.DeviceID
@@ -204,7 +204,7 @@ func UpdateTelemetrDataBatch(data []*model.TelemetryData) error {
 		dc.NumberV = d.NumberV
 		dc.StringV = d.StringV
 		dc.BoolV = d.BoolV
-		
+
 		dc.T = time.Unix(0, d.T*int64(time.Millisecond)).UTC()
 		dc.TenantID = d.TenantID
 		info, err := query.TelemetryCurrentData.

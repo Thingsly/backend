@@ -1,7 +1,7 @@
 package logic
 
 import (
-	model "github.com/HustIoTPlatform/backend/internal/model"
+	model "github.com/Thingsly/backend/internal/model"
 )
 
 type DeviceLogic struct {
@@ -53,7 +53,7 @@ func (DeviceLogic) GetDeviceList(list []*model.Device, configsList []*model.Devi
 		resInfo := &model.GetTenantDeviceListReq{
 			ID: info.ID,
 		}
-		
+
 		if info.DeviceConfigID == nil {
 			continue
 		}

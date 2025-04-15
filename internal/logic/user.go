@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 
-	"github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/pkg/constant"
+	"github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/pkg/constant"
 )
 
 func UserIsEncrypt(ctx context.Context) bool {

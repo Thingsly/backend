@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/constant"
+	"github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/constant"
 
 	"github.com/sirupsen/logrus"
 )
@@ -182,4 +182,3 @@ func (*AutomateTelemetryActionService) AutomateActionRun(_ model.ActionInfo) (st
 	fmt.Println("Automation service action implementation")
 	return "Service", nil
 }
-

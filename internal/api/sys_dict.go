@@ -1,9 +1,9 @@
 package api
 
 import (
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -11,7 +11,7 @@ import (
 
 type DictApi struct{}
 
-// CreateDictColumn 
+// CreateDictColumn
 // @Router   /api/v1/dict/column [post]
 func (*DictApi) CreateDictColumn(c *gin.Context) {
 
@@ -61,7 +61,7 @@ func (*DictApi) DeleteDictColumn(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// DeleteDictLanguage 
+// DeleteDictLanguage
 // @Router   /api/v1/dict/language/{id} [delete]
 func (*DictApi) DeleteDictLanguage(c *gin.Context) {
 	id := c.Param("id")
@@ -106,7 +106,7 @@ func (*DictApi) HandleProtocolAndService(c *gin.Context) {
 	c.Set("data", list)
 }
 
-// GetDictLanguage 
+// GetDictLanguage
 // @Router   /api/v1/dict/language/{id} [get]
 func (*DictApi) HandleDictLanguage(c *gin.Context) {
 	id := c.Param("id")

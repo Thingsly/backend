@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/HustIoTPlatform/backend/initialize"
-	"github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/initialize"
+	"github.com/Thingsly/backend/internal/model"
 )
 
 func init() {

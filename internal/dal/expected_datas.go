@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
 
 	"github.com/sirupsen/logrus"
 )

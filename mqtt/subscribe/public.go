@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/internal/model"
 
 	"github.com/sirupsen/logrus"
 )

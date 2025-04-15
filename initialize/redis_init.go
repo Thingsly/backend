@@ -7,9 +7,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	global "github.com/Thingsly/backend/pkg/global"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"

@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/internal/model"
 )
 
 func newLatestDeviceAlarm(db *gorm.DB, opts ...gen.DOOption) latestDeviceAlarm {

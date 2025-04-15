@@ -1,7 +1,7 @@
 package main
 
 import (
-	initialize "github.com/HustIoTPlatform/backend/initialize"
+	initialize "github.com/Thingsly/backend/initialize"
 
 	"gorm.io/gen"
 )

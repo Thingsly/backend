@@ -3,10 +3,10 @@ package service
 import (
 	"time"
 
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
@@ -15,15 +15,15 @@ import (
 type NotificationGroup struct{}
 
 //	type CreateNotificationGroupReq struct {
-//		Name               string    `json:"name" validate:"required"`                
-//		NotificationType   string    `json:"notification_type" validate:"required"`  
-//		Status             int       `json:"status" validate:"required"`              
-//		NotificationConfig *string    `json:"notification_config" validate:"omitempty"` 
-//		Description        string    `json:"description" validate:"required"`         
-//		TenantID           string    `json:"tenant_id" validate:"required"`           
-//		CreateTime         time.Time `json:"create_time" validate:"required"`         
-//		UpdateTime         time.Time `json:"update_time" validate:"required"`         
-//		Remark             string    `json:"remark" validate:"required"`              
+//		Name               string    `json:"name" validate:"required"`
+//		NotificationType   string    `json:"notification_type" validate:"required"`
+//		Status             int       `json:"status" validate:"required"`
+//		NotificationConfig *string    `json:"notification_config" validate:"omitempty"`
+//		Description        string    `json:"description" validate:"required"`
+//		TenantID           string    `json:"tenant_id" validate:"required"`
+//		CreateTime         time.Time `json:"create_time" validate:"required"`
+//		UpdateTime         time.Time `json:"update_time" validate:"required"`
+//		Remark             string    `json:"remark" validate:"required"`
 //	}
 func (*NotificationGroup) CreateNotificationGroup(createNotificationgroupReq *model.CreateNotificationGroupReq, u *utils.UserClaims) (*model.NotificationGroup, error) {
 	var notificationGroup model.NotificationGroup

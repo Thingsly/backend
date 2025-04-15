@@ -1,8 +1,8 @@
 package dal
 
 import (
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
 
 	"github.com/go-basic/uuid"
 	"gorm.io/gorm"

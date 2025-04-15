@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/mqtt/publish"
-	"github.com/HustIoTPlatform/backend/pkg/common"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/mqtt/publish"
+	"github.com/Thingsly/backend/pkg/common"
+	global "github.com/Thingsly/backend/pkg/global"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
@@ -26,13 +26,12 @@ func (*OTA) CreateOTAUpgradePackage(req *model.CreateOTAUpgradePackageReq, tenan
 	ota.Name = req.Name
 	ota.Version = req.Version
 	ota.TargetVersion = req.TargetVersion
-	
+
 	ota.DeviceConfigID = req.DeviceConfigID
 	ota.Module = req.Module
 	ota.PackageType = *req.PackageType
 	ota.SignatureType = req.SignatureType
 
-	
 	fileurl := *req.PackageUrl
 	filepath := strings.Replace(fileurl, "/api/v1/ota/download", "", 1)
 	signature, err := utils.FileSign(filepath, *req.SignatureType)

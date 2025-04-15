@@ -1,7 +1,7 @@
 package global
 
 import (
-	"github.com/HustIoTPlatform/backend/internal/middleware/response"
+	"github.com/Thingsly/backend/internal/middleware/response"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/redis/go-redis/v9"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/internal/model"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"

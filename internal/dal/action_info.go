@@ -1,8 +1,8 @@
 package dal
 
 import (
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
 )
 
 func CreateActionInfo(d model.ActionInfo, tx *query.QueryTx) error {

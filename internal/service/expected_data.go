@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
@@ -128,7 +128,7 @@ func (*ExpectedData) PageList(ctx context.Context, req *model.GetExpectedDataPag
 }
 
 // Send processes and sends expected data for a specific device.
-// It queries the expected data from the database, checks for expiration, 
+// It queries the expected data from the database, checks for expiration,
 // and sends the data based on its type (telemetry, attribute, command).
 // It also updates the status of the data after sending.
 func (*ExpectedData) Send(ctx context.Context, deviceID string) error {

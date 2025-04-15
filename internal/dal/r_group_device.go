@@ -3,8 +3,8 @@ package dal
 import (
 	"context"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
 
 	"github.com/sirupsen/logrus"
 )
@@ -22,7 +22,7 @@ func DeleteRGroupDevice(group_id, device_id string) error {
 }
 
 func GetRGroupDeviceByGroupId(req model.GetDeviceListByGroup) (int64, interface{}, error) {
-	
+
 	q := query.RGroupDevice
 	var devicesList []model.GetDeviceListByGroupRsp
 	queryBuilder := q.WithContext(context.Background())

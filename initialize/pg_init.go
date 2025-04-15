@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	global "github.com/HustIoTPlatform/backend/pkg/global"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	global "github.com/Thingsly/backend/pkg/global"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"

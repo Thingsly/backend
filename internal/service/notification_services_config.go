@@ -5,10 +5,10 @@ import (
 	"strings"
 	"time"
 
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/third_party/others/http_client"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/third_party/others/http_client"
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
@@ -18,7 +18,7 @@ import (
 type NotificationServicesConfig struct{}
 
 func (*NotificationServicesConfig) SaveNotificationServicesConfig(req *model.SaveNotificationServicesConfigReq) (*model.NotificationServicesConfig, error) {
-	
+
 	c, err := dal.GetNotificationServicesConfigByType(req.NoticeType)
 	if err != nil {
 		return nil, err
@@ -123,10 +123,10 @@ func sendEmailMessage(message string, subject string, tenantId string, to ...str
 	// if emailConf.SSL != nil {
 	// 	if *emailConf.SSL {
 	// 		d.TLSConfig = &tls.Config{
-	// 			MinVersion:         tls.VersionTLS12, 
-	// 			MaxVersion:         tls.VersionTLS13, 
-	// 			InsecureSkipVerify: false,            
-	// 			CipherSuites: []uint16{ 
+	// 			MinVersion:         tls.VersionTLS12,
+	// 			MaxVersion:         tls.VersionTLS13,
+	// 			InsecureSkipVerify: false,
+	// 			CipherSuites: []uint16{
 	// 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
 	// 				tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
 	// 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
@@ -142,7 +142,6 @@ func sendEmailMessage(message string, subject string, tenantId string, to ...str
 	m.SetBody("text/plain", message)
 	m.SetHeader("Subject", subject)
 
-	
 	if err := d.DialAndSend(m); err != nil {
 		logrus.Error(err)
 		result := "FAILURE"

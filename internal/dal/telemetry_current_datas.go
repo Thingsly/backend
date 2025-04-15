@@ -5,15 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
+	"github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 
-	tptodb "github.com/HustIoTPlatform/backend/third_party/grpc/tptodb_client"
-	pb "github.com/HustIoTPlatform/backend/third_party/grpc/tptodb_client/grpc_tptodb"
+	tptodb "github.com/Thingsly/backend/third_party/grpc/tptodb_client"
+	pb "github.com/Thingsly/backend/third_party/grpc/tptodb_client/grpc_tptodb"
 )
 
 // Get current telemetry data from telemetry_current_datas to replace telemetry_datas

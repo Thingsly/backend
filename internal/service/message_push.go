@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/model"
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/errcode"
 
 	"github.com/sirupsen/logrus"
 )

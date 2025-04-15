@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	global "github.com/HustIoTPlatform/backend/pkg/global"
+	global "github.com/Thingsly/backend/pkg/global"
 
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v3"

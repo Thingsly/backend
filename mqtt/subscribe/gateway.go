@@ -3,8 +3,8 @@ package subscribe
 import (
 	"context"
 
-	config "github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/mqtt/publish"
+	config "github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/mqtt/publish"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/panjf2000/ants"

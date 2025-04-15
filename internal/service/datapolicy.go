@@ -3,10 +3,10 @@ package service
 import (
 	"time"
 
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/utils"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/sirupsen/logrus"
 )

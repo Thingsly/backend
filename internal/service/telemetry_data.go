@@ -11,13 +11,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/initialize"
-	config "github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/mqtt/publish"
-	simulationpublish "github.com/HustIoTPlatform/backend/mqtt/simulation_publish"
-	"github.com/HustIoTPlatform/backend/pkg/constant"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/initialize"
+	config "github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/mqtt/publish"
+	simulationpublish "github.com/Thingsly/backend/mqtt/simulation_publish"
+	"github.com/Thingsly/backend/pkg/constant"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/go-basic/uuid"
 	"github.com/mintance/go-uniqid"
@@ -25,8 +25,8 @@ import (
 	"github.com/spf13/viper"
 	"github.com/xuri/excelize/v2"
 
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
 )
 
 type TelemetryData struct{}

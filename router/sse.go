@@ -1,7 +1,7 @@
 package router
 
 import (
-	sseapi "github.com/HustIoTPlatform/backend/internal/api/sseapi"
+	sseapi "github.com/Thingsly/backend/internal/api/sseapi"
 
 	"github.com/gin-gonic/gin"
 )

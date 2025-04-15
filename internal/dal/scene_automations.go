@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/pkg/common"
+	"github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/pkg/common"
 
 	"github.com/sirupsen/logrus"
 )

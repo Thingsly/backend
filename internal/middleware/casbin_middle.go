@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	service "github.com/Thingsly/backend/internal/service"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )

@@ -4,10 +4,10 @@ import (
 	"errors"
 	"time"
 
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/go-basic/uuid"
 	"gorm.io/gorm"

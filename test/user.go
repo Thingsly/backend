@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/HustIoTPlatform/backend/internal/api"
+	"github.com/Thingsly/backend/internal/api"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -34,7 +34,7 @@ func TestHomepageHandler(t *testing.T) {
 	responseData, _ := io.ReadAll(w.Body)
 
 	assert.Equal(t, http.StatusOK, w.Code)
-	// assert.Equal(t, mockResponse, string(responseData))  
+	// assert.Equal(t, mockResponse, string(responseData))
 	t.Log("resoponseData:" + string(responseData))
 	t.Log("resoponseData:" + string(responseData))
 }

@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/sirupsen/logrus"
 )
@@ -32,7 +32,7 @@ func GetDeviceTemplateById(id string) (*model.DeviceTemplate, error) {
 	return template, err
 }
 
-// GetDeviceTemplateByDeviceId 
+// GetDeviceTemplateByDeviceId
 func GetDeviceTemplateByDeviceId(deviceId string) (any, error) {
 	var d = query.Device
 	var t = query.DeviceTemplate

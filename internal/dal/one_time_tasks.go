@@ -4,9 +4,9 @@ import (
 	"errors"
 	"time"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/pkg/common"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/pkg/common"
 )
 
 func CreateOneTimeTask(d model.OneTimeTask, tx *query.QueryTx) error {

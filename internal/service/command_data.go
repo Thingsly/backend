@@ -7,15 +7,15 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/initialize"
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/internal/query"
-	config "github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/mqtt/publish"
-	"github.com/HustIoTPlatform/backend/pkg/common"
-	"github.com/HustIoTPlatform/backend/pkg/constant"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
+	"github.com/Thingsly/backend/initialize"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/internal/query"
+	config "github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/mqtt/publish"
+	"github.com/Thingsly/backend/pkg/common"
+	"github.com/Thingsly/backend/pkg/constant"
+	"github.com/Thingsly/backend/pkg/errcode"
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
@@ -39,7 +39,7 @@ func (*CommandData) GetCommandSetLogsDataListByPage(req model.GetCommandSetLogsL
 }
 
 func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param *model.PutMessageForCommand, operationType string, fn ...config.MqttDirectResponseFunc) error {
-	
+
 	deviceInfo, err := initialize.GetDeviceCacheById(param.DeviceID)
 	if err != nil {
 		return errcode.WithData(errcode.CodeDBError, map[string]interface{}{
@@ -47,7 +47,6 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		})
 	}
 
-	
 	deviceType, protocolType := "1", "MQTT"
 	var deviceConfig *model.DeviceConfig
 	if deviceInfo.DeviceConfigID != nil {
@@ -67,11 +66,9 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		}
 	}
 
-	
 	messageID := common.GetMessageID()
 	topic := fmt.Sprintf("%s%s/%s", config.MqttConfig.Commands.PublishTopic, deviceInfo.DeviceNumber, messageID)
 
-	
 	if deviceConfig != nil && protocolType != "MQTT" {
 		subTopicPrefix, err := dal.GetServicePluginSubTopicPrefixByDeviceConfigID(*deviceInfo.DeviceConfigID)
 		if err != nil {
@@ -82,7 +79,6 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		topic = fmt.Sprintf("%s%s%s/%s", subTopicPrefix, config.MqttConfig.Commands.PublishTopic, deviceInfo.ID, messageID)
 	}
 
-	
 	payloadMap := map[string]interface{}{"method": param.Identify}
 	if param.Value != nil && *param.Value != "" {
 		if !IsJSON(*param.Value) {
@@ -99,7 +95,6 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		payloadMap["params"] = params
 	}
 
-	
 	if deviceInfo.DeviceConfigID != nil && *deviceInfo.DeviceConfigID != "" {
 		payloadBytes, err := json.Marshal(payloadMap)
 		if err != nil {
@@ -121,7 +116,6 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		}
 	}
 
-	
 	if protocolType == "MQTT" && (deviceType == "2" || deviceType == "3") {
 		gatewayID := deviceInfo.ID
 		if deviceType == "3" {
@@ -154,7 +148,6 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		topic = fmt.Sprintf("%s%s/%s", config.MqttConfig.Commands.GatewayPublishTopic, gatewayInfo.DeviceNumber, messageID)
 	}
 
-	
 	payload, err := json.Marshal(payloadMap)
 	if err != nil {
 		return errcode.WithData(errcode.CodeSystemError, map[string]interface{}{
@@ -162,7 +155,6 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		})
 	}
 
-	
 	err = publish.PublishCommandMessage(topic, payload)
 	errorMessage := ""
 	if err != nil {
@@ -170,7 +162,6 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		logrus.Error(ctx, "Dispatch failed", err)
 	}
 
-	
 	status := strconv.Itoa(constant.StatusOK)
 	if errorMessage != "" {
 		status = strconv.Itoa(constant.StatusFailed)

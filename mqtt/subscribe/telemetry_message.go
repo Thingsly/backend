@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	initialize "github.com/HustIoTPlatform/backend/initialize"
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	config "github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/mqtt/publish"
+	initialize "github.com/Thingsly/backend/initialize"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
+	config "github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/mqtt/publish"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"

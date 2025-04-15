@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/mqtt/subscribe"
+	"github.com/Thingsly/backend/mqtt/subscribe"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"

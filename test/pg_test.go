@@ -5,11 +5,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/initialize"
+	"github.com/Thingsly/backend/initialize"
 
-	"github.com/HustIoTPlatform/backend/internal/query"
+	"github.com/Thingsly/backend/internal/query"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/internal/model"
 
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"

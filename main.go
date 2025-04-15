@@ -8,18 +8,19 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/HustIoTPlatform/backend/initialize"
-	"github.com/HustIoTPlatform/backend/initialize/croninit"
-	"github.com/HustIoTPlatform/backend/internal/app"
-	"github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/mqtt/device"
-	"github.com/HustIoTPlatform/backend/mqtt/publish"
-	"github.com/HustIoTPlatform/backend/mqtt/subscribe"
-	grpc_tptodb "github.com/HustIoTPlatform/backend/third_party/grpc/tptodb_client"
 	"time"
 
-	router "github.com/HustIoTPlatform/backend/router"
+	"github.com/Thingsly/backend/initialize"
+	"github.com/Thingsly/backend/initialize/croninit"
+	"github.com/Thingsly/backend/internal/app"
+	"github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/mqtt/device"
+	"github.com/Thingsly/backend/mqtt/publish"
+	"github.com/Thingsly/backend/mqtt/subscribe"
+	grpc_tptodb "github.com/Thingsly/backend/third_party/grpc/tptodb_client"
+
+	router "github.com/Thingsly/backend/router"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -53,7 +54,7 @@ func init() {
 		logrus.Fatal(err)
 	}
 	publish.PublishInit()
-	
+
 	croninit.CronInit()
 }
 

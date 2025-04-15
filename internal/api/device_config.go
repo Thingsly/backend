@@ -1,9 +1,9 @@
 package api
 
 import (
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +27,7 @@ func (*DeviceConfigApi) CreateDeviceConfig(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// UpdateDeviceConfig 
+// UpdateDeviceConfig
 // @Router   /api/v1/device_config [put]
 func (*DeviceConfigApi) UpdateDeviceConfig(c *gin.Context) {
 	var req model.UpdateDeviceConfigReq

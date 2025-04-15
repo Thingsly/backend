@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/third_party/others/http_client"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/third_party/others/http_client"
 
 	"github.com/sirupsen/logrus"
 )

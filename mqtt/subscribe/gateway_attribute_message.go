@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/model"
-	config "github.com/HustIoTPlatform/backend/mqtt"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/model"
+	config "github.com/Thingsly/backend/mqtt"
 
 	pkgerrors "github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

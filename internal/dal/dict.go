@@ -3,9 +3,9 @@ package dal
 import (
 	"fmt"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"gorm.io/gen/field"
 )

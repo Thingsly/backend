@@ -8,18 +8,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/pkg/common"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/common"
+	"github.com/Thingsly/backend/pkg/errcode"
 
 	"gorm.io/gorm"
 
-	"github.com/HustIoTPlatform/backend/initialize"
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/logic"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/initialize"
+	dal "github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/logic"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	global "github.com/Thingsly/backend/pkg/global"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"

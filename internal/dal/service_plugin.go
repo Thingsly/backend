@@ -6,8 +6,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/internal/query"
+	"github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/internal/query"
 
 	"github.com/sirupsen/logrus"
 )
@@ -81,9 +81,9 @@ func GetServicePluginListByPage(req *model.GetServicePluginByPageReq) (int64, []
 		}
 
 		if timeNow.Sub(lastActiveTime) > time.Minute {
-			servicePlugins[i]["service_heartbeat"] = 2 
+			servicePlugins[i]["service_heartbeat"] = 2
 		} else {
-			servicePlugins[i]["service_heartbeat"] = 1 
+			servicePlugins[i]["service_heartbeat"] = 1
 		}
 	}
 	return count, servicePlugins, err
@@ -106,7 +106,7 @@ func GetServicePlugin(id string) (interface{}, error) {
 }
 
 func GetServicePluginByID(id string) (*model.ServicePlugin, error) {
-	
+
 	q := query.ServicePlugin
 	queryBuilder := q.WithContext(context.Background())
 	servicePlugin, err := queryBuilder.Where(q.ID.Eq(id)).Select().First()
@@ -126,7 +126,7 @@ func GetServicePluginHttpAddressByID(id string) (*model.ServicePlugin, string, e
 	if servicePlugin.ServiceConfig == nil || *servicePlugin.ServiceConfig == "" {
 		return nil, "", errors.New("service plugin config error, can not get form")
 	}
-	
+
 	var serviceAccessConfig model.ServiceAccessConfig
 	err = json.Unmarshal([]byte(*servicePlugin.ServiceConfig), &serviceAccessConfig)
 	if err != nil {
@@ -148,7 +148,7 @@ func GetServicePluginByServiceIdentifier(serviceIdentifier string) (*model.Servi
 			ServiceIdentifier: "MQTT",
 		}, nil
 	}
-	
+
 	q := query.ServicePlugin
 	queryBuilder := q.WithContext(context.Background())
 	servicePlugin, err := queryBuilder.Where(q.ServiceIdentifier.Eq(serviceIdentifier)).Select().First()
@@ -165,7 +165,7 @@ func GetServicePluginByDeviceConfigID(deviceConfigID string) (*model.ServicePlug
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return GetServicePluginByServiceIdentifier(*deviceConfig.ProtocolType)
 }
 
@@ -212,7 +212,7 @@ func GetServicePluginSubTopicPrefixByDeviceConfigID(deviceConfigID string) (stri
 func UpdateServicePluginHeartbeat(serviceIdentifier string) error {
 	q := query.ServicePlugin
 	queryBuilder := q.WithContext(context.Background())
-	
+
 	t := time.Now().UTC()
 	info, err := queryBuilder.Where(q.ServiceIdentifier.Eq(serviceIdentifier)).Update(q.LastActiveTime, t)
 	if err != nil {

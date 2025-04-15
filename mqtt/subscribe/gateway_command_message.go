@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
-	config "github.com/HustIoTPlatform/backend/mqtt"
+	"github.com/Thingsly/backend/internal/model"
+	config "github.com/Thingsly/backend/mqtt"
 
 	"github.com/sirupsen/logrus"
 )

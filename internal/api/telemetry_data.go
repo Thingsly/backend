@@ -6,13 +6,13 @@ import (
 	"sync"
 	"time"
 
-	ws_subscribe "github.com/HustIoTPlatform/backend/mqtt/ws_subscribe"
-	"github.com/HustIoTPlatform/backend/pkg/constant"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/utils"
+	ws_subscribe "github.com/Thingsly/backend/mqtt/ws_subscribe"
+	"github.com/Thingsly/backend/pkg/constant"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/utils"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/errcode"
 
 	"github.com/gin-gonic/gin"
 )

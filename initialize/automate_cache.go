@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/initialize/automatecache"
-	"github.com/HustIoTPlatform/backend/internal/model"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/initialize/automatecache"
+	"github.com/Thingsly/backend/internal/model"
+	global "github.com/Thingsly/backend/pkg/global"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"

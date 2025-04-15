@@ -3,9 +3,9 @@ package sseapi
 import (
 	"time"
 
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/global"
-	"github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/global"
+	"github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

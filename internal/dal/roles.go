@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/pkg/global"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/gen"

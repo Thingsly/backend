@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	global "github.com/HustIoTPlatform/backend/pkg/global"
+	global "github.com/Thingsly/backend/pkg/global"
 )
 
 type TelemetryDatasAggregate struct {
-	AggregateWindow   int64  `json:"aggregate_window"` 
-	AggregateFunction string `json:"aggregate_function"` 
+	AggregateWindow   int64  `json:"aggregate_window"`
+	AggregateFunction string `json:"aggregate_function"`
 	STime             int64  `json:"s_time"`
 	ETime             int64  `json:"e_time"`
 	Count             int64  `json:"count"`

@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/initialize"
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/common"
+	"github.com/Thingsly/backend/initialize"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/common"
 
 	"github.com/go-basic/uuid"
 	pkgerrors "github.com/pkg/errors"
@@ -431,7 +431,9 @@ func (a *Automate) getActualValue(deviceId string, key string, triggerParamType 
 
 // automateConditionCheckWithDevice
 // @description  Validates a device condition by comparing actual device data (telemetry, attribute, event, or status)
-//              against the expected trigger value using the specified operator.
+//
+//	against the expected trigger value using the specified operator.
+//
 // @params cond model.DeviceTriggerCondition - The condition to validate
 // @params deviceId string - The ID of the device
 // @return bool - True if condition is met, false otherwise
@@ -519,7 +521,6 @@ func (a *Automate) automateConditionCheckWithDevice(cond model.DeviceTriggerCond
 
 	return ok, result
 }
-
 
 type DataIdentifierName func(device_template_id, identifier string) string
 

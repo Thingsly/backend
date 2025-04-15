@@ -1,11 +1,11 @@
 package api
 
 import (
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	dal "github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
+	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )

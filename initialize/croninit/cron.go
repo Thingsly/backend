@@ -4,7 +4,7 @@ package croninit
 import (
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/service"
+	"github.com/Thingsly/backend/internal/service"
 
 	"github.com/robfig/cron"
 	"github.com/sirupsen/logrus"

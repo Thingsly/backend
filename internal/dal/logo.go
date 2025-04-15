@@ -3,7 +3,7 @@ package dal
 import (
 	"context"
 
-	query "github.com/HustIoTPlatform/backend/internal/query"
+	query "github.com/Thingsly/backend/internal/query"
 
 	"github.com/sirupsen/logrus"
 )

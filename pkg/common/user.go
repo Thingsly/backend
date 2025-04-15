@@ -1,7 +1,7 @@
 package common
 
 import (
-	constant "github.com/HustIoTPlatform/backend/pkg/constant"
+	constant "github.com/Thingsly/backend/pkg/constant"
 )
 
 func CheckUserIsAdmin(authority string) bool {

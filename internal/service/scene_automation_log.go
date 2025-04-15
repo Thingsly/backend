@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	utils "github.com/Thingsly/backend/pkg/utils"
 )
 
 type SceneAutomationLog struct{}

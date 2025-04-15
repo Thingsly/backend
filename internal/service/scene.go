@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
 )
 
 type Scene struct{}

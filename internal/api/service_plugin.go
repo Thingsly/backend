@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/internal/service"
+	"github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	initialize "github.com/HustIoTPlatform/backend/initialize"
-	"github.com/HustIoTPlatform/backend/internal/query"
+	initialize "github.com/Thingsly/backend/initialize"
+	"github.com/Thingsly/backend/internal/query"
 
 	"github.com/sirupsen/logrus"
 )

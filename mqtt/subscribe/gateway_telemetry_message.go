@@ -3,8 +3,8 @@ package subscribe
 import (
 	"encoding/json"
 
-	dal "github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/model"
+	dal "github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/model"
 
 	pkgerrors "github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

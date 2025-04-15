@@ -1,6 +1,6 @@
 package service
 
-import global "github.com/HustIoTPlatform/backend/pkg/global"
+import global "github.com/Thingsly/backend/pkg/global"
 
 type Casbin struct {
 }

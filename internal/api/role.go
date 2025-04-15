@@ -3,17 +3,17 @@ package api
 import (
 	"net/http"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
+	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 type RoleApi struct{}
 
-// CreateRole 
+// CreateRole
 // @Router   /api/v1/role [post]
 func (*RoleApi) CreateRole(c *gin.Context) {
 	var req model.CreateRoleReq
@@ -32,7 +32,7 @@ func (*RoleApi) CreateRole(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// UpdateRole 
+// UpdateRole
 // @Router   /api/v1/role [put]
 func (*RoleApi) UpdateRole(c *gin.Context) {
 	var req model.UpdateRoleReq
@@ -54,7 +54,7 @@ func (*RoleApi) UpdateRole(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// DeleteRole 
+// DeleteRole
 // @Router   /api/v1/role/{id} [delete]
 func (*RoleApi) DeleteRole(c *gin.Context) {
 	id := c.Param("id")
@@ -76,7 +76,7 @@ func (*RoleApi) DeleteRole(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// GetRoleListByPage 
+// GetRoleListByPage
 // @Router   /api/v1/role [get]
 func (*RoleApi) HandleRoleListByPage(c *gin.Context) {
 	var req model.GetRoleListByPageReq

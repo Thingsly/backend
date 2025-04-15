@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/global"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
@@ -16,7 +16,6 @@ type LoginLock struct {
 	MaxFailedAttempts int64
 	LockDuration      time.Duration
 }
-
 
 func NewLoginLock() *LoginLock {
 	maxFailedAttempts := viper.GetInt64("classified-protect.login-max-fail-times")
@@ -43,7 +42,7 @@ func (l *LoginLock) GetAllowLogin(_ context.Context, username string) error {
 	lockUntil, err := global.REDIS.Get(context.Background(), lockKey).Result()
 	if err == nil {
 		lockUntilTime, err := time.Parse(time.RFC3339, lockUntil)
-		
+
 		if err == nil && time.Now().Before(lockUntilTime) {
 			return errcode.WithVars(errcode.CodeTooManyAttempts, map[string]interface{}{
 				"attempts":    l.MaxFailedAttempts,

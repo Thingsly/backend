@@ -3,23 +3,23 @@ package router
 import (
 	"time"
 
-	middleware "github.com/HustIoTPlatform/backend/internal/middleware"
-	"github.com/HustIoTPlatform/backend/internal/middleware/response"
-	"github.com/HustIoTPlatform/backend/pkg/global"
-	"github.com/HustIoTPlatform/backend/pkg/metrics"
-	"github.com/HustIoTPlatform/backend/router/apps"
+	middleware "github.com/Thingsly/backend/internal/middleware"
+	"github.com/Thingsly/backend/internal/middleware/response"
+	"github.com/Thingsly/backend/pkg/global"
+	"github.com/Thingsly/backend/pkg/metrics"
+	"github.com/Thingsly/backend/router/apps"
 
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 
 	// gin-swagger middleware
-	_ "github.com/HustIoTPlatform/backend/docs"
+	_ "github.com/Thingsly/backend/docs"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	api "github.com/HustIoTPlatform/backend/internal/api"
+	api "github.com/Thingsly/backend/internal/api"
 )
 
 // swagger embed files

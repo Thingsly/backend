@@ -3,10 +3,10 @@ package dal
 import (
 	"context"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	global "github.com/Thingsly/backend/pkg/global"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/datatypes"
@@ -64,7 +64,7 @@ func ServeUiElementsListByPage(uielements *model.ServeUiElementsListByPageReq) (
 }
 
 func ServeUiElementsListByAuthority(u *utils.UserClaims) (int64, interface{}, error) {
-	
+
 	if u.Authority == "SYS_ADMIN" || u.Authority == "TENANT_ADMIN" {
 		q := query.SysUIElement
 		var count int64

@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/service"
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/service"
+	"github.com/Thingsly/backend/pkg/global"
 
 	"github.com/robfig/cron"
 	"github.com/sirupsen/logrus"

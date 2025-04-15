@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/errcode"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"

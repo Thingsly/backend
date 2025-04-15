@@ -5,9 +5,9 @@ import (
 	"path"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
-	config "github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/pkg/common"
+	"github.com/Thingsly/backend/internal/model"
+	config "github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/pkg/common"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/go-basic/uuid"

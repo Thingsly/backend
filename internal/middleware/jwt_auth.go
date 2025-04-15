@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/pkg/global"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/pkg/global"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"

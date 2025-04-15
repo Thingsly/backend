@@ -6,11 +6,11 @@ import (
 	"strings"
 	"time"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	common "github.com/HustIoTPlatform/backend/pkg/common"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	common "github.com/Thingsly/backend/pkg/common"
+	global "github.com/Thingsly/backend/pkg/global"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/gen"
@@ -45,12 +45,12 @@ func GetUsersByEmail(email string) (*model.User, error) {
 }
 
 func GetUsersByPhoneNumber(phoneNumber string) (*model.User, error) {
-	
+
 	format1 := phoneNumber
 	format2 := phoneNumber
 
 	if strings.HasPrefix(phoneNumber, "+") {
-		
+
 		phone := phoneNumber[1:]
 		parts := strings.Split(phone, " ")
 		if len(parts) > 1 {

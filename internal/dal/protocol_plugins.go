@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
@@ -27,14 +27,14 @@ func CreateProtocolPluginWithDict(p *model.CreateProtocolPluginReq) (*model.Prot
 		return nil, errors.New("deviceType is invalid")
 	}
 	logrus.Info("dictCode:", dictCode)
-	
+
 	tx, err := StartTransaction()
 	if err != nil {
 		return nil, err
 	}
 	defer tx.Rollback()
 	t := time.Now().UTC()
-	
+
 	var dict = model.SysDict{}
 	dictId := uuid.New()
 	dict.ID = dictId
@@ -45,7 +45,7 @@ func CreateProtocolPluginWithDict(p *model.CreateProtocolPluginReq) (*model.Prot
 		tx.Rollback()
 		return nil, err
 	}
-	
+
 	var dictLanguage = model.SysDictLanguage{}
 	dictLanguage.ID = uuid.New()
 	dictLanguage.DictID = dictId
@@ -56,7 +56,7 @@ func CreateProtocolPluginWithDict(p *model.CreateProtocolPluginReq) (*model.Prot
 		tx.Rollback()
 		return nil, err
 	}
-	
+
 	var protocolPlugin = model.ProtocolPlugin{}
 	protocolPlugin.ID = uuid.New()
 	protocolPlugin.Name = p.Name
@@ -82,7 +82,7 @@ func CreateProtocolPluginWithDict(p *model.CreateProtocolPluginReq) (*model.Prot
 }
 
 func DeleteProtocolPluginWithDict(id string) error {
-	
+
 	tx, err := StartTransaction()
 	if err != nil {
 		return err
@@ -254,7 +254,7 @@ func GetProtocolPluginByDeviceConfigID(deviceConfigID string) (*model.ProtocolPl
 	if deviceConfig.ProtocolType == nil {
 		return nil, errors.New("protocolType is nil")
 	}
-	
+
 	var deviceType int16
 	if deviceConfig.DeviceType == "1" {
 		deviceType = 1

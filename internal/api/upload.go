@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/pkg/common"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/utils"
+	"github.com/Thingsly/backend/pkg/common"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )

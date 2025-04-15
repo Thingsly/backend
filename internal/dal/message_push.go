@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/internal/query"
+	"github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/internal/query"
 	"github.com/go-basic/uuid"
 	"gorm.io/gorm"
 )

@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	config "github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/mqtt/subscribe"
+	config "github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/mqtt/subscribe"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/go-basic/uuid"

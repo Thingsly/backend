@@ -1,16 +1,16 @@
 package api
 
 import (
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 type EventDataApi struct{}
 
-// GetEventDatasListByPage 
+// GetEventDatasListByPage
 // @Router   /api/v1/event/datas [get]
 func (*EventDataApi) HandleEventDatasListByPage(c *gin.Context) {
 	var req model.GetEventDatasListByPageReq

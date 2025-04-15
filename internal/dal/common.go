@@ -1,8 +1,8 @@
 package dal
 
 import (
-	"github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/pkg/global"
 )
 
 func StartTransaction() (*query.QueryTx, error) {

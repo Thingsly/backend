@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/internal/query"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
-	"github.com/HustIoTPlatform/backend/third_party/others/http_client"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
+	"github.com/Thingsly/backend/third_party/others/http_client"
 
 	"github.com/go-basic/uuid"
 	"github.com/jinzhu/copier"

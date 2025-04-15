@@ -1,7 +1,7 @@
 package apps
 
 import (
-	"github.com/HustIoTPlatform/backend/internal/api"
+	"github.com/Thingsly/backend/internal/api"
 	"github.com/gin-gonic/gin"
 )
 

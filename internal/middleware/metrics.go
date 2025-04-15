@@ -3,7 +3,7 @@ package middleware
 import (
 	"time"
 
-	"github.com/HustIoTPlatform/backend/pkg/metrics"
+	"github.com/Thingsly/backend/pkg/metrics"
 
 	"github.com/gin-gonic/gin"
 )

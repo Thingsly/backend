@@ -8,17 +8,17 @@ import (
 	"github.com/sirupsen/logrus"
 	"gorm.io/gen"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	global "github.com/HustIoTPlatform/backend/pkg/global"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	global "github.com/Thingsly/backend/pkg/global"
 )
 
-// CreateOpenAPIKey 
+// CreateOpenAPIKey
 func CreateOpenAPIKey(key *model.OpenAPIKey) error {
 	return query.OpenAPIKey.Create(key)
 }
 
-// GetOpenAPIKeyByID 
+// GetOpenAPIKeyByID
 func GetOpenAPIKeyByID(id string) (*model.OpenAPIKey, error) {
 	return query.OpenAPIKey.Where(query.OpenAPIKey.ID.Eq(id)).First()
 }

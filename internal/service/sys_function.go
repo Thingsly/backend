@@ -1,17 +1,17 @@
 package service
 
 import (
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/internal/dal"
+	model "github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/global"
 )
 
 type SysFunction struct{}
 
 func (*SysFunction) GetSysFuncion(lang string) ([]*model.SysFunction, error) {
 	data, err := dal.GetAllSysFunction()
-	
+
 	for _, v := range data {
 		description := global.ResponseHandler.ErrManager.GetMessageStr(*v.Description, lang)
 		v.Description = &description

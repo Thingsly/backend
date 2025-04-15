@@ -1,6 +1,6 @@
 package automatecache
 
-import "github.com/HustIoTPlatform/backend/internal/model"
+import "github.com/Thingsly/backend/internal/model"
 
 type MultipleDeviceCache struct{}
 

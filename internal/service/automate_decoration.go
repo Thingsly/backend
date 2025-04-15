@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/HustIoTPlatform/backend/initialize"
-	model "github.com/HustIoTPlatform/backend/internal/model"
+	"github.com/Thingsly/backend/initialize"
+	model "github.com/Thingsly/backend/internal/model"
 
 	pkgerrors "github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -110,7 +110,7 @@ func AlarmExecute(alarm_config_id, scene_automation_id string) (bool, string) {
 		alarmName string
 		resultOk  bool
 	)
-	
+
 	alarmCache := initialize.NewAlarmCache()
 	groupIds, err := alarmCache.GetBySceneAutomationId(scene_automation_id)
 	logrus.Debugf("Cache 11: %#v, Scene ID: %#v", groupIds, scene_automation_id)

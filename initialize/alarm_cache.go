@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	global "github.com/HustIoTPlatform/backend/pkg/global"
+	global "github.com/Thingsly/backend/pkg/global"
 
 	pkgerrors "github.com/pkg/errors"
 	"github.com/redis/go-redis/v9"

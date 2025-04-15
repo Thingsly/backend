@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/pkg/global"
 
 	"github.com/sirupsen/logrus"
 )

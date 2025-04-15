@@ -3,8 +3,8 @@ package device
 import (
 	"time"
 
-	config "github.com/HustIoTPlatform/backend/mqtt"
-	"github.com/HustIoTPlatform/backend/mqtt/subscribe"
+	config "github.com/Thingsly/backend/mqtt"
+	"github.com/Thingsly/backend/mqtt/subscribe"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/go-basic/uuid"
@@ -61,50 +61,50 @@ func InitDeviceStatus() error {
 }
 
 func NewStatusManager(config StatusConfig) (*StatusManager, error) {
-    messageHandler := func(_ mqtt.Client, msg mqtt.Message) {
-        logrus.WithFields(logrus.Fields{
-            "topic":   msg.Topic(),
-            "payload": string(msg.Payload()),
-        }).Debug("Received device status message")
+	messageHandler := func(_ mqtt.Client, msg mqtt.Message) {
+		logrus.WithFields(logrus.Fields{
+			"topic":   msg.Topic(),
+			"payload": string(msg.Payload()),
+		}).Debug("Received device status message")
 
-        subscribe.DeviceOnline(msg.Payload(), msg.Topic())
-    }
+		subscribe.DeviceOnline(msg.Payload(), msg.Topic())
+	}
 
-    manager := &StatusManager{
-        subscribeTopic: "devices/status/+",
-        subscribeQos:   byte(1),
-        messageHandler: messageHandler,
-        retryInterval:  config.RetryInterval,
-        maxRetries:     config.MaxRetries,
-    }
+	manager := &StatusManager{
+		subscribeTopic: "devices/status/+",
+		subscribeQos:   byte(1),
+		messageHandler: messageHandler,
+		retryInterval:  config.RetryInterval,
+		maxRetries:     config.MaxRetries,
+	}
 
-    opts := mqtt.NewClientOptions().
-        AddBroker(config.Broker).
-        SetClientID(config.ClientID).
-        SetUsername(config.Username).
-        SetPassword(config.Password).
-        SetAutoReconnect(true).
-        SetCleanSession(false)
+	opts := mqtt.NewClientOptions().
+		AddBroker(config.Broker).
+		SetClientID(config.ClientID).
+		SetUsername(config.Username).
+		SetPassword(config.Password).
+		SetAutoReconnect(true).
+		SetCleanSession(false)
 
-    opts.SetOnConnectHandler(func(_ mqtt.Client) {
-        logrus.Info("Connected to MQTT broker")
-        if err := manager.subscribe(); err != nil {
-            logrus.WithError(err).Error("Failed to resubscribe")
-        }
-    })
+	opts.SetOnConnectHandler(func(_ mqtt.Client) {
+		logrus.Info("Connected to MQTT broker")
+		if err := manager.subscribe(); err != nil {
+			logrus.WithError(err).Error("Failed to resubscribe")
+		}
+	})
 
-    opts.SetConnectionLostHandler(func(_ mqtt.Client, err error) {
-        logrus.WithError(err).Warn("Lost connection to MQTT broker")
-    })
+	opts.SetConnectionLostHandler(func(_ mqtt.Client, err error) {
+		logrus.WithError(err).Warn("Lost connection to MQTT broker")
+	})
 
-    client := mqtt.NewClient(opts)
-    manager.mqttClient = client
+	client := mqtt.NewClient(opts)
+	manager.mqttClient = client
 
-    if err := manager.connectWithRetry(); err != nil {
-        return nil, err
-    }
+	if err := manager.connectWithRetry(); err != nil {
+		return nil, err
+	}
 
-    return manager, nil
+	return manager, nil
 }
 
 func (sm *StatusManager) connectWithRetry() error {
@@ -136,13 +136,13 @@ func (sm *StatusManager) connectWithRetry() error {
 }
 
 func (sm *StatusManager) subscribe() error {
-    logrus.WithField("topic", sm.subscribeTopic).Info("Subscribing to device status topic")
+	logrus.WithField("topic", sm.subscribeTopic).Info("Subscribing to device status topic")
 
-    if token := sm.mqttClient.Subscribe(sm.subscribeTopic, sm.subscribeQos, sm.messageHandler); token.Wait() && token.Error() != nil {
-        logrus.WithError(token.Error()).Error("Failed to subscribe to topic")
-        return token.Error()
-    }
-    return nil
+	if token := sm.mqttClient.Subscribe(sm.subscribeTopic, sm.subscribeQos, sm.messageHandler); token.Wait() && token.Error() != nil {
+		logrus.WithError(token.Error()).Error("Failed to subscribe to topic")
+		return token.Error()
+	}
+	return nil
 }
 
 func (sm *StatusManager) Start() error {

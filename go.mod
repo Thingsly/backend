@@ -1,4 +1,4 @@
-module github.com/HustIoTPlatform/backend
+module github.com/Thingsly/backend
 
 go 1.24.2
 

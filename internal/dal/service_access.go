@@ -3,8 +3,8 @@ package dal
 import (
 	"context"
 
-	"github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/internal/query"
+	"github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/internal/query"
 
 	"github.com/sirupsen/logrus"
 )
@@ -51,7 +51,7 @@ func GetServiceAccessListByPage(req *model.GetServiceAccessByPageReq, tenantID s
 }
 
 func GetServiceAccessByVoucher(voucher string, tenantID string) (*model.ServiceAccess, error) {
-	
+
 	q := query.ServiceAccess
 	queryBuilder := q.WithContext(context.Background())
 	serviceAccess, err := queryBuilder.Where(q.Voucher.Eq(voucher)).Where(q.TenantID.Eq(tenantID)).First()
@@ -75,7 +75,7 @@ func GetServiceAccessListByServicePluginID(servicePluginID string) ([]model.Serv
 }
 
 func GetServiceAccessByID(id string) (*model.ServiceAccess, error) {
-	
+
 	q := query.ServiceAccess
 	queryBuilder := q.WithContext(context.Background())
 	serviceAccess, err := queryBuilder.Where(q.ID.Eq(id)).First()

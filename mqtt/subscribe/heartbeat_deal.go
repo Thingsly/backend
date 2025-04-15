@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/HustIoTPlatform/backend/internal/dal"
-	"github.com/HustIoTPlatform/backend/internal/model"
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/internal/dal"
+	"github.com/Thingsly/backend/internal/model"
+	"github.com/Thingsly/backend/pkg/global"
 
 	"github.com/sirupsen/logrus"
 )

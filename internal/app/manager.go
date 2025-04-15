@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/HustIoTPlatform/backend/mqtt/device"
-	"github.com/HustIoTPlatform/backend/pkg/global"
+	"github.com/Thingsly/backend/mqtt/device"
+	"github.com/Thingsly/backend/pkg/global"
 
 	"github.com/sirupsen/logrus"
 )

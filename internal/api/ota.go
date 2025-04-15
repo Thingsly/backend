@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"strings"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	service "github.com/HustIoTPlatform/backend/internal/service"
-	"github.com/HustIoTPlatform/backend/pkg/errcode"
-	"github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	service "github.com/Thingsly/backend/internal/service"
+	"github.com/Thingsly/backend/pkg/errcode"
+	"github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/howeyc/crc16"
@@ -141,7 +141,7 @@ func (*OTAApi) HandleOTAUpgradeTaskDetailByPage(c *gin.Context) {
 
 }
 
-// UpdateOTAUpgradeTaskStatus 
+// UpdateOTAUpgradeTaskStatus
 // @Router   /api/v1/ota/task/detail [put]
 func (*OTAApi) UpdateOTAUpgradeTaskStatus(c *gin.Context) {
 	var req model.UpdateOTAUpgradeTaskStatusReq
@@ -198,7 +198,7 @@ func serveRangeFile(filePath, rangeHeader, crc16Method string, c *gin.Context) {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	
+
 	// Use named return value to ensure close errors are handled on function return
 	defer func() {
 		closeErr := file.Close()

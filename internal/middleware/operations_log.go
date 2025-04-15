@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	model "github.com/HustIoTPlatform/backend/internal/model"
-	query "github.com/HustIoTPlatform/backend/internal/query"
-	utils "github.com/HustIoTPlatform/backend/pkg/utils"
+	model "github.com/Thingsly/backend/internal/model"
+	query "github.com/Thingsly/backend/internal/query"
+	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-basic/uuid"
@@ -57,7 +57,6 @@ func OperationLogs() gin.HandlerFunc {
 	}
 }
 
-
 func isModifyMethod(method string) bool {
 	return method == http.MethodPost ||
 		method == http.MethodPut ||
@@ -81,80 +80,79 @@ func processRequestBody(c *gin.Context) (string, string) {
 }
 
 func handleFileUpload(c *gin.Context) string {
-    // Retrieve the uploaded file from the request form
-    file, err := c.FormFile("file")
-    if err != nil {
-        return "" // If there's an error, return an empty string
-    }
+	// Retrieve the uploaded file from the request form
+	file, err := c.FormFile("file")
+	if err != nil {
+		return "" // If there's an error, return an empty string
+	}
 
-    // Retrieve file type from the form, default to "unknown" if not specified
-    fileType := c.PostForm("type")
-    if fileType == "" {
-        fileType = "unknown"
-    }
+	// Retrieve file type from the form, default to "unknown" if not specified
+	fileType := c.PostForm("type")
+	if fileType == "" {
+		fileType = "unknown"
+	}
 
-    // 1. Extract a safe file name, removing path
-    baseFileName := filepath.Base(file.Filename)
+	// 1. Extract a safe file name, removing path
+	baseFileName := filepath.Base(file.Filename)
 
-    // 2. Sanitize the file name (remove dangerous characters, etc.)
-    filename := utils.SanitizeFilename(baseFileName)
+	// 2. Sanitize the file name (remove dangerous characters, etc.)
+	filename := utils.SanitizeFilename(baseFileName)
 
-    // 3. Second check on filename's safety (ensuring it's a valid file path)
-    if !filepath.IsLocal(filename) {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Illegal file name"}) // Respond with an error if filename is not safe
-        return ""
-    }
+	// 3. Second check on filename's safety (ensuring it's a valid file path)
+	if !filepath.IsLocal(filename) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Illegal file name"}) // Respond with an error if filename is not safe
+		return ""
+	}
 
-    // 4. Validate the file type/extension
-    if !utils.ValidateFileExtension(filename, allowedFileExts) {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Disallowed file type"}) // Respond with an error if the file type is not allowed
-        return ""
-    }
+	// 4. Validate the file type/extension
+	if !utils.ValidateFileExtension(filename, allowedFileExts) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Disallowed file type"}) // Respond with an error if the file type is not allowed
+		return ""
+	}
 
-    // Return a formatted string with the file type and filename
-    return fmt.Sprintf("%s:%s", fileType, filename)
+	// Return a formatted string with the file type and filename
+	return fmt.Sprintf("%s:%s", fileType, filename)
 }
 
 func saveOperationLog(c *gin.Context, start time.Time, cost int64, requestMsg, responseMsg string) {
-    // Check if claims exist in the context (this holds user info)
-    claims, exists := c.Get("claims")
-    if !exists {
-        logrus.Info("No user info found, skipping operation log")
-        return
-    }
+	// Check if claims exist in the context (this holds user info)
+	claims, exists := c.Get("claims")
+	if !exists {
+		logrus.Info("No user info found, skipping operation log")
+		return
+	}
 
-    // Type assertion to get user claims from the context
-    userClaims, ok := claims.(*utils.UserClaims)
-    if !ok {
-        logrus.Info("Incorrect user info type, skipping operation log")
-        return
-    }
+	// Type assertion to get user claims from the context
+	userClaims, ok := claims.(*utils.UserClaims)
+	if !ok {
+		logrus.Info("Incorrect user info type, skipping operation log")
+		return
+	}
 
-    // Check if tenantID is empty
-    if userClaims.TenantID == "" {
-        logrus.Info("TenantID is empty, skipping operation log")
-        return
-    }
+	// Check if tenantID is empty
+	if userClaims.TenantID == "" {
+		logrus.Info("TenantID is empty, skipping operation log")
+		return
+	}
 
-    // Prepare the operation log
-    path := c.Request.URL.Path
-    log := &model.OperationLog{
-        ID:              uuid.New(),
-        IP:              c.ClientIP(),
-        Path:            &path,
-        UserID:          userClaims.ID,
-        Name:            &c.Request.Method,
-        CreatedAt:       start,
-        Latency:         &cost,
-        RequestMessage:  &requestMsg,
-        ResponseMessage: &responseMsg,
-        TenantID:        userClaims.TenantID,
-    }
+	// Prepare the operation log
+	path := c.Request.URL.Path
+	log := &model.OperationLog{
+		ID:              uuid.New(),
+		IP:              c.ClientIP(),
+		Path:            &path,
+		UserID:          userClaims.ID,
+		Name:            &c.Request.Method,
+		CreatedAt:       start,
+		Latency:         &cost,
+		RequestMessage:  &requestMsg,
+		ResponseMessage: &responseMsg,
+		TenantID:        userClaims.TenantID,
+	}
 
-    // Save the log to the database
-    query.OperationLog.Create(log)
+	// Save the log to the database
+	query.OperationLog.Create(log)
 }
-
 
 type responseBodyWriter struct {
 	gin.ResponseWriter

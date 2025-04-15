@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"log"
 
-	pb "github.com/HustIoTPlatform/backend/third_party/grpc/tptodb_client/grpc_tptodb"
+	pb "github.com/Thingsly/backend/third_party/grpc/tptodb_client/grpc_tptodb"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
