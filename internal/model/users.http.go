@@ -16,7 +16,7 @@ type CreateUserReq struct {
 }
 
 type LoginReq struct {
-	Email    string `json:"email" validate:"required" example:"test@hust.edu.vn"`
+	Email    string `json:"email" validate:"required" example:"test@thingsly.vn"`
 	Password string `json:"password" validate:"required,min=6,max=512" example:"123456"`
 	Salt     string `json:"salt" validate:"omitempty,max=512"`
 }

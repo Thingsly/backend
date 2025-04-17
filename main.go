@@ -58,9 +58,9 @@ func init() {
 	croninit.CronInit()
 }
 
-// @title           Mitras API
+// @title           Thingsly API
 // @version         1.0
-// @description     Mitras API.
+// @description     Thingsly API.
 // @schemes         http
 // @host      localhost:9999
 // @BasePath
@@ -136,11 +136,11 @@ func successInfo() {
 	startTime := time.Now().Format("2006-01-02 15:04:05")
 
 	fmt.Println("----------------------------------------")
-	fmt.Println("        Mitras Backend started successfully!")
+	fmt.Println("        Thingsly Backend started successfully!")
 	fmt.Println("----------------------------------------")
 	fmt.Printf("Start time: %s\n", startTime)
 	fmt.Println("Version: v1.0.0")
 	fmt.Println("----------------------------------------")
-	fmt.Println("Welcome to Mitras IoT Platform!")
+	fmt.Println("Welcome to Thingsly IoT Platform!")
 	fmt.Println("----------------------------------------")
 }

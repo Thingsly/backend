@@ -684,7 +684,7 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 5,
-                    "example": "test@hust.edu.vn"
+                    "example": "test@thingsly.vn"
                 },
                 "password": {
                     "description": "Password",
@@ -729,8 +729,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:9999",
 	BasePath:         "",
 	Schemes:          []string{"http"},
-	Title:            "Mitras API",
-	Description:      "Mitras API.",
+	Title:            "Thingsly API",
+	Description:      "Thingsly API.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

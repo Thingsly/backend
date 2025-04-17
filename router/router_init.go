@@ -30,7 +30,7 @@ func RouterInit() *gin.Engine {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	m := metrics.NewMetrics("Mitras")
+	m := metrics.NewMetrics("Thingsly")
 
 	m.StartMetricsCollection(15 * time.Second)
 

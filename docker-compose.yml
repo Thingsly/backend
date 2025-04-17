@@ -9,22 +9,22 @@ services:
     environment:
       - "TZ=Asia/Ho_Chi_Minh"
       - "LC_ALL=C.UTF-8"
-      - "POSTGRES_DB=Mitras"
+      - "POSTGRES_DB=Thingsly"
       - "POSTGRES_USER=postgres"
-      - "POSTGRES_PASSWORD=postgresMitras"
+      - "POSTGRES_PASSWORD=postgresThingsly"
       - "POSTGRES_HOST_AUTH_METHOD=md5"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d Mitras"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d Thingsly"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 40s
     restart: unless-stopped
     networks:
-      - mitras_network
+      - thingsly_network
 
   gmqtt:
-    image: hantdev1/mitras-gmqtt:latest
+    image: hantdev1/thingsly-gmqtt:v1.0.0
     volumes:
       - gmqtt:/gmqttd
     ports:
@@ -35,9 +35,9 @@ services:
       - "GMQTT_DB_REDIS_PASSWORD=redis"
       - "GMQTT_DB_PSQL_PSQLADDR=postgres"
       - "GMQTT_DB_PSQL_PSQLPORT=5432"
-      - "GMQTT_DB_PSQL_PSQLDB=Mitras"
+      - "GMQTT_DB_PSQL_PSQLDB=Thingsly"
       - "GMQTT_DB_PSQL_PSQLUSER=postgres"
-      - "GMQTT_DB_PSQL_PSQLPASSWORD=postgresMitras"
+      - "GMQTT_DB_PSQL_PSQLPASSWORD=postgresThingsly"
     hostname: gmqtt
     depends_on:
       postgres:
@@ -46,7 +46,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     networks:
-      - mitras_network
+      - thingsly_network
 
   redis:
     image: redis:6.2.7
@@ -64,10 +64,10 @@ services:
       retries: 5
     restart: unless-stopped
     networks:
-      - mitras_network
+      - thingsly_network
 
   backend:
-    image: hantdev1/mitras-go:v1.0.1
+    image: hantdev1/thingsly-go:v1.0.1
     ports:
       - "9999:9999"
     environment:
@@ -75,8 +75,8 @@ services:
       - "GOTP_DB_PSQL_HOST=postgres"
       - "GOTP_DB_PSQL_PORT=5432"
       - "GOTP_DB_PSQL_USERNAME=postgres"
-      - "GOTP_DB_PSQL_PASSWORD=postgresMitras"
-      - "GOTP_DB_PSQL_DBNAME=Mitras"
+      - "GOTP_DB_PSQL_PASSWORD=postgresThingsly"
+      - "GOTP_DB_PSQL_DBNAME=Thingsly"
       - "GOTP_DB_PSQL_LOG_LEVEL=3"
       - "GOTP_DB_REDIS_ADDR=redis:6379"
       - "GOTP_DB_REDIS_PASSWORD=redis"
@@ -96,7 +96,7 @@ services:
       - go_configs:/go/src/app/configs
     restart: unless-stopped
     networks:
-      - mitras_network
+      - thingsly_network
 
 volumes:
   go_files:
@@ -107,5 +107,5 @@ volumes:
   redis_data:
 
 networks:
-  mitras_network:
+  thingsly_network:
     driver: bridge

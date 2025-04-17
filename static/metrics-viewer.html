@@ -418,8 +418,8 @@
 
 
             const memoryOpt = charts.memory.getOption();
-            const memoryUsage = metrics.find(m => m.name === 'Mitras_memory_usage_bytes')?.value || 0;
-            const memoryAllocated = metrics.find(m => m.name === 'Mitras_memory_allocated_bytes')?.value || 0;
+            const memoryUsage = metrics.find(m => m.name === 'Thingsly_memory_usage_bytes')?.value || 0;
+            const memoryAllocated = metrics.find(m => m.name === 'Thingsly_memory_allocated_bytes')?.value || 0;
 
             memoryOpt.xAxis[0].data.push(timestamp);
             memoryOpt.series[0].data.push(memoryUsage);
@@ -435,8 +435,8 @@
 
 
             const cpuOpt = charts.cpu.getOption();
-            const cpuUsage = metrics.find(m => m.name === 'Mitras_cpu_usage_percent')?.value || 0;
-            const goroutines = metrics.find(m => m.name === 'Mitras_goroutines_total')?.value || 0;
+            const cpuUsage = metrics.find(m => m.name === 'Thingsly_cpu_usage_percent')?.value || 0;
+            const goroutines = metrics.find(m => m.name === 'Thingsly_goroutines_total')?.value || 0;
 
             cpuOpt.xAxis[0].data.push(timestamp);
             cpuOpt.series[0].data.push(cpuUsage);
@@ -452,7 +452,7 @@
 
 
             const apiRequestsData = metrics
-                .filter(m => m.name === 'Mitras_api_requests_total')
+                .filter(m => m.name === 'Thingsly_api_requests_total')
                 .map(m => ({
                     name: `${m.labels.path} (${m.labels.method})`,
                     value: m.value
@@ -470,7 +470,7 @@
 
 
             const apiLatencyData = metrics
-                .filter(m => m.name === 'Mitras_api_latency_seconds_sum')
+                .filter(m => m.name === 'Thingsly_api_latency_seconds_sum')
                 .map(m => ({
                     name: m.labels.path,
                     value: m.value
@@ -489,8 +489,8 @@
 
 
             const gcOpt = charts.gc.getOption();
-            const gcPause = metrics.find(m => m.name === 'Mitras_gc_pause_total_seconds')?.value || 0;
-            const gcRuns = metrics.find(m => m.name === 'Mitras_gc_runs_total')?.value || 0;
+            const gcPause = metrics.find(m => m.name === 'Thingsly_gc_pause_total_seconds')?.value || 0;
+            const gcRuns = metrics.find(m => m.name === 'Thingsly_gc_runs_total')?.value || 0;
 
             gcOpt.xAxis[0].data.push(timestamp);
             gcOpt.series[0].data.push(parseFloat(gcPause.toFixed(3)));
@@ -579,9 +579,9 @@
 
         function updateErrorOverviewChart(metrics) {
 
-            const apiErrors = metrics.filter(m => m.name === 'Mitras_api_errors_total');
-            const businessErrors = metrics.filter(m => m.name === 'Mitras_business_errors_total');
-            const criticalError = metrics.find(m => m.name === 'Mitras_critical_errors_total');
+            const apiErrors = metrics.filter(m => m.name === 'Thingsly_api_errors_total');
+            const businessErrors = metrics.filter(m => m.name === 'Thingsly_business_errors_total');
+            const criticalError = metrics.find(m => m.name === 'Thingsly_critical_errors_total');
 
 
             const moduleErrors = {};

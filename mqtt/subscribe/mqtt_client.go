@@ -88,7 +88,7 @@ func subscribeMqttClient() {
 	opts.AddBroker(config.MqttConfig.Broker)
 	opts.SetUsername(config.MqttConfig.User)
 	opts.SetPassword(config.MqttConfig.Pass)
-	id := "mitras-go-sub-" + uuid.New()[0:8]
+	id := "thingsly-go-sub-" + uuid.New()[0:8]
 	opts.SetClientID(id)
 	logrus.Info("clientid: ", id)
 

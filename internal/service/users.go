@@ -190,7 +190,7 @@ func (*UsersService) UpdateTenantInfo(ctx context.Context, userInfo *utils.UserC
 // UpdateTenantInfoPassword
 func (*UsersService) UpdateTenantInfoPassword(ctx context.Context, userInfo *utils.UserClaims, param *model.UsersUpdatePasswordReq) error {
 
-	if userInfo.Email == "test@hust.edu.vn" {
+	if userInfo.Email == "test@thingsly.vn" {
 		return errcode.New(200044)
 	}
 

@@ -1604,9 +1604,9 @@ INSERT INTO public.sys_function (id, "name", enable_flag, description, remark)
 VALUES('function_2', 'enable_reg', 'disable', 'Tenant Registration', NULL);
 
 INSERT INTO public.users (id, "name", phone_number, email, status, authority, "password", tenant_id, remark, additional_info, created_at, updated_at) 
-VALUES('00000000-4fe9-b409-67c3-000000000000', 'admin', '1231231321', 'super@hust.edu.vn', 'N', 'SYS_ADMIN', '$2a$10$dPDIqoOEt.rSDwEWsSHCqe9/PJEsnWvRK76DwXVZUFM/7J0D3ikfq', 'aaaaaa', 'dolor', '{}'::json, NULL, '2024-03-06 14:52:52.390');
+VALUES('00000000-4fe9-b409-67c3-000000000000', 'admin', '1231231321', 'demo-super@thingsly.vn', 'N', 'SYS_ADMIN', '$2a$10$dPDIqoOEt.rSDwEWsSHCqe9/PJEsnWvRK76DwXVZUFM/7J0D3ikfq', 'aaaaaa', 'dolor', '{}'::json, NULL, '2024-03-06 14:52:52.390');
 INSERT INTO public.users (id, "name", phone_number, email, status, authority, "password", tenant_id, remark, additional_info, created_at, updated_at) 
-VALUES('11111111-4fe9-b409-67c3-111111111111', 'Tenant', '17366666666', 'tenant@hust.edu.vn', 'N', 'TENANT_ADMIN', '$2a$10$zvPRDn0okgLt1t/OjQ.K5eZjGc3Mva7tmA8VlASsP8flfv0PwEz76', 'd616bcbb', '', '{}'::json, '2024-06-05 16:48:11.097', '2024-06-05 16:48:11.097');
+VALUES('11111111-4fe9-b409-67c3-111111111111', 'Tenant', '17366666666', 'demo-tenant@thingsly.vn', 'N', 'TENANT_ADMIN', '$2a$10$zvPRDn0okgLt1t/OjQ.K5eZjGc3Mva7tmA8VlASsP8flfv0PwEz76', 'd616bcbb', '', '{}'::json, '2024-06-05 16:48:11.097', '2024-06-05 16:48:11.097');
 
 
 INSERT INTO public.data_policy (id, data_type, retention_days, last_cleanup_time, last_cleanup_data_time, enabled, remark) VALUES('b', '2', 15, '2024-06-05 10:02:00.003', '2024-05-21 10:02:00.003', '1', '');
@@ -1758,7 +1758,7 @@ INSERT INTO public.sys_ui_elements (id, parent_id, element_code, element_type, o
 VALUES ('18892c6e-ca04-f2b5-c243-f2c7230b3f33', '990af72f-06ce-5f23-3af6-1694bd479c96', 'manage_user', 3, 1, '/manage/user', '', '0', '["TENANT_ADMIN","SYS_ADMIN"]'::json, 'User Management', '2024-09-04 10:05:06.377', '', 'default', '');
 
 INSERT INTO public.logo (id, system_name, logo_cache, logo_background, logo_loading, home_background, remark) 
-VALUES ('a', 'Mitras', '', '', '', '', NULL);
+VALUES ('a', 'Thingsly', '', '', '', '', NULL);
 
 ALTER TABLE "public"."scene_action_info"
 ALTER COLUMN "action_param" TYPE varchar(50) COLLATE "pg_catalog"."default";

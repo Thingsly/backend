@@ -21,7 +21,7 @@ type UserApi struct{}
 // @Success      200 {object} model.LoginRsp "Success"
 // @Failure      400 {object} errcode.Error "Error response"
 // @Router       /api/v1/login [post]
-// @example request - "Request example" {"email":"test@hust.edu.vn","password":"123456"}
+// @example request - "Request example" {"email":"test@thingsly.vn","password":"123456"}
 func (*UserApi) Login(c *gin.Context) {
 	var loginReq model.LoginReq
 	if !BindAndValidate(c, &loginReq) {

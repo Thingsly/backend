@@ -1,6 +1,6 @@
-# Schema Mitras
+# Schema Thingsly
 
-Dưới đây là mô tả chi tiết về các bảng trong cơ sở dữ liệu Mitras, bao gồm cấu trúc bảng, các trường dữ liệu, ràng buộc và mối quan hệ giữa các bảng.
+Dưới đây là mô tả chi tiết về các bảng trong cơ sở dữ liệu Thingsly, bao gồm cấu trúc bảng, các trường dữ liệu, ràng buộc và mối quan hệ giữa các bảng.
 
 ## 📘 Table: `action_info`
 
@@ -666,7 +666,7 @@ db.Query("INSERT INTO device_configs (id, name, device_type, protocol_type) VALU
 
 ## 📘 Table: `devices`
 
-Bảng `devices` lưu thông tin các thiết bị IoT trong hệ thống Mitras. Đây là một bảng trung tâm, được liên kết với nhiều bảng khác như telemetry, OTA upgrade, logs, và cấu hình.
+Bảng `devices` lưu thông tin các thiết bị IoT trong hệ thống Thingsly. Đây là một bảng trung tâm, được liên kết với nhiều bảng khác như telemetry, OTA upgrade, logs, và cấu hình.
 
 ### 🧩 Columns
 

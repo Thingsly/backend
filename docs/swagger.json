@@ -4,8 +4,8 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "Mitras API.",
-        "title": "Mitras API",
+        "description": "Thingsly API.",
+        "title": "Thingsly API",
         "contact": {},
         "version": "v1.0.0"
     },
@@ -680,7 +680,7 @@
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 5,
-                    "example": "test@hust.edu.vn"
+                    "example": "test@thingsly.vn"
                 },
                 "password": {
                     "description": "Password",

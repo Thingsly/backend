@@ -29,7 +29,7 @@ func CreateMqttClient() {
 	opts.AddBroker(config.MqttConfig.Broker)
 	opts.SetUsername(config.MqttConfig.User)
 	opts.SetPassword(config.MqttConfig.Pass)
-	opts.SetClientID("mitras-go-pub-" + uuid.New()[0:8])
+	opts.SetClientID("thingsly-go-pub-" + uuid.New()[0:8])
 
 	opts.SetCleanSession(true)
 

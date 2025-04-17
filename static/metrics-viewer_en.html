@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mitras Metrics Viewer</title>
+    <title>Thingsly Metrics Viewer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
     <style>
         body {
@@ -58,7 +58,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Mitras Metrics Viewer</h1>
+        <h1>Thingsly Metrics Viewer</h1>
         <button class="refresh-btn" onclick="refreshData()">Refresh Data</button>
         
         <div class="grid">
@@ -152,7 +152,7 @@
         // Update the charts with new data
         function updateCharts(metrics) {
             // API Requests Chart
-            const requestsData = metrics.filter(m => m.name === 'Mitras_api_requests_total')
+            const requestsData = metrics.filter(m => m.name === 'Thingsly_api_requests_total')
                 .map(m => ({
                     name: m.labels.path || 'unknown',
                     value: m.value
@@ -172,7 +172,7 @@
 
             // API Latency Chart
             const latencyData = metrics.filter(m => 
-                m.name === 'Mitras_api_latency_seconds_sum' && m.labels.path
+                m.name === 'Thingsly_api_latency_seconds_sum' && m.labels.path
             ).map(m => ({
                 name: m.labels.path,
                 value: m.value
@@ -191,7 +191,7 @@
             });
 
             // Errors Chart
-            const errorsData = metrics.filter(m => m.name === 'Mitras_api_errors_total')
+            const errorsData = metrics.filter(m => m.name === 'Thingsly_api_errors_total')
                 .map(m => ({
                     name: m.labels.type || 'unknown',
                     value: m.value

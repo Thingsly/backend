@@ -12,7 +12,7 @@ definitions:
     properties:
       email:
         description: Login account (enter email or phone number)
-        example: test@hust.edu.vn
+        example: test@thingsly.vn
         maxLength: 255
         minLength: 5
         type: string
@@ -42,8 +42,8 @@ definitions:
 host: localhost:9999
 info:
   contact: {}
-  description: Mitras API.
-  title: Mitras API
+  description: Thingsly API.
+  title: Thingsly API
   version: v1.0.0
 paths:
   /api/v1/attribute/datas/{id}:
