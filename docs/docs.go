@@ -691,7 +691,7 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 512,
                     "minLength": 6,
-                    "example": "123456aA@"
+                    "example": "123456"
                 },
                 "salt": {
                     "description": "Random salt (required if RSA encryption is enabled by the super administrator)",
