@@ -254,10 +254,10 @@ messages:
     vi_VN: "MQTT ClientID (danh tính tùy chỉnh, phải đảm bảo tính duy nhất)"
     en_US: "MQTT ClientID (custom identifier, must be unique)"
   500003:
-    vi_VN: "Chủ đề báo cáo telemetry thiết bị (xem tài liệu MQTT để biết thêm chủ đề lên)"
+    vi_VN: "Chủ đề báo cáo telemetry thiết bị (xem tài liệu MQTT để biết thêm upstream topics)"
     en_US: "Device telemetry topic (see MQTT documentation for more upstream topics)"
   500004:
-    vi_VN: "Chủ đề đăng ký điều khiển thiết bị (xem tài liệu MQTT để biết thêm chủ đề xuống)"
+    vi_VN: "Chủ đề đăng ký điều khiển thiết bị (xem tài liệu MQTT để biết thêm downstream topics)"
     en_US: "Device control subscription topic (see MQTT documentation for more downstream topics)"
   500005:
     vi_VN: "Ví dụ dữ liệu báo cáo thiết bị"
@@ -266,7 +266,7 @@ messages:
 # Configuration Metadata
 metadata:
   version: "1.0"
-  last_updated: "2024-12-11"
+  last_updated: "2025-04-26"
   supported_languages:
     - vi_VN
     - en_US

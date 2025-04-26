@@ -1,4 +1,19 @@
 services:
+  frontend:
+    image: hantdev1/thingsly-vue:v1.0.2
+    ports:
+      - "8080:8080"
+    environment:
+      - "TZ=Asia/Ho_Chi_Minh"
+      - "BACKEND_HOST=http://backend:9999"
+    depends_on:
+      backend:
+        condition: service_started
+    volumes:
+      - nginx:/etc/nginx
+    restart: unless-stopped
+    networks:
+      - thingsly_network
 
   postgres:
     image: timescale/timescaledb:2.8.1-pg14
