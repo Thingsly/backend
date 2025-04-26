@@ -9,7 +9,7 @@ import (
 )
 
 func ViperInit(path string) {
-	viper.SetEnvPrefix("GOTP")
+	viper.SetEnvPrefix("THINGSLY")
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 

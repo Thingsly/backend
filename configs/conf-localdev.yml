@@ -1,4 +1,4 @@
-# If you need to set configuration items in system variables, use variable names starting with GOTP_, for example: GOTP_DB_PSQL_DBTYPE for db.psql.dbType
+# If you need to set configuration items in system variables, use variable names starting with THINGSLY_, for example: THINGSLY_DB_PSQL_DBTYPE for db.psql.dbType
 
 service:
   http:
@@ -23,9 +23,9 @@ db:
     host: 127.0.0.1 # Default is localhost
     #    host: 47.92.253.145 # Default is localhost
     port: 5432 # Default is 5432
-    dbname: mitras
+    dbname: Thingsly
     username: postgres
-    password: postgresMitras
+    password: postgresThingsly
     time_zone: Asia/Ho_Chi_Minh # Default is UTC
 
     idle_conns: 5 # Maximum number of idle connections in the pool, recommended to be between 5-20% of open_conns

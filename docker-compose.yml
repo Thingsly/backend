@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: hantdev1/thingsly-vue:v1.0.2
+    image: hantdev1/thingsly-vue:v1.0.2-alpha.1
     ports:
       - "8080:8080"
     environment:
@@ -82,23 +82,23 @@ services:
       - thingsly_network
 
   backend:
-    image: hantdev1/thingsly-go:v1.0.2
+    image: hantdev1/thingsly-go:v1.0.3-alpha.1
     ports:
       - "9999:9999"
     environment:
       - "TZ=Asia/Ho_Chi_Minh"
-      - "GOTP_DB_PSQL_HOST=postgres"
-      - "GOTP_DB_PSQL_PORT=5432"
-      - "GOTP_DB_PSQL_USERNAME=postgres"
-      - "GOTP_DB_PSQL_PASSWORD=postgresThingsly"
-      - "GOTP_DB_PSQL_DBNAME=Thingsly"
-      - "GOTP_DB_PSQL_LOG_LEVEL=3"
-      - "GOTP_DB_REDIS_ADDR=redis:6379"
-      - "GOTP_DB_REDIS_PASSWORD=redis"
-      - "GOTP_MQTT_SERVER=gmqtt"
-      - "GOTP_MQTT_ACCESS_ADDRESS=gmqtt:1883"
-      - "GOTP_MQTT_BROKER=gmqtt:1883"
-      - "GOTP_LOG_LEVEL=error"
+      - "THINGSLY_DB_PSQL_HOST=postgres"
+      - "THINGSLY_DB_PSQL_PORT=5432"
+      - "THINGSLY_DB_PSQL_USERNAME=postgres"
+      - "THINGSLY_DB_PSQL_PASSWORD=postgresThingsly"
+      - "THINGSLY_DB_PSQL_DBNAME=Thingsly"
+      - "THINGSLY_DB_PSQL_LOG_LEVEL=3"
+      - "THINGSLY_DB_REDIS_ADDR=redis:6379"
+      - "THINGSLY_DB_REDIS_PASSWORD=redis"
+      - "THINGSLY_MQTT_SERVER=gmqtt"
+      - "THINGSLY_MQTT_ACCESS_ADDRESS=gmqtt:1883"
+      - "THINGSLY_MQTT_BROKER=gmqtt:1883"
+      - "THINGSLY_LOG_LEVEL=error"
     depends_on:
       postgres:
         condition: service_healthy
