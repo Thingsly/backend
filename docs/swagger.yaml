@@ -18,7 +18,7 @@ definitions:
         type: string
       password:
         description: Login password
-        example: "123456"
+        example: "123456aA@"
         maxLength: 512
         minLength: 6
         type: string
