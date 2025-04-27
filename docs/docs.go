@@ -3102,17 +3102,154 @@ const docTemplate = `{
         },
         "/api/v1/notification/services/config": {
             "post": {
-                "responses": {}
+                "summary": "Create notification service config",
+                "description": "Create a new notification service configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["type", "config"],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Service type (e.g., email, sms, webhook)"
+                                    },
+                                    "config": {
+                                        "type": "object",
+                                        "description": "Service configuration details"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Service description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Service config created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created service config ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/notification/services/config/e-mail/test": {
             "post": {
-                "responses": {}
+                "summary": "Test email notification service",
+                "description": "Test the email notification service configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "subject", "content"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "Test email address"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "description": "Test email subject"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "description": "Test email content"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Test email sent successfully"
+                    }
+                }
             }
         },
         "/api/v1/notification/services/config/{type}": {
             "get": {
-                "responses": {}
+                "summary": "Get notification service config",
+                "description": "Retrieve notification service configuration by type",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Service type (e.g., email, sms, webhook)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Service config ID"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Service type"
+                                },
+                                "config": {
+                                    "type": "object",
+                                    "description": "Service configuration"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Service description"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/notification_group": {
@@ -3217,23 +3354,286 @@ const docTemplate = `{
         },
         "/api/v1/notification_group/list": {
             "get": {
-                "responses": {}
+                "summary": "Get notification group list",
+                "description": "Retrieve a list of notification groups",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Group description"
+                                    },
+                                    "members": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Group member IDs"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/notification_group/{id}": {
             "get": {
-                "responses": {}
+                "summary": "Get notification group detail",
+                "description": "Retrieve detailed information about a notification group",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Group ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Group ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Group name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Group description"
+                                },
+                                "members": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Member ID"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Member name"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "description": "Member email"
+                                            }
+                                        }
+                                    }
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "put": {
-                "responses": {}
+                "summary": "Update notification group",
+                "description": "Update an existing notification group",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Group ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Group description"
+                                    },
+                                    "members": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Group member IDs"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Group updated successfully"
+                    }
+                }
             },
             "delete": {
-                "responses": {}
+                "summary": "Delete notification group",
+                "description": "Delete a notification group",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Group ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Group deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/notification_history/list": {
             "get": {
-                "responses": {}
+                "summary": "Get notification history list",
+                "description": "Retrieve a list of notification history records",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "group_id",
+                        "in": "query",
+                        "description": "Notification group ID",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Notification type",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "Start time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "End time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "History record ID"
+                                    },
+                                    "group_id": {
+                                        "type": "string",
+                                        "description": "Notification group ID"
+                                    },
+                                    "group_name": {
+                                        "type": "string",
+                                        "description": "Notification group name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Notification type"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "description": "Notification content"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Notification status"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/open/keys": {
