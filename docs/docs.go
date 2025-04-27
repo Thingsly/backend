@@ -2591,30 +2591,275 @@ const docTemplate = `{
         },
         "/api/v1/dict/column": {
             "post": {
-                "responses": {}
+                "summary": "Create dictionary column",
+                "description": "Create a new dictionary column",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "type", "dict_id"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Column name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Column type"
+                                    },
+                                    "dict_id": {
+                                        "type": "string",
+                                        "description": "Dictionary ID"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Column description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Column created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created column ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/dict/column/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete dictionary column",
+                "description": "Delete a dictionary column",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Column ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Column deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/dict/enum": {
             "get": {
-                "responses": {}
+                "summary": "Get dictionary enum list",
+                "description": "Retrieve a list of dictionary enums",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "dict_id",
+                        "in": "query",
+                        "description": "Dictionary ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Enum ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Enum name"
+                                    },
+                                    "value": {
+                                        "type": "string",
+                                        "description": "Enum value"
+                                    },
+                                    "dict_id": {
+                                        "type": "string",
+                                        "description": "Dictionary ID"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/dict/language": {
             "post": {
-                "responses": {}
+                "summary": "Create dictionary language",
+                "description": "Create a new dictionary language",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "code"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Language name"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "description": "Language code"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Language description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Language created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created language ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/dict/language/{id}": {
             "get": {
-                "responses": {}
+                "summary": "Get dictionary language detail",
+                "description": "Retrieve detailed information about a dictionary language",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Language ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Language ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Language name"
+                                },
+                                "code": {
+                                    "type": "string",
+                                    "description": "Language code"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Language description"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "delete": {
-                "responses": {}
+                "summary": "Delete dictionary language",
+                "description": "Delete a dictionary language",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Language ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Language deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/event/datas": {
