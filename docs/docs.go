@@ -17,7 +17,83 @@ const docTemplate = `{
     "paths": {
         "/api/v1/attribute/datas/set/logs": {
             "get": {
-                "responses": {}
+                "summary": "Get attribute data set logs",
+                "description": "Retrieve logs of attribute data changes",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "attribute_name",
+                        "in": "query",
+                        "description": "Attribute name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "Start time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "End time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Log ID"
+                                    },
+                                    "device_id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    },
+                                    "attribute_name": {
+                                        "type": "string",
+                                        "description": "Attribute name"
+                                    },
+                                    "old_value": {
+                                        "type": "string",
+                                        "description": "Previous value"
+                                    },
+                                    "new_value": {
+                                        "type": "string",
+                                        "description": "New value"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Change timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/attribute/datas/{id}": {
@@ -30,18 +106,150 @@ const docTemplate = `{
         },
         "/api/v1/board": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get board list",
+                "description": "Retrieve a list of boards",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Board ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Board name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Board description"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create board",
+                "description": "Create a new board",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Board name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Board description"
+                                    },
+                                    "layout": {
+                                        "type": "object",
+                                        "description": "Board layout configuration"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Board created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created board ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/device": {
             "get": {
-                "responses": {}
+                "summary": "Get board device list",
+                "description": "Retrieve a list of devices associated with a board",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "board_id",
+                        "in": "query",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Device name"
+                                    },
+                                    "device_number": {
+                                        "type": "string",
+                                        "description": "Device number"
+                                    },
+                                    "is_online": {
+                                        "type": "integer",
+                                        "description": "Online status (1: online, 0: offline)"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/device/total": {
@@ -51,12 +259,98 @@ const docTemplate = `{
         },
         "/api/v1/board/home": {
             "get": {
-                "responses": {}
+                "summary": "Get home board",
+                "description": "Retrieve the home board configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Board ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Board name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Board description"
+                                },
+                                "layout": {
+                                    "type": "object",
+                                    "description": "Board layout configuration"
+                                },
+                                "widgets": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "description": "Board widgets"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/tenant": {
             "get": {
-                "responses": {}
+                "summary": "Get tenant board",
+                "description": "Retrieve the tenant board configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Board ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Board name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Board description"
+                                },
+                                "layout": {
+                                    "type": "object",
+                                    "description": "Board layout configuration"
+                                },
+                                "widgets": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "description": "Board widgets"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/tenant/device/info": {
@@ -71,12 +365,111 @@ const docTemplate = `{
         },
         "/api/v1/board/trend": {
             "get": {
-                "responses": {}
+                "summary": "Get trend board",
+                "description": "Retrieve the trend board configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Board ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Board name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Board description"
+                                },
+                                "layout": {
+                                    "type": "object",
+                                    "description": "Board layout configuration"
+                                },
+                                "widgets": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "description": "Board widgets"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/user/info": {
             "get": {
-                "responses": {}
+                "summary": "Get user board info",
+                "description": "Retrieve user-specific board information",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "User ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "User name"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "User email"
+                                },
+                                "role": {
+                                    "type": "string",
+                                    "description": "User role"
+                                },
+                                "boards": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Board ID"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Board name"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Board type"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/user/update": {
@@ -99,50 +492,483 @@ const docTemplate = `{
         },
         "/api/v1/casbin/function": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get function list",
+                "description": "Retrieve a list of functions for RBAC",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Function ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Function name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Function description"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create function",
+                "description": "Create a new function for RBAC",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Function name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Function description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Function created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created function ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/casbin/function/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete function",
+                "description": "Delete a function from RBAC system",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Function ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Function deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/casbin/user": {
             "get": {
-                "responses": {}
+                "summary": "Get Casbin user list",
+                "description": "Retrieve a list of users with their RBAC permissions",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User name"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "description": "User role"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "User permissions"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "put": {
-                "responses": {}
+                "summary": "Update Casbin user",
+                "description": "Update a user's RBAC permissions",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["id", "role", "permissions"],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "description": "User role"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "User permissions"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User permissions updated successfully"
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create Casbin user",
+                "description": "Create a new user with RBAC permissions",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "role", "permissions"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User name"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "description": "User role"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "User permissions"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created user ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/casbin/user/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete Casbin user",
+                "description": "Delete a user and their RBAC permissions",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/command/datas/set/logs": {
             "get": {
-                "responses": {}
+                "summary": "Get command data set logs",
+                "description": "Retrieve logs of command executions",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "command_name",
+                        "in": "query",
+                        "description": "Command name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "Start time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "End time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Log ID"
+                                    },
+                                    "device_id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    },
+                                    "command_name": {
+                                        "type": "string",
+                                        "description": "Command name"
+                                    },
+                                    "parameters": {
+                                        "type": "object",
+                                        "description": "Command parameters"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Execution status"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Execution timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/data_script": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get data script list",
+                "description": "Retrieve a list of data scripts",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Script ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Script name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Script type"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "description": "Script content"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create data script",
+                "description": "Create a new data script",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "type", "content"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Script name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Script type"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "description": "Script content"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Script description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Script created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created script ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/data_script/{id}": {
@@ -152,81 +978,848 @@ const docTemplate = `{
         },
         "/api/v1/datapolicy": {
             "get": {
-                "responses": {}
+                "summary": "Get data policy list",
+                "description": "Retrieve a list of data policies",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Policy ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Policy name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Policy type"
+                                    },
+                                    "config": {
+                                        "type": "object",
+                                        "description": "Policy configuration"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
-            "put": {
-                "responses": {}
+            "post": {
+                "summary": "Create data policy",
+                "description": "Create a new data policy",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "type", "config"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Policy name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Policy type"
+                                    },
+                                    "config": {
+                                        "type": "object",
+                                        "description": "Policy configuration"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Policy description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Policy created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created policy ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device": {
             "get": {
-                "responses": {}
+                "summary": "Get device list by page",
+                "description": "Retrieve a paginated list of devices with optional filtering",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "total": {
+                                    "type": "integer",
+                                    "description": "Total number of devices"
+                                },
+                                "list": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Device ID"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Device name"
+                                            },
+                                            "device_number": {
+                                                "type": "string",
+                                                "description": "Device number"
+                                            },
+                                            "device_config_id": {
+                                                "type": "string",
+                                                "description": "Device configuration ID"
+                                            },
+                                            "device_config_name": {
+                                                "type": "string",
+                                                "description": "Device configuration name"
+                                            },
+                                            "is_online": {
+                                                "type": "integer",
+                                                "description": "Online status (1: online, 0: offline)"
+                                            },
+                                            "access_way": {
+                                                "type": "string",
+                                                "description": "Access method"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "put": {
-                "responses": {}
+                "summary": "Update device",
+                "description": "Update an existing device's information",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["id"],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Device name"
+                                    },
+                                    "label": {
+                                        "type": "string",
+                                        "description": "Device label"
+                                    },
+                                    "device_config_id": {
+                                        "type": "string",
+                                        "description": "Device configuration ID"
+                                    },
+                                    "access_way": {
+                                        "type": "string",
+                                        "description": "Access method (A: protocol, B: service)"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Device updated successfully"
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create device",
+                "description": "Create a new device",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Device name",
+                                        "example": "test-create-device-moi"
+                                    },
+                                    "label": {
+                                        "type": "string",
+                                        "description": "Device label",
+                                        "example": ""
+                                    },
+                                    "device_config_id": {
+                                        "type": "string",
+                                        "description": "Device configuration ID",
+                                        "example": ""
+                                    },
+                                    "access_way": {
+                                        "type": "string",
+                                        "description": "Access method (A: protocol, B: service)",
+                                        "example": "A"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Device created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created device ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/active": {
             "put": {
-                "responses": {}
+                "summary": "Update device active status",
+                "description": "Update the active status of a device",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["id", "is_active"],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    },
+                                    "is_active": {
+                                        "type": "boolean",
+                                        "description": "Active status"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Device status updated successfully"
+                    }
+                }
             }
         },
         "/api/v1/device/check/{deviceNumber}": {
             "get": {
-                "tags": [
-                    "Device Management"
+                "summary": "Check device",
+                "description": "Check if a device exists by device number",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "deviceNumber",
+                        "in": "path",
+                        "description": "Device number",
+                        "required": true,
+                        "type": "string"
+                    }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "Device exists",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "exists": {
+                                    "type": "boolean",
+                                    "description": "Whether device exists"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/detail/{id}": {
             "get": {
-                "responses": {}
+                "summary": "Get device detail",
+                "description": "Retrieve detailed information about a device",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Device ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Device name"
+                                },
+                                "device_number": {
+                                    "type": "string",
+                                    "description": "Device number"
+                                },
+                                "device_config_id": {
+                                    "type": "string",
+                                    "description": "Device configuration ID"
+                                },
+                                "device_config_name": {
+                                    "type": "string",
+                                    "description": "Device configuration name"
+                                },
+                                "is_online": {
+                                    "type": "integer",
+                                    "description": "Online status (1: online, 0: offline)"
+                                },
+                                "access_way": {
+                                    "type": "string",
+                                    "description": "Access method"
+                                },
+                                "attributes": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Attribute name"
+                                            },
+                                            "value": {
+                                                "type": "string",
+                                                "description": "Attribute value"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/group": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get device group list",
+                "description": "Retrieve a list of device groups",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Group description"
+                                    },
+                                    "parent_id": {
+                                        "type": "string",
+                                        "description": "Parent group ID"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create device group",
+                "description": "Create a new device group",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Group description"
+                                    },
+                                    "parent_id": {
+                                        "type": "string",
+                                        "description": "Parent group ID"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Group created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created group ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/group/detail/{id}": {
             "get": {
-                "responses": {}
+                "summary": "Get device group detail",
+                "description": "Retrieve detailed information about a device group",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Group ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Group ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Group name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Group description"
+                                },
+                                "parent_id": {
+                                    "type": "string",
+                                    "description": "Parent group ID"
+                                },
+                                "devices": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Device ID"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Device name"
+                                            }
+                                        }
+                                    }
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/group/relation": {
             "get": {
-                "responses": {}
+                "summary": "Get device group relations",
+                "description": "Retrieve device group relations",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "group_id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "device_id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create device group relation",
+                "description": "Create a new device group relation",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["group_id", "device_id"],
+                                "properties": {
+                                    "group_id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "device_id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Relation created successfully"
+                    }
+                }
             },
             "delete": {
-                "responses": {}
+                "summary": "Delete device group relation",
+                "description": "Delete a device group relation",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["group_id", "device_id"],
+                                "properties": {
+                                    "group_id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "device_id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Relation deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/device/group/relation/list": {
             "get": {
-                "responses": {}
+                "summary": "Get device group relation list",
+                "description": "Retrieve a list of device group relations",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "group_id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "group_name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "device_id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    },
+                                    "device_name": {
+                                        "type": "string",
+                                        "description": "Device name"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/group/tree": {
             "get": {
-                "responses": {}
+                "summary": "Get device group tree",
+                "description": "Retrieve the device group tree structure",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "children": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        },
+                                        "description": "Child groups"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/group/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete device group",
+                "description": "Delete a device group",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Group ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Group deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/device/online/status/ws": {
@@ -247,13 +1840,123 @@ const docTemplate = `{
         },
         "/api/v1/device/template": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get device template list",
+                "description": "Retrieve a list of device templates",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Template ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Template name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Template description"
+                                    },
+                                    "device_config_id": {
+                                        "type": "string",
+                                        "description": "Device configuration ID"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create device template",
+                "description": "Create a new device template",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "device_config_id"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Template name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Template description"
+                                    },
+                                    "device_config_id": {
+                                        "type": "string",
+                                        "description": "Device configuration ID"
+                                    },
+                                    "attributes": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "description": "Attribute name"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "description": "Attribute type"
+                                                },
+                                                "default_value": {
+                                                    "type": "string",
+                                                    "description": "Default value"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Template created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created template ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/template/chart": {
@@ -273,23 +1976,161 @@ const docTemplate = `{
         },
         "/api/v1/device/template/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete device template",
+                "description": "Delete a device template",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Template ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/device/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete device",
+                "description": "Delete a device",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Device deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/device_config": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get device configuration list",
+                "description": "Retrieve a list of device configurations",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Configuration ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Configuration name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Configuration description"
+                                    },
+                                    "protocol_type": {
+                                        "type": "string",
+                                        "description": "Protocol type"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create device configuration",
+                "description": "Create a new device configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "protocol_type"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Configuration name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Configuration description"
+                                    },
+                                    "protocol_type": {
+                                        "type": "string",
+                                        "description": "Protocol type"
+                                    },
+                                    "config": {
+                                        "type": "object",
+                                        "description": "Configuration details"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Configuration created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created configuration ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device_config/batch": {
@@ -312,7 +2153,63 @@ const docTemplate = `{
         },
         "/api/v1/dict": {
             "get": {
-                "responses": {}
+                "summary": "Get dictionary list",
+                "description": "Retrieve a list of dictionaries",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Dictionary ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Dictionary name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Dictionary type"
+                                    },
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "key": {
+                                                    "type": "string",
+                                                    "description": "Item key"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "description": "Item value"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/dict/column": {
@@ -345,15 +2242,126 @@ const docTemplate = `{
         },
         "/api/v1/event/datas": {
             "get": {
-                "responses": {}
+                "summary": "Get event data",
+                "description": "Retrieve event data",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "event_type",
+                        "in": "query",
+                        "description": "Event type",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "Start time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "End time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Event ID"
+                                    },
+                                    "device_id": {
+                                        "type": "string",
+                                        "description": "Device ID"
+                                    },
+                                    "event_type": {
+                                        "type": "string",
+                                        "description": "Event type"
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "description": "Event data"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Event timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/file/up": {
             "post": {
-                "tags": [
-                    "File Upload"
+                "summary": "Upload file",
+                "description": "Upload a new file",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
                 ],
-                "responses": {}
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["file"],
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "File to upload"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "File uploaded successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "description": "File URL"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/login": {
@@ -398,10 +2406,76 @@ const docTemplate = `{
         },
         "/api/v1/logo": {
             "get": {
-                "responses": {}
+                "summary": "Get logo",
+                "description": "Retrieve the system logo",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "description": "Logo URL"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "put": {
-                "responses": {}
+                "summary": "Update logo",
+                "description": "Update the system logo",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["file"],
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Logo file"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logo updated successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "description": "Updated logo URL"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/notification/services/config": {
@@ -420,8 +2494,103 @@ const docTemplate = `{
             }
         },
         "/api/v1/notification_group": {
+            "get": {
+                "summary": "Get notification group list",
+                "description": "Retrieve a list of notification groups",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Group ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Group description"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
-                "responses": {}
+                "summary": "Create notification group",
+                "description": "Create a new notification group",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Group name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Group description"
+                                    },
+                                    "members": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Group member IDs"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Group created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created group ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/notification_group/list": {
@@ -447,13 +2616,99 @@ const docTemplate = `{
         },
         "/api/v1/open/keys": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get open keys list",
+                "description": "Retrieve a list of open API keys",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Key ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Key name"
+                                    },
+                                    "key": {
+                                        "type": "string",
+                                        "description": "API key"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create open key",
+                "description": "Create a new open API key",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Key name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Key description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Key created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created key ID"
+                                },
+                                "key": {
+                                    "type": "string",
+                                    "description": "Generated API key"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/open/keys/{id}": {
@@ -463,15 +2718,184 @@ const docTemplate = `{
         },
         "/api/v1/operation_logs": {
             "get": {
-                "responses": {}
+                "summary": "Get operation logs",
+                "description": "Retrieve system operation logs",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User ID",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "operation_type",
+                        "in": "query",
+                        "description": "Operation type",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "Start time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "End time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Log ID"
+                                    },
+                                    "user_id": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "operation_type": {
+                                        "type": "string",
+                                        "description": "Operation type"
+                                    },
+                                    "details": {
+                                        "type": "object",
+                                        "description": "Operation details"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Operation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/ota/package": {
             "get": {
-                "responses": {}
+                "summary": "Get OTA package list",
+                "description": "Retrieve a list of OTA packages",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Package ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Package name"
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "description": "Package version"
+                                    },
+                                    "file_url": {
+                                        "type": "string",
+                                        "description": "Package file URL"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create OTA package",
+                "description": "Create a new OTA package",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "version", "file_url"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Package name"
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "description": "Package version"
+                                    },
+                                    "file_url": {
+                                        "type": "string",
+                                        "description": "Package file URL"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Package description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Package created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created package ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/ota/package/": {
@@ -507,13 +2931,111 @@ const docTemplate = `{
         },
         "/api/v1/protocol_plugin": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get protocol plugin list",
+                "description": "Retrieve a list of protocol plugins",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Plugin ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Plugin name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Plugin type"
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "description": "Plugin version"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create protocol plugin",
+                "description": "Create a new protocol plugin",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "type", "version"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Plugin name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Plugin type"
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "description": "Plugin version"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Plugin description"
+                                    },
+                                    "config": {
+                                        "type": "object",
+                                        "description": "Plugin configuration"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Plugin created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created plugin ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/protocol_plugin/config_form": {
@@ -533,13 +3055,104 @@ const docTemplate = `{
         },
         "/api/v1/role": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get role list",
+                "description": "Retrieve a list of roles",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Role ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Role name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Role description"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Role permissions"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create role",
+                "description": "Create a new role",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Role name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Role description"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "Role permissions"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created role ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/role/{id}": {
@@ -548,8 +3161,72 @@ const docTemplate = `{
             }
         },
         "/api/v1/telemetry/datas": {
-            "delete": {
-                "responses": {}
+            "get": {
+                "summary": "Get telemetry data",
+                "description": "Retrieve telemetry data for a device",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "device_id",
+                        "in": "query",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "keys",
+                        "in": "query",
+                        "description": "Telemetry keys (comma-separated)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "Start time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "End time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "key": {
+                                        "type": "string",
+                                        "description": "Telemetry key"
+                                    },
+                                    "value": {
+                                        "type": "object",
+                                        "description": "Telemetry value"
+                                    },
+                                    "ts": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/telemetry/datas/current/detail/{id}": {
@@ -604,18 +3281,154 @@ const docTemplate = `{
         },
         "/api/v1/ui_elements": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get UI elements list",
+                "description": "Retrieve a list of UI elements",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Element ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Element name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Element type"
+                                    },
+                                    "config": {
+                                        "type": "object",
+                                        "description": "Element configuration"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create UI element",
+                "description": "Create a new UI element",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "type"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Element name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Element type"
+                                    },
+                                    "config": {
+                                        "type": "object",
+                                        "description": "Element configuration"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Element created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created element ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/ui_elements/menu": {
             "get": {
-                "responses": {}
+                "summary": "Get UI elements menu",
+                "description": "Retrieve the UI elements menu structure",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Menu item ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Menu item name"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "description": "Menu item icon"
+                                    },
+                                    "path": {
+                                        "type": "string",
+                                        "description": "Menu item path"
+                                    },
+                                    "children": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        },
+                                        "description": "Child menu items"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/ui_elements/{id}": {
@@ -625,13 +3438,107 @@ const docTemplate = `{
         },
         "/api/v1/user": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get user list",
+                "description": "Retrieve a list of users",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User email"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User name"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "description": "User role"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create user",
+                "description": "Create a new user",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "password", "name"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "User password"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User name"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "description": "User role"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created user ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/user/detail": {
@@ -740,3 +3647,4 @@ var SwaggerInfo = &swag.Spec{
 func init() {
 	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
 }
+
