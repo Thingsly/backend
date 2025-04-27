@@ -3522,33 +3522,341 @@ const docTemplate = `{
         },
         "/api/v1/ota/package/": {
             "put": {
-                "responses": {}
+                "summary": "Update OTA package",
+                "description": "Update an existing OTA package",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["id", "name", "version", "file_url"],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Package ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Package name"
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "description": "Package version"
+                                    },
+                                    "file_url": {
+                                        "type": "string",
+                                        "description": "Package file URL"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Package description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Package updated successfully"
+                    }
+                }
             }
         },
         "/api/v1/ota/package/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete OTA package",
+                "description": "Delete an OTA package",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Package ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Package deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/ota/task": {
             "get": {
-                "responses": {}
+                "summary": "Get OTA task list",
+                "description": "Retrieve a list of OTA tasks",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Task ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Task name"
+                                    },
+                                    "package_id": {
+                                        "type": "string",
+                                        "description": "Package ID"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Task status"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Creation timestamp"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create OTA task",
+                "description": "Create a new OTA task",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "package_id", "device_ids"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Task name"
+                                    },
+                                    "package_id": {
+                                        "type": "string",
+                                        "description": "Package ID"
+                                    },
+                                    "device_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "List of device IDs"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Task description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task created successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Created task ID"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/ota/task/detail": {
             "get": {
-                "responses": {}
+                "summary": "Get OTA task detail",
+                "description": "Retrieve detailed information about an OTA task",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "task_id",
+                        "in": "query",
+                        "description": "Task ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Task ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Task name"
+                                },
+                                "package_id": {
+                                    "type": "string",
+                                    "description": "Package ID"
+                                },
+                                "package_name": {
+                                    "type": "string",
+                                    "description": "Package name"
+                                },
+                                "package_version": {
+                                    "type": "string",
+                                    "description": "Package version"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "Task status"
+                                },
+                                "devices": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Device ID"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Device name"
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "description": "Device update status"
+                                            }
+                                        }
+                                    }
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "put": {
-                "responses": {}
+                "summary": "Update OTA task",
+                "description": "Update an existing OTA task",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["id", "status"],
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Task ID"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Task status"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Task description"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task updated successfully"
+                    }
+                }
             }
         },
         "/api/v1/ota/task/{id}": {
             "delete": {
-                "responses": {}
+                "summary": "Delete OTA task",
+                "description": "Delete an OTA task",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Task deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/protocol_plugin": {
@@ -3662,12 +3970,122 @@ const docTemplate = `{
         },
         "/api/v1/protocol_plugin/config_form": {
             "get": {
-                "responses": {}
+                "summary": "Get protocol plugin config form",
+                "description": "Retrieve the configuration form for a protocol plugin",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "plugin_id",
+                        "in": "query",
+                        "description": "Plugin ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Field name"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Field type"
+                                            },
+                                            "label": {
+                                                "type": "string",
+                                                "description": "Field label"
+                                            },
+                                            "required": {
+                                                "type": "boolean",
+                                                "description": "Whether field is required"
+                                            },
+                                            "default": {
+                                                "type": "string",
+                                                "description": "Default value"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/protocol_plugin/device_config_form": {
             "get": {
-                "responses": {}
+                "summary": "Get protocol plugin device config form",
+                "description": "Retrieve the device configuration form for a protocol plugin",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "plugin_id",
+                        "in": "query",
+                        "description": "Plugin ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Field name"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Field type"
+                                            },
+                                            "label": {
+                                                "type": "string",
+                                                "description": "Field label"
+                                            },
+                                            "required": {
+                                                "type": "boolean",
+                                                "description": "Whether field is required"
+                                            },
+                                            "default": {
+                                                "type": "string",
+                                                "description": "Default value"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/protocol_plugin/{id}": {
