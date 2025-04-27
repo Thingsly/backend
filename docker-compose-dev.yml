@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: timescale/timescaledb:2.8.1-pg14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5555:5432"
+    environment:
+      - "TZ=Asia/Ho_Chi_Minh"
+      - "LC_ALL=C.UTF-8"
+      - "POSTGRES_DB=Thingsly"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgresThingsly"
+      - "POSTGRES_HOST_AUTH_METHOD=md5"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d Thingsly"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - thingsly_network
+
+  gmqtt:
+    image: hantdev1/thingsly-gmqtt:v1.0.0
+    volumes:
+      - gmqtt:/gmqttd
+    ports:
+      - "1883:1883"
+    environment:
+      - "TZ=Asia/Ho_Chi_Minh"
+      - "GMQTT_DB_REDIS_CONN=redis:6379"
+      - "GMQTT_DB_REDIS_PASSWORD=redis"
+      - "GMQTT_DB_PSQL_PSQLADDR=postgres"
+      - "GMQTT_DB_PSQL_PSQLPORT=5432"
+      - "GMQTT_DB_PSQL_PSQLDB=Thingsly"
+      - "GMQTT_DB_PSQL_PSQLUSER=postgres"
+      - "GMQTT_DB_PSQL_PSQLPASSWORD=postgresThingsly"
+    hostname: gmqtt
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - thingsly_network
+
+  redis:
+    image: redis:6.2.7
+    command: redis-server --requirepass redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    environment:
+      - "TZ=Asia/Ho_Chi_Minh"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - thingsly_network
+
+volumes:
+  go_files:
+  go_configs:
+  gmqtt:
+  nginx:
+  postgres_data:
+  redis_data:
+
+networks:
+  thingsly_network:
+    driver: bridge

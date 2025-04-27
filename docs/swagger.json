@@ -10,6 +10,7 @@
         "version": "v1.0.0"
     },
     "host": "localhost:9999",
+    "basePath": "",
     "paths": {
         "/api/v1/attribute/datas/set/logs": {
             "get": {
@@ -26,33 +27,557 @@
         },
         "/api/v1/board": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get board list",
+                "description": "Get a paginated list of boards",
+                "tags": [
+                    "board"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "Page size",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.BoardListRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
+                "summary": "Create board",
+                "description": "Create a new board",
+                "tags": [
+                    "board"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "board",
+                        "in": "body",
+                        "description": "Board information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateBoardReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateBoardRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update board",
+                "description": "Update an existing board",
+                "tags": [
+                    "board"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "board",
+                        "in": "body",
+                        "description": "Board information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateBoardReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateBoardRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Board not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/board/{id}": {
+            "get": {
+                "summary": "Get board by ID",
+                "description": "Get detailed information about a specific board",
+                "tags": [
+                    "board"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.BoardDetailRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Board not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete board",
+                "description": "Delete a board by ID",
+                "tags": [
+                    "board"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Board not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/device": {
             "get": {
-                "responses": {}
+                "summary": "Get board devices",
+                "description": "Get devices associated with a board",
+                "tags": [
+                    "board"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "board_id",
+                        "in": "query",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.BoardDeviceListRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/device/total": {
             "get": {
-                "responses": {}
+                "summary": "Get board device total",
+                "description": "Get total number of devices associated with a board",
+                "tags": [
+                    "board"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "board_id",
+                        "in": "query",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.BoardDeviceTotalRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/home": {
             "get": {
-                "responses": {}
+                "summary": "Get home board",
+                "description": "Get the home board configuration",
+                "tags": [
+                    "board"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.HomeBoardRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/tenant": {
             "get": {
-                "responses": {}
+                "summary": "Get tenant boards",
+                "description": "Get boards associated with a tenant",
+                "tags": [
+                    "board"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.TenantBoardListRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             }
         },
         "/api/v1/board/tenant/device/info": {
@@ -85,15 +610,7 @@
                 "responses": {}
             }
         },
-        "/api/v1/board/{id}": {
-            "get": {
-                "responses": {}
-            },
-            "delete": {
-                "responses": {}
-            }
-        },
-        "/api/v1/casbin/function": {
+        "/api/v1/board/device/group": {
             "get": {
                 "responses": {}
             },
@@ -104,144 +621,475 @@
                 "responses": {}
             }
         },
-        "/api/v1/casbin/function/{id}": {
-            "delete": {
+        "/api/v1/board/device/group/detail/{id}": {
+            "get": {
                 "responses": {}
             }
         },
-        "/api/v1/casbin/user": {
+        "/api/v1/board/device/group/relation": {
             "get": {
-                "responses": {}
-            },
-            "put": {
                 "responses": {}
             },
             "post": {
                 "responses": {}
-            }
-        },
-        "/api/v1/casbin/user/{id}": {
+            },
             "delete": {
                 "responses": {}
             }
         },
-        "/api/v1/command/datas/set/logs": {
+        "/api/v1/board/device/group/relation/list": {
             "get": {
                 "responses": {}
             }
         },
-        "/api/v1/data_script": {
+        "/api/v1/board/device/group/tree": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
-            },
-            "post": {
                 "responses": {}
             }
         },
-        "/api/v1/data_script/{id}": {
+        "/api/v1/board/device/group/{id}": {
             "delete": {
                 "responses": {}
             }
         },
-        "/api/v1/datapolicy": {
+        "/api/v1/board/device/online/status/ws": {
             "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device": {
-            "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
-            },
-            "post": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/active": {
-            "put": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/check/{deviceNumber}": {
-            "get": {
+                "summary": "Get device online status",
+                "description": "Get real-time device online status via WebSocket",
                 "tags": [
-                    "Device Management"
+                    "device"
                 ],
-                "responses": {}
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceOnlineStatus"
+                        }
+                    }
+                }
             }
         },
-        "/api/v1/device/detail/{id}": {
+        "/api/v1/board/device/template": {
             "get": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/group": {
-            "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
+                "summary": "Get device template list",
+                "description": "Get a paginated list of device templates",
+                "tags": [
+                    "device"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "Page size",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.GetDeviceTemplateListRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             },
             "post": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/group/detail/{id}": {
-            "get": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/group/relation": {
-            "get": {
-                "responses": {}
-            },
-            "post": {
-                "responses": {}
-            },
-            "delete": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/group/relation/list": {
-            "get": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/group/tree": {
-            "get": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/group/{id}": {
-            "delete": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/online/status/ws": {
-            "get": {
-                "description": "Obtain real-time device online status via WebSocket connection",
+                "summary": "Create device template",
+                "description": "Create a new device template",
+                "tags": [
+                    "device"
+                ],
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "tags": [
-                    "Device"
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "template",
+                        "in": "body",
+                        "description": "Device template information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateDeviceTemplateReq"
+                        }
+                    }
                 ],
-                "summary": "Get Device Online Status",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateDeviceTemplateRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update device template",
+                "description": "Update an existing device template",
+                "tags": [
+                    "device"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "template",
+                        "in": "body",
+                        "description": "Device template information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateDeviceTemplateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateDeviceTemplateRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Template not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/board/device/template/chart": {
+            "get": {
                 "responses": {}
             }
         },
-        "/api/v1/device/template": {
+        "/api/v1/board/device/template/detail/{id}": {
+            "get": {
+                "summary": "Get device template by ID",
+                "description": "Get detailed information about a specific device template",
+                "tags": [
+                    "device"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Template ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceTemplateReadSchema"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Template not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/board/device/template/menu": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/v1/board/device/template/{id}": {
+            "delete": {
+                "summary": "Delete device template",
+                "description": "Delete a device template by ID",
+                "tags": [
+                    "device"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Template ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Template not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/board/device/{id}": {
+            "get": {
+                "summary": "Get device by ID",
+                "description": "Get device details by ID",
+                "tags": [
+                    "device"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.Device"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete device",
+                "description": "Delete a device by ID",
+                "tags": [
+                    "device"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/v1/board/device_config": {
             "get": {
                 "responses": {}
             },
@@ -252,53 +1100,17 @@
                 "responses": {}
             }
         },
-        "/api/v1/device/template/chart": {
-            "get": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/template/detail/{id}": {
-            "get": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/template/menu": {
-            "get": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/template/{id}": {
-            "delete": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device/{id}": {
-            "delete": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device_config": {
-            "get": {
-                "responses": {}
-            },
-            "put": {
-                "responses": {}
-            },
-            "post": {
-                "responses": {}
-            }
-        },
-        "/api/v1/device_config/batch": {
+        "/api/v1/board/device_config/batch": {
             "put": {
                 "responses": {}
             }
         },
-        "/api/v1/device_config/menu": {
+        "/api/v1/board/device_config/menu": {
             "get": {
                 "responses": {}
             }
         },
-        "/api/v1/device_config/{id}": {
+        "/api/v1/board/device_config/{id}": {
             "get": {
                 "responses": {}
             },
@@ -706,6 +1518,743 @@
                 "token": {
                     "description": "Login token",
                     "type": "string"
+                }
+            }
+        },
+        "model.CreateDeviceReq": {
+            "type": "object",
+            "required": [
+                "name",
+                "access_way"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Device name"
+                },
+                "label": {
+                    "type": "string",
+                    "description": "Device label"
+                },
+                "device_config_id": {
+                    "type": "string",
+                    "description": "Device config ID"
+                },
+                "access_way": {
+                    "type": "string",
+                    "description": "Access way (A for direct access)"
+                }
+            }
+        },
+        "model.CreateDeviceRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Device ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Device name"
+                        },
+                        "voucher": {
+                            "type": "string",
+                            "description": "Device authentication voucher"
+                        },
+                        "tenant_id": {
+                            "type": "string",
+                            "description": "Tenant ID"
+                        },
+                        "is_enabled": {
+                            "type": "string",
+                            "description": "Device enabled status"
+                        },
+                        "activate_flag": {
+                            "type": "string",
+                            "description": "Device activation flag"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Creation timestamp"
+                        },
+                        "update_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Last update timestamp"
+                        },
+                        "device_number": {
+                            "type": "string",
+                            "description": "Device number"
+                        },
+                        "product_id": {
+                            "type": "string",
+                            "description": "Product ID"
+                        },
+                        "parent_id": {
+                            "type": "string",
+                            "description": "Parent device ID"
+                        },
+                        "protocol": {
+                            "type": "string",
+                            "description": "Device protocol"
+                        },
+                        "label": {
+                            "type": "string",
+                            "description": "Device label"
+                        },
+                        "location": {
+                            "type": "string",
+                            "description": "Device location"
+                        },
+                        "sub_device_addr": {
+                            "type": "string",
+                            "description": "Sub-device address"
+                        },
+                        "current_version": {
+                            "type": "string",
+                            "description": "Current version"
+                        },
+                        "additional_info": {
+                            "type": "string",
+                            "description": "Additional information"
+                        },
+                        "protocol_config": {
+                            "type": "string",
+                            "description": "Protocol configuration"
+                        },
+                        "remark1": {
+                            "type": "string",
+                            "description": "Remark 1"
+                        },
+                        "remark2": {
+                            "type": "string",
+                            "description": "Remark 2"
+                        },
+                        "remark3": {
+                            "type": "string",
+                            "description": "Remark 3"
+                        },
+                        "device_config_id": {
+                            "type": "string",
+                            "description": "Device config ID"
+                        },
+                        "batch_number": {
+                            "type": "string",
+                            "description": "Batch number"
+                        },
+                        "activate_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Activation timestamp"
+                        },
+                        "is_online": {
+                            "type": "integer",
+                            "description": "Online status"
+                        },
+                        "access_way": {
+                            "type": "string",
+                            "description": "Access way"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Device description"
+                        },
+                        "service_access_id": {
+                            "type": "string",
+                            "description": "Service access ID"
+                        }
+                    }
+                }
+            }
+        },
+        "model.Device": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Device ID"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Device name"
+                },
+                "device_number": {
+                    "type": "string",
+                    "description": "Device number"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Device description"
+                },
+                "is_active": {
+                    "type": "boolean",
+                    "description": "Device active status"
+                }
+            }
+        },
+        "model.DeviceListRes": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "integer",
+                    "description": "Total number of devices"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Device"
+                    }
+                }
+            }
+        },
+        "model.DeviceActiveReq": {
+            "type": "object",
+            "required": [
+                "device_id",
+                "is_active"
+            ],
+            "properties": {
+                "device_id": {
+                    "type": "string",
+                    "description": "Device ID"
+                },
+                "is_active": {
+                    "type": "boolean",
+                    "description": "Device active status"
+                }
+            }
+        },
+        "model.DeviceOnlineStatus": {
+            "type": "object",
+            "properties": {
+                "device_id": {
+                    "type": "string",
+                    "description": "Device ID"
+                },
+                "is_online": {
+                    "type": "boolean",
+                    "description": "Device online status"
+                },
+                "last_seen": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Last seen timestamp"
+                }
+            }
+        },
+        "model.CreateDeviceTemplateReq": {
+            "type": "object",
+            "required": [
+                "name",
+                "description"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Template name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Template description"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Device protocol"
+                },
+                "protocol_config": {
+                    "type": "string",
+                    "description": "Protocol configuration"
+                }
+            }
+        },
+        "model.CreateDeviceTemplateRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Template name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Template description"
+                        },
+                        "protocol": {
+                            "type": "string",
+                            "description": "Device protocol"
+                        },
+                        "protocol_config": {
+                            "type": "string",
+                            "description": "Protocol configuration"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Creation timestamp"
+                        },
+                        "update_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Last update timestamp"
+                        }
+                    }
+                }
+            }
+        },
+        "model.UpdateDeviceTemplateReq": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "description"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Template ID"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Template name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Template description"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Device protocol"
+                },
+                "protocol_config": {
+                    "type": "string",
+                    "description": "Protocol configuration"
+                }
+            }
+        },
+        "model.UpdateDeviceTemplateRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Template name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Template description"
+                        },
+                        "protocol": {
+                            "type": "string",
+                            "description": "Device protocol"
+                        },
+                        "protocol_config": {
+                            "type": "string",
+                            "description": "Protocol configuration"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Creation timestamp"
+                        },
+                        "update_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Last update timestamp"
+                        }
+                    }
+                }
+            }
+        },
+        "model.GetDeviceTemplateListRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "description": "Total number of templates"
+                        },
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.DeviceTemplateReadSchema"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "model.DeviceTemplateReadSchema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Template ID"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Template name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Template description"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Device protocol"
+                },
+                "protocol_config": {
+                    "type": "string",
+                    "description": "Protocol configuration"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Creation timestamp"
+                },
+                "update_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Last update timestamp"
+                }
+            }
+        },
+        "model.CreateBoardReq": {
+            "type": "object",
+            "required": [
+                "name",
+                "description"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Board name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Board description"
+                },
+                "layout": {
+                    "type": "string",
+                    "description": "Board layout configuration"
+                },
+                "is_home": {
+                    "type": "boolean",
+                    "description": "Whether this is the home board"
+                }
+            }
+        },
+        "model.CreateBoardRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Board ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Board name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Board description"
+                        },
+                        "layout": {
+                            "type": "string",
+                            "description": "Board layout configuration"
+                        },
+                        "is_home": {
+                            "type": "boolean",
+                            "description": "Whether this is the home board"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Creation timestamp"
+                        },
+                        "update_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Last update timestamp"
+                        }
+                    }
+                }
+            }
+        },
+        "model.UpdateBoardReq": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "description"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Board ID"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Board name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Board description"
+                },
+                "layout": {
+                    "type": "string",
+                    "description": "Board layout configuration"
+                },
+                "is_home": {
+                    "type": "boolean",
+                    "description": "Whether this is the home board"
+                }
+            }
+        },
+        "model.UpdateBoardRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Board ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Board name"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Board description"
+                        },
+                        "layout": {
+                            "type": "string",
+                            "description": "Board layout configuration"
+                        },
+                        "is_home": {
+                            "type": "boolean",
+                            "description": "Whether this is the home board"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Creation timestamp"
+                        },
+                        "update_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Last update timestamp"
+                        }
+                    }
+                }
+            }
+        },
+        "model.BoardListRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "description": "Total number of boards"
+                        },
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.BoardDetailRes"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "model.BoardDetailRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Board ID"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Board name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Board description"
+                },
+                "layout": {
+                    "type": "string",
+                    "description": "Board layout configuration"
+                },
+                "is_home": {
+                    "type": "boolean",
+                    "description": "Whether this is the home board"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Creation timestamp"
+                },
+                "update_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Last update timestamp"
+                }
+            }
+        },
+        "model.BoardDeviceListRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Device"
+                    }
+                }
+            }
+        },
+        "model.BoardDeviceTotalRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "description": "Total number of devices"
+                        }
+                    }
+                }
+            }
+        },
+        "model.HomeBoardRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "$ref": "#/definitions/model.BoardDetailRes"
+                }
+            }
+        },
+        "model.TenantBoardListRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "description": "Response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Response message"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.BoardDetailRes"
+                    }
                 }
             }
         }
