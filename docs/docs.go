@@ -484,10 +484,105 @@ const docTemplate = `{
         },
         "/api/v1/board/{id}": {
             "get": {
-                "responses": {}
+                "summary": "Get board details",
+                "description": "Retrieve detailed information about a specific board",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Board ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Board name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Board description"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Board type"
+                                },
+                                "widgets": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Widget ID"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Widget type"
+                                            },
+                                            "config": {
+                                                "type": "object",
+                                                "description": "Widget configuration"
+                                            }
+                                        }
+                                    }
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Last update timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "delete": {
-                "responses": {}
+                "summary": "Delete board",
+                "description": "Delete a specific board",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Board deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/casbin/function": {
@@ -5002,6 +5097,210 @@ const docTemplate = `{
             },
             "delete": {
                 "responses": {}
+            }
+        },
+        "/api/v1/board/user/update": {
+            "post": {
+                "summary": "Update board user information",
+                "description": "Update user information for a specific board",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["board_id", "user_id", "role"],
+                                "properties": {
+                                    "board_id": {
+                                        "type": "string",
+                                        "description": "Board ID"
+                                    },
+                                    "user_id": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "description": "User role in the board"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "description": "List of user permissions"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User information updated successfully"
+                    }
+                }
+            }
+        },
+        "/api/v1/board/user/update/password": {
+            "post": {
+                "summary": "Update board user password",
+                "description": "Update password for a board user",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["board_id", "user_id", "old_password", "new_password"],
+                                "properties": {
+                                    "board_id": {
+                                        "type": "string",
+                                        "description": "Board ID"
+                                    },
+                                    "user_id": {
+                                        "type": "string",
+                                        "description": "User ID"
+                                    },
+                                    "old_password": {
+                                        "type": "string",
+                                        "description": "Current password"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "description": "New password"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully"
+                    }
+                }
+            }
+        },
+        "/api/v1/board/{id}": {
+            "get": {
+                "summary": "Get board details",
+                "description": "Retrieve detailed information about a specific board",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Board ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Board name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Board description"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Board type"
+                                },
+                                "widgets": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Widget ID"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Widget type"
+                                            },
+                                            "config": {
+                                                "type": "object",
+                                                "description": "Widget configuration"
+                                            }
+                                        }
+                                    }
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Last update timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete board",
+                "description": "Delete a specific board",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Board ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Board deleted successfully"
+                    }
+                }
             }
         }
     },
