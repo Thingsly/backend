@@ -2548,7 +2548,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "v1.0.0",
 	Host:             "localhost:9999",
-	BasePath:         "/api/v1",
+	BasePath:         "",
 	Schemes:          []string{"http", "https"},
 	Title:            "Thingsly IoT Platform API",
 	Description:      `This is the API documentation for Thingsly IoT Platform.
@@ -2588,8 +2588,7 @@ For support, please contact:
 The source code for this API is available on GitHub:
 - Repository: https://github.com/Thingsly/backend
 - Issues: https://github.com/Thingsly/backend/issues
-- Pull Requests: https://github.com/Thingsly/backend/pulls
-`,
+- Pull Requests: https://github.com/Thingsly/backend/pulls`,
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
