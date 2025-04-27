@@ -1961,17 +1961,217 @@ const docTemplate = `{
         },
         "/api/v1/device/template/chart": {
             "get": {
-                "responses": {}
+                "summary": "Get device template chart",
+                "description": "Retrieve chart data for device templates",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "template_id",
+                        "in": "query",
+                        "description": "Template ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_time",
+                        "in": "query",
+                        "description": "Start time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "End time (ISO 8601)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "template_id": {
+                                    "type": "string",
+                                    "description": "Template ID"
+                                },
+                                "template_name": {
+                                    "type": "string",
+                                    "description": "Template name"
+                                },
+                                "charts": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Chart name"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Chart type"
+                                            },
+                                            "data": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "x": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "Timestamp"
+                                                        },
+                                                        "y": {
+                                                            "type": "number",
+                                                            "description": "Value"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/template/detail/{id}": {
             "get": {
-                "responses": {}
+                "summary": "Get device template detail",
+                "description": "Retrieve detailed information about a device template",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Template ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Template ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Template name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Template description"
+                                },
+                                "device_config_id": {
+                                    "type": "string",
+                                    "description": "Device configuration ID"
+                                },
+                                "device_config_name": {
+                                    "type": "string",
+                                    "description": "Device configuration name"
+                                },
+                                "attributes": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Attribute name"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Attribute type"
+                                            },
+                                            "default_value": {
+                                                "type": "string",
+                                                "description": "Default value"
+                                            }
+                                        }
+                                    }
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/template/menu": {
             "get": {
-                "responses": {}
+                "summary": "Get device template menu",
+                "description": "Retrieve the device template menu structure",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Template ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Template name"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "description": "Menu icon"
+                                    },
+                                    "path": {
+                                        "type": "string",
+                                        "description": "Menu path"
+                                    },
+                                    "children": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        },
+                                        "description": "Child menu items"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/template/{id}": {
@@ -3647,4 +3847,6 @@ var SwaggerInfo = &swag.Spec{
 func init() {
 	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
 }
+
+
 
