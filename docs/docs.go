@@ -2335,20 +2335,197 @@ const docTemplate = `{
         },
         "/api/v1/device_config/batch": {
             "put": {
-                "responses": {}
+                "summary": "Update device configurations in batch",
+                "description": "Update multiple device configurations at once",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["configs"],
+                                "properties": {
+                                    "configs": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "required": ["id", "name", "protocol_type"],
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "description": "Configuration ID"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "description": "Configuration name"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "description": "Configuration description"
+                                                },
+                                                "protocol_type": {
+                                                    "type": "string",
+                                                    "description": "Protocol type"
+                                                },
+                                                "config": {
+                                                    "type": "object",
+                                                    "description": "Configuration details"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Configurations updated successfully"
+                    }
+                }
             }
         },
         "/api/v1/device_config/menu": {
             "get": {
-                "responses": {}
+                "summary": "Get device configuration menu",
+                "description": "Retrieve the device configuration menu structure",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Configuration ID"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Configuration name"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "description": "Menu icon"
+                                    },
+                                    "path": {
+                                        "type": "string",
+                                        "description": "Menu path"
+                                    },
+                                    "children": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object"
+                                        },
+                                        "description": "Child menu items"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device_config/{id}": {
             "get": {
-                "responses": {}
+                "summary": "Get device configuration detail",
+                "description": "Retrieve detailed information about a device configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Configuration ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string",
+                                    "description": "Configuration ID"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Configuration name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Configuration description"
+                                },
+                                "protocol_type": {
+                                    "type": "string",
+                                    "description": "Protocol type"
+                                },
+                                "config": {
+                                    "type": "object",
+                                    "description": "Configuration details"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Creation timestamp"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "delete": {
-                "responses": {}
+                "summary": "Delete device configuration",
+                "description": "Delete a device configuration",
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Configuration ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Configuration deleted successfully"
+                    }
+                }
             }
         },
         "/api/v1/dict": {
