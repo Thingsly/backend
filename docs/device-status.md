@@ -37,8 +37,8 @@ CREATE TABLE devices (
 
 ```json
 {
-    "heartbeat": 60,        // Heartbeat interval in seconds
-    "online_timeout": 5     // Timeout period in minutes
+    "heartbeat": 8000,        // Heartbeat interval in seconds
+    "online_timeout": 3000     // Timeout period in seconds
 }
 ```
 
@@ -146,21 +146,21 @@ Consider a device with the following configuration:
 
 ```json
 {
-    "heartbeat": 60,        // Send heartbeat every 60 seconds
-    "online_timeout": 5     // Timeout after 5 minutes
+    "heartbeat": 8000,        // Send heartbeat every 8 seconds
+    "online_timeout": 3000     // Timeout after 3 seconds of no heartbeat
 }
 ```
 
 ### Device Online Flow
 
-1. Device sends telemetry data every 60 seconds
+1. Device sends telemetry data every 8 seconds
 2. System receives telemetry → calls HeartbeatDeal()
 3. Updates online status in database
-4. Sets Redis key with 60s TTL
+4. Sets Redis key with 8s TTL
 
 ### Device Offline Flow
 
-1. If no telemetry received within 60 seconds
+1. If no telemetry received within 8 seconds
 2. Redis key expires
 3. System updates device status to offline
 4. Sends WebSocket notification
