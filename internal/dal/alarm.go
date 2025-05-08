@@ -262,7 +262,7 @@ func AlarmHistoryDescUpdate(req *model.AlarmHistoryDescUpdateReq, tenantID strin
 		return err
 	}
 	if result.RowsAffected == 0 {
-		return errors.New("Failed to set alarm description")
+		return errors.New("failed to set alarm description")
 	}
 	return nil
 }

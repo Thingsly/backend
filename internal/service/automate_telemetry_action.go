@@ -43,7 +43,7 @@ func AutomateActionDeviceMqttSend(deviceId string, action model.ActionInfo, tena
 	}
 
 	if action.ActionParamType == nil {
-		return executeMsg + " ActionParamType does not exist ", errors.New("ActionParamType does not exist.")
+		return executeMsg + " ActionParamType does not exist ", errors.New("ActionParamType does not exist")
 	}
 	if action.ActionValue == nil {
 		return executeMsg + " Action target value does not exist", errors.New("Action target value does not exist")

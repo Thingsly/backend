@@ -266,7 +266,7 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
 	alarmConfig, err := dal.GetAlarmByID(alarmConfigID)
 	if err != nil {
 		logrus.Error(err)
-		return false, alarmName, err.Error()
+		return false, alarmName, ""
 	}
 
 	if alarmConfig.Enabled != "Y" {
@@ -295,13 +295,13 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
 	})
 	if err != nil {
 		logrus.Error(err)
-		return false, alarmName, err.Error()
+		return false, alarmName, ""
 	}
 	for _, deviceId := range device_ids {
 		deviceInfo, _ := dal.GetDeviceByID(deviceId)
 		go GroupApp.AlarmMessagePushSend(alarmConfig.Name, id, deviceInfo)
 	}
-	return true, alarmName, err.Error()
+	return true, alarmName, ""
 }
 
 func (*Alarm) GetAlarmInfoHistoryByID(id string) (map[string]interface{}, error) {

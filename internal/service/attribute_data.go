@@ -257,7 +257,7 @@ func transformGatewayData(param *model.AttributePutMessage) error {
 
 	var inputData map[string]interface{}
 	if err := json.Unmarshal([]byte(param.Value), &inputData); err != nil {
-		return fmt.Errorf("Failed to parse input JSON: %v", err)
+		return fmt.Errorf("failed to parse input JSON: %v", err)
 	}
 
 	outputData := map[string]interface{}{
@@ -266,7 +266,7 @@ func transformGatewayData(param *model.AttributePutMessage) error {
 
 	output, err := json.Marshal(outputData)
 	if err != nil {
-		return fmt.Errorf("Failed to generate output JSON: %v", err)
+		return fmt.Errorf("failed to generate output JSON: %v", err)
 	}
 
 	param.Value = string(output)
@@ -278,7 +278,7 @@ func transformSubDeviceData(param *model.AttributePutMessage, subDeviceAddr stri
 
 	var inputData map[string]interface{}
 	if err := json.Unmarshal([]byte(param.Value), &inputData); err != nil {
-		return fmt.Errorf("Failed to parse input JSON: %v", err)
+		return fmt.Errorf("failed to parse input JSON: %v", err)
 	}
 
 	outputData := map[string]interface{}{
@@ -289,7 +289,7 @@ func transformSubDeviceData(param *model.AttributePutMessage, subDeviceAddr stri
 
 	output, err := json.Marshal(outputData)
 	if err != nil {
-		return fmt.Errorf("Failed to generate output JSON: %v", err)
+		return fmt.Errorf("failed to generate output JSON: %v", err)
 	}
 
 	param.Value = string(output)

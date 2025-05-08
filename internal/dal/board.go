@@ -18,7 +18,7 @@ import (
 
 func CreateBoard(boards *model.Board) error {
 	if _, err := query.Board.Where(query.Board.HomeFlag.Eq("Y"), query.Board.TenantID.Eq(boards.TenantID)).First(); err == nil {
-		return fmt.Errorf("Dashboard already exists on the homepage.")
+		return fmt.Errorf("dashboard already exists on the homepage")
 	}
 	return query.Board.Create(boards)
 }
