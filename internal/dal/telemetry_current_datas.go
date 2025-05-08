@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"time"
 
 	"github.com/Thingsly/backend/internal/model"
 	query "github.com/Thingsly/backend/internal/query"
@@ -115,4 +116,40 @@ func DeleteCurrentTelemetryData(deviceId string, key string) error {
 func DeleteCurrentTelemetryDataByDeviceId(deviceId string, tx *query.QueryTx) error {
 	_, err := tx.TelemetryCurrentData.Where(query.TelemetryCurrentData.DeviceID.Eq(deviceId)).Delete()
 	return err
+}
+
+type NewDeviceData struct {
+	DeviceID  string    `json:"device_id"`
+	Timestamp time.Time `json:"timestamp"`
+}
+
+func GetTenantTelemetryData(tenantId string) ([]NewDeviceData, error) {
+	subQuery := query.TelemetryCurrentData.Select(
+		query.TelemetryCurrentData.DeviceID.As("device_id"),
+		query.TelemetryCurrentData.T.Max().As("max_t"),
+	).Where(
+		query.TelemetryCurrentData.TenantID.Eq(tenantId),
+	).Group(query.TelemetryCurrentData.DeviceID).Order(query.TelemetryCurrentData.T.Max().Desc()).Limit(3)
+
+	type DeviceData struct {
+		DeviceID string    `json:"device_id"`
+		MaxT     time.Time `json:"max_t"`
+	}
+
+	var devices []DeviceData
+	err := subQuery.Scan(&devices)
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]NewDeviceData, 0, len(devices))
+	for _, device := range devices {
+		deviceInfo := NewDeviceData{
+			DeviceID:  device.DeviceID,
+			Timestamp: device.MaxT,
+		}
+		result = append(result, deviceInfo)
+	}
+
+	return result, nil
 }

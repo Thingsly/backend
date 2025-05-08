@@ -173,9 +173,7 @@ func (*DeviceConfig) DeleteDeviceConfig(id string) error {
 }
 
 func (*DeviceConfig) GetDeviceConfigByID(ctx context.Context, id string) (any, error) {
-	var (
-		db = dal.DeviceConfigQuery{}
-	)
+	db := dal.DeviceConfigQuery{}
 	info, err := db.First(ctx, query.DeviceConfig.ID.Eq(id))
 	if err != nil {
 		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
@@ -225,7 +223,7 @@ func (*DeviceConfig) BatchUpdateDeviceConfig(req *model.BatchUpdateDeviceConfigR
 
 	for _, id := range req.DeviceIds {
 		initialize.DelDeviceCache(id)
-		initialize.DelDeviceDataScriptCache(id)
+		// initialize.DelDeviceDataScriptCache(id)
 	}
 	return err
 }
@@ -278,9 +276,7 @@ func (*DeviceConfig) GetVoucherTypeForm(deviceType string, protocolType string) 
 	data, err = pd.GetPluginForm(protocolType, deviceType, string(constant.VOUCHER_TYPE_FORM))
 	if err != nil {
 		logrus.Error(err)
-		return data, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
-			"sql_error": err.Error(),
-		})
+		return data, err
 	}
 	return
 }

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
 	"time"
 
@@ -12,8 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type Alarm struct {
-}
+type Alarm struct{}
 
 // CreateAlarmConfig
 func (*Alarm) CreateAlarmConfig(req *model.CreateAlarmConfigReq) (data *model.AlarmConfig, err error) {
@@ -180,7 +180,6 @@ func (*Alarm) AlarmHistoryDescUpdate(req *model.AlarmHistoryDescUpdateReq, tenan
 	return
 }
 func (*Alarm) GetDeviceAlarmStatus(req *model.GetDeviceAlarmStatusReq) bool {
-
 	return dal.GetDeviceAlarmStatus(req)
 }
 
@@ -262,16 +261,16 @@ func (*Alarm) AlarmRecovery(alarmConfigID, content, scene_automation_id, group_i
 	return true, id
 }
 
-func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id string, device_ids []string) (bool, string) {
+func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id string, device_ids []string) (bool, string, string) {
 	var alarmName string
 	alarmConfig, err := dal.GetAlarmByID(alarmConfigID)
 	if err != nil {
 		logrus.Error(err)
-		return false, alarmName
+		return false, alarmName, err.Error()
 	}
 
 	if alarmConfig.Enabled != "Y" {
-		return false, alarmName
+		return false, alarmName, "alarm is not enabled"
 	}
 	alarmName = alarmConfig.Name
 	if alarmConfig.NotificationGroupID != "" {
@@ -296,13 +295,13 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
 	})
 	if err != nil {
 		logrus.Error(err)
-		return false, alarmName
+		return false, alarmName, err.Error()
 	}
 	for _, deviceId := range device_ids {
 		deviceInfo, _ := dal.GetDeviceByID(deviceId)
 		go GroupApp.AlarmMessagePushSend(alarmConfig.Name, id, deviceInfo)
 	}
-	return true, alarmName
+	return true, alarmName, err.Error()
 }
 
 func (*Alarm) GetAlarmInfoHistoryByID(id string) (map[string]interface{}, error) {
@@ -313,4 +312,21 @@ func (*Alarm) GetAlarmInfoHistoryByID(id string) (map[string]interface{}, error)
 		})
 	}
 	return alarmInfo, nil
+}
+
+func (a *Alarm) GetAlarmDeviceCountsByTenant(tenantID string) (*model.AlarmDeviceCountsResponse, error) {
+	ctx := context.Background()
+	db := &dal.LatestDeviceAlarmQuery{}
+
+	totalCount, err := db.CountDevicesByTenantAndStatus(ctx, tenantID)
+	if err != nil {
+		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+			"operation": "count_alarm_devices",
+			"error":     err.Error(),
+		})
+	}
+
+	return &model.AlarmDeviceCountsResponse{
+		AlarmDeviceTotal: int64(totalCount),
+	}, nil
 }

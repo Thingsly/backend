@@ -166,7 +166,11 @@ func (*TelemetryDataApi) ServeEchoData(c *gin.Context) {
 		return
 	}
 
-	date, err := service.GroupApp.TelemetryData.ServeEchoData(&req)
+	// Get Host (directly use client IP)
+	clientIP := c.Request.Host
+
+	date, err := service.GroupApp.TelemetryData.ServeEchoData(&req, clientIP)
+
 	if err != nil {
 		c.Error(err)
 		return

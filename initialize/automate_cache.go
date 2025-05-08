@@ -62,6 +62,7 @@ func (c *AutomateCache) getAutomateCacheKey(cType string, id string) string {
 }
 
 func (c *AutomateCache) getAutomateCacheKeyBase(deviceId string) string {
+	// automate:v3:one:_:deviceId
 	return c.getAutomateCacheKey("_", deviceId)
 }
 
@@ -191,7 +192,7 @@ func (c *AutomateCache) automateDeviceCacheDeleteHandel(sceneAutomationId string
 	for _, deviceId := range ids {
 		var (
 			baseCacheKey = c.getAutomateCacheKeyBase(deviceId)
-			//baseCacheKey        = getCachekey(deviceId)
+			// baseCacheKey        = getCachekey(deviceId)
 			automateDeviceInfos AutomateDeviceInfos
 		)
 		err := c.client.Get(context.Background(), baseCacheKey).Scan(&automateDeviceInfos)
@@ -284,7 +285,7 @@ func (c *AutomateCache) setCacheBySceneAutId(sceneAutomationId string, condition
 		}
 		automateDeviceInfo.GroupIds = append(automateDeviceInfo.GroupIds, groupId)
 		actionInfos.GroupIds = append(actionInfos.GroupIds, groupId)
-		var groupCacheKey = c.getAutomateCacheKeyGroup(groupId)
+		groupCacheKey := c.getAutomateCacheKeyGroup(groupId)
 		err := c.set(groupCacheKey, val, c.expiredIn)
 		if err != nil {
 			return err
@@ -298,7 +299,7 @@ func (c *AutomateCache) setCacheBySceneAutId(sceneAutomationId string, condition
 
 	for deviceId := range deviceIdsMap {
 		var automateDeviceInfos AutomateDeviceInfos
-		var deviceCacheKey = c.getAutomateCacheKeyBase(deviceId)
+		deviceCacheKey := c.getAutomateCacheKeyBase(deviceId)
 		_, err = c.scan(c.client.Get(context.Background(), deviceCacheKey), &automateDeviceInfos)
 		if err != nil {
 			continue
@@ -320,9 +321,11 @@ func (c *AutomateCache) GetCacheByDeviceId(deviceId, deviceConfigId string) (Aut
 	var deviceCacheKey string
 	if deviceConfigId == "" {
 		c.SetDeviceType(automatecache.NewOneDeviceCache())
+		// automate:v3:one:_:deviceId
 		deviceCacheKey = c.getAutomateCacheKeyBase(deviceId)
 	} else {
 		c.SetDeviceType(automatecache.NewMultipleDeviceCache())
+		// automate:v3:multiple:_:deviceConfigId
 		deviceCacheKey = c.getAutomateCacheKeyBase(deviceConfigId)
 	}
 	return c.getCacheByDId(deviceId, deviceConfigId, deviceCacheKey)
@@ -342,6 +345,7 @@ func (c *AutomateCache) getCacheByDId(deviceId, deviceConfigId, deviceCacheKey s
 		resultInt int
 	)
 	stringCmd := c.client.Get(context.Background(), deviceCacheKey)
+	logrus.Debugf("deviceCacheKey: %s", deviceCacheKey)
 	resultInt, err := c.scan(stringCmd, &automateDeviceInfos)
 	if err != nil || resultInt != AUTOMATE_CACHE_RESULT_OK {
 		return automateExecuteParams, resultInt, err
@@ -416,7 +420,7 @@ func (c *AutomateCache) setCache(deviceId, deviceConfigId string, conditions []m
 	}
 
 	for groupId, val := range groupInfosMap {
-		var groupCacheKey = c.getAutomateCacheKeyGroup(groupId)
+		groupCacheKey := c.getAutomateCacheKeyGroup(groupId)
 		logrus.Info("groupCacheKey:", groupCacheKey)
 		err := c.set(groupCacheKey, val, c.expiredIn)
 		if err != nil {
@@ -424,9 +428,7 @@ func (c *AutomateCache) setCache(deviceId, deviceConfigId string, conditions []m
 		}
 	}
 
-	var (
-		actionsMap = make(map[string][]model.ActionInfo)
-	)
+	actionsMap := make(map[string][]model.ActionInfo)
 	for _, val := range actions {
 		actionsMap[val.SceneAutomationID] = append(actionsMap[val.SceneAutomationID], val)
 	}

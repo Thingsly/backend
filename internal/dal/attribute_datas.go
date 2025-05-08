@@ -54,12 +54,35 @@ func CreateAttributeData(data *model.AttributeData) error {
 
 // Update device attribute data. If the data does not exist, generate a UUID to create a new entry
 func UpdateAttributeData(data *model.AttributeData) (*model.AttributeData, error) {
-	info, err := query.AttributeData.Where(query.AttributeData.DeviceID.Eq(data.DeviceID)).
-		Where(query.AttributeData.TenantID.Eq(*data.TenantID)).
-		Where(query.AttributeData.Key.Eq(data.Key)).Updates(data)
+	// Based on the data type of the new data, directly set other type fields to null
+	if data.StringV != nil {
+		data.NumberV = nil
+		data.BoolV = nil
+	} else if data.NumberV != nil {
+		data.StringV = nil
+		data.BoolV = nil
+	} else if data.BoolV != nil {
+		data.StringV = nil
+		data.NumberV = nil
+	}
+
+	// Create an update map that includes null values to ensure null fields are also updated in the database
+	updateMap := map[string]interface{}{
+		"bool_v":   data.BoolV,
+		"number_v": data.NumberV,
+		"string_v": data.StringV,
+		"ts":       data.T,
+	}
+
+	// Try to update the existing record
+	result, err := query.AttributeData.Where(
+		query.AttributeData.DeviceID.Eq(data.DeviceID),
+		query.AttributeData.TenantID.Eq(*data.TenantID),
+		query.AttributeData.Key.Eq(data.Key),
+	).Updates(updateMap)
 	if err != nil {
 		return nil, err
-	} else if info.RowsAffected == 0 {
+	} else if result.RowsAffected == 0 {
 		data.ID = uuid.New()
 		err = query.AttributeData.Create(data)
 		if err != nil {

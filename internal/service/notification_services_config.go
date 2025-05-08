@@ -8,6 +8,7 @@ import (
 	dal "github.com/Thingsly/backend/internal/dal"
 	model "github.com/Thingsly/backend/internal/model"
 	"github.com/Thingsly/backend/pkg/errcode"
+	utils "github.com/Thingsly/backend/pkg/utils"
 	"github.com/Thingsly/backend/third_party/others/http_client"
 
 	"github.com/go-basic/uuid"
@@ -24,11 +25,17 @@ func (*NotificationServicesConfig) SaveNotificationServicesConfig(req *model.Sav
 		return nil, err
 	}
 
-	var config = model.NotificationServicesConfig{}
+	config := model.NotificationServicesConfig{}
 
 	var strconf []byte
-	if req.NoticeType == model.NoticeType_Email {
+	switch req.NoticeType {
+	case model.NoticeType_Email:
 		strconf, err = json.Marshal(req.EMailConfig)
+		if err != nil {
+			return nil, err
+		}
+	case model.NoticeType_SME_CODE:
+		strconf, err = json.Marshal(req.SMEConfig)
 		if err != nil {
 			return nil, err
 		}
@@ -62,7 +69,9 @@ func (*NotificationServicesConfig) GetNotificationServicesConfig(noticeType stri
 // SendTestEmail sends a test email based on the provided request
 // @params req model.SendTestEmailReq
 func (*NotificationServicesConfig) SendTestEmail(req *model.SendTestEmailReq) error {
-	// Retrieve notification service configuration for email
+	if !utils.ValidateEmail(req.Email) {
+		return errcode.New(200014)
+	}
 	c, err := dal.GetNotificationServicesConfigByType(model.NoticeType_Email)
 	if err != nil {
 		// Return an error if notification configuration is not found
@@ -145,6 +154,7 @@ func sendEmailMessage(message string, subject string, tenantId string, to ...str
 	if err := d.DialAndSend(m); err != nil {
 		logrus.Error(err)
 		result := "FAILURE"
+		remark := err.Error()
 		GroupApp.NotificationHisory.SaveNotificationHistory(&model.NotificationHistory{
 			ID:               uuid.New(),
 			SendTime:         time.Now().UTC(),
@@ -153,7 +163,7 @@ func sendEmailMessage(message string, subject string, tenantId string, to ...str
 			SendResult:       &result,
 			NotificationType: model.NoticeType_Email,
 			TenantID:         tenantId,
-			Remark:           nil,
+			Remark:           &remark,
 		})
 		return err
 	} else {
@@ -195,8 +205,10 @@ func (*NotificationServicesConfig) ExecuteNotification(notificationGroupId, titl
 			logrus.Error(err)
 			return
 		}
-		emailList := strings.Split(nConfig["email"], ",")
+		logrus.Debug("Notification configuration:", nConfig)
+		emailList := strings.Split(nConfig["EMAIL"], ",")
 		for _, ev := range emailList {
+			logrus.Debug("Sending email address:", ev)
 			sendEmailMessage(title, content, notificationGroup.TenantID, ev)
 		}
 	case model.NoticeType_Webhook:

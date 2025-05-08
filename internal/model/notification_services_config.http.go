@@ -1,18 +1,20 @@
 package model
 
 type SaveNotificationServicesConfigReq struct {
-	EMailConfig *EmailConfig `json:"email_config" validate:"omitempty"`                         // Email configuration
-	SMEConfig   *SMEConfig   `json:"sme_config" validate:"omitempty"`                           // SMS configuration
-	NoticeType  string       `json:"notice_type" form:"notice_type" validate:"required,max=36"` // Notification type: EMAIL / SME
-	Status      string       `json:"status" form:"status" validate:"required,max=36"`           // Status: ON/OFF
-	Remark      *string      `json:"remark" form:"remark" validate:"omitempty,max=36"`          // Remarks
+	EMailConfig *EmailConfig `json:"email_config" validate:"omitempty"`                                              
+	SMEConfig   *SMEConfig   `json:"sme_config" validate:"omitempty"`                                                
+	NoticeType  string       `json:"notice_type" form:"notice_type" validate:"required,max=36,oneof=EMAIL SME_CODE"` 
+	Status      string       `json:"status" form:"status" validate:"required,max=36,oneof=OPEN CLOSE"`               
+	Remark      *string      `json:"remark" form:"remark" validate:"omitempty,max=36"`                               
 }
 
-const NoticeType_Email = "EMAIL"
-const NoticeType_SME = "SME"
-const NoticeType_Member = "MEMBER"
-const NoticeType_Voice = "VOICE"
-const NoticeType_Webhook = "WEBHOOK"
+const (
+	NoticeType_Email    = "EMAIL"
+	NoticeType_SME_CODE = "SME_CODE"
+	NoticeType_Member   = "MEMBER"
+	NoticeType_Voice    = "VOICE"
+	NoticeType_Webhook  = "WEBHOOK"
+)
 
 type EmailConfig struct {
 	// Email        string `json:"email" validate:"required"`
@@ -24,6 +26,16 @@ type EmailConfig struct {
 }
 
 type SMEConfig struct {
+	Provider string `json:"provider" form:"provider" validate:"required,max=36,oneof=ALIYUN"`
+	AliyunSMSConfig *AliyunSMSConfig `json:"aliyun_sms_config" form:"aliyun_sms_config" validate:"omitempty"`
+}
+
+type AliyunSMSConfig struct {
+	AccessKeyID     string `json:"access_key_id" form:"access_key_id" validate:"required,max=100"`         
+	AccessKeySecret string `json:"access_key_secret" form:"access_key_secret" validate:"required,max=100"` 
+	Endpoint        string `json:"endpoint" form:"endpoint" validate:"required,max=100"`                   
+	SignName        string `json:"sign_name" form:"sign_name" validate:"required,max=100"`                 
+	TemplateCode    string `json:"template_code" form:"template_code" validate:"required,max=36"`         
 }
 
 type SendTestEmailReq struct {

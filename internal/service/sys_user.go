@@ -50,10 +50,11 @@ func (u *User) CreateUser(createUserReq *model.CreateUserReq, claims *utils.User
 		user.AdditionalInfo = StringPtr(string(*createUserReq.AdditionalInfo))
 	}
 
-	if claims.Authority == "SYS_ADMIN" {
+	switch claims.Authority {
+	case "SYS_ADMIN": // System admin creates tenant admin
 		user.Authority = StringPtr("TENANT_ADMIN")
 		user.TenantID = StringPtr(strings.Split(uuid.New(), "-")[0])
-	} else if claims.Authority == "TENANT_ADMIN" {
+	case "TENANT_ADMIN": // Tenant admin creates tenant user
 		user.Authority = StringPtr("TENANT_USER")
 		a, err := u.GetUserById(claims.ID)
 		if err != nil {
@@ -64,8 +65,8 @@ func (u *User) CreateUser(createUserReq *model.CreateUserReq, claims *utils.User
 			})
 		}
 		user.TenantID = a.TenantID
-	} else {
-
+	default:
+		// If the current user is not a system admin or tenant admin, return an error
 		return errcode.WithVars(errcode.CodeNoPermission, map[string]interface{}{
 			"required_role": "SYS_ADMIN or TENANT_ADMIN",
 			"current_role":  claims.Authority,
@@ -98,6 +99,14 @@ func (u *User) CreateUser(createUserReq *model.CreateUserReq, claims *utils.User
 			"error":      err.Error(),
 			"user_email": user.Email,
 		})
+	}
+
+	// If the user is a tenant admin, create a default home dashboard for the tenant
+	if claims.Authority == "SYS_ADMIN" {
+		err = dal.BoardQuery{}.CreateDefaultBoard(context.Background(), *user.TenantID)
+		if err != nil {
+			logrus.Error(err)
+		}
 	}
 
 	if len(createUserReq.RoleIDs) > 0 {

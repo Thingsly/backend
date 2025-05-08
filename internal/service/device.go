@@ -128,6 +128,17 @@ func (*Device) CreateDeviceBatch(req model.BatchCreateDeviceReq, claims *utils.U
 			})
 		}
 
+		// Validate whether the device number exists
+		exists, err := dal.CheckDeviceNumberExists(v.DeviceNumber)
+		if err != nil {
+			return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+				"sql_error": err.Error(),
+			})
+		}
+		if exists {
+			continue
+		}
+
 		device := model.Device{
 			ID:              uuid.New(),
 			Name:            &v.DeviceName,
@@ -194,11 +205,33 @@ func (*Device) CreateDeviceBatch(req model.BatchCreateDeviceReq, claims *utils.U
 
 func (*Device) UpdateDevice(req model.UpdateDeviceReq, _ *utils.UserClaims) (*model.Device, error) {
 
-	oldDevice, err := dal.GetDeviceByID(req.Id)
-	if err != nil {
-		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
-			"sql_error": err.Error(),
-		})
+	var oldDevice *model.Device
+	var err error
+
+	// If ID exists, prioritize querying by ID
+	if req.Id != "EMPTY" {
+		oldDevice, err = dal.GetDeviceByID(req.Id)
+		if err != nil {
+			return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+				"sql_error": err.Error(),
+			})
+		}
+	} else if req.DeviceNumber != nil && *req.DeviceNumber != "" {
+		// If ID does not exist but DeviceNumber is provided, try querying by DeviceNumber
+		oldDevice, err = dal.GetDeviceByDeviceNumber(*req.DeviceNumber)
+		if err != nil {
+			return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+				"sql_error": err.Error(),
+			})
+		}
+		// If device is found, update req.Id
+		if oldDevice != nil {
+			req.Id = oldDevice.ID
+		} else {
+			return nil, errcode.New(204003) // Device does not exist
+		}
+	} else {
+		return nil, errcode.New(204003) // Device does not exist
 	}
 
 	if req.DeviceNumber != nil && *req.DeviceNumber != "" {
@@ -899,7 +932,7 @@ func (*Device) UpdateDeviceConfig(param *model.ChangeDeviceConfigReq) error {
 
 	initialize.DelDeviceCache(param.DeviceID)
 
-	initialize.DelDeviceDataScriptCache(param.DeviceID)
+	// initialize.DelDeviceDataScriptCache(param.DeviceID)
 	return err
 }
 
@@ -1632,23 +1665,30 @@ func (*Device) GetMapTelemetry(device_id string) (map[string]interface{}, error)
 	str := make([]string, 0)
 
 	for _, v := range telemetry {
-		str = append(str, v.Key)
+		if v != nil {
+			str = append(str, v.Key)
+		}
 	}
 
-	deviceConfig, err := dal.GetDeviceConfigByID(*device.DeviceConfigID)
-	if err != nil {
-		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
-			"error": "get device config failed:" + err.Error(),
-			"id":    device_id,
-		})
-	}
+	var labelMap []*model.DeviceModelTelemetry
+	if device.DeviceConfigID != nil {
 
-	labelMap, err := dal.GetDataNameByIdentifierAndTemplateId(*deviceConfig.DeviceTemplateID, str...)
-	if err != nil {
-		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
-			"error": "get device template failed:" + err.Error(),
-			"id":    device_id,
-		})
+		deviceConfig, err := dal.GetDeviceConfigByID(*device.DeviceConfigID)
+		if err != nil {
+			return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+				"error": "get device config failed:" + err.Error(),
+				"id":    device_id,
+			})
+		}
+
+		lm, err := dal.GetDataNameByIdentifierAndTemplateId(*deviceConfig.DeviceTemplateID, str...)
+		if err != nil {
+			return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+				"error": "get device template failed:" + err.Error(),
+				"id":    device_id,
+			})
+		}
+		labelMap = lm
 	}
 
 	telemetryData := make([]map[string]interface{}, 0)
@@ -1679,7 +1719,11 @@ func (*Device) GetMapTelemetry(device_id string) (map[string]interface{}, error)
 
 	res["device_id"] = device.ID
 	res["is_online"] = device.IsOnline
-	res["last_push_time"] = telemetry[0].T
+	if len(telemetry) > 0 {
+		res["last_push_time"] = telemetry[0].T
+	} else {
+		res["last_push_time"] = nil
+	}
 	res["telemetry_data"] = telemetryData
 	res["device_name"] = device.Name
 
@@ -1993,4 +2037,22 @@ func (*Device) GetDeviceSelector(req model.DeviceSelectorReq, userClaims *utils.
 		return nil, err
 	}
 	return list, nil
+}
+
+// Retrieve telemetry data for the three most recently reported devices under the tenant
+func (d *Device) GetTenantTelemetryData(tenantId string) ([]map[string]interface{}, error) {
+	devices, err := dal.GetTenantTelemetryData(tenantId)
+	if err != nil {
+		return nil, err
+	}
+	telemetryDataList := make([]map[string]interface{}, 0)
+	for _, device := range devices {
+		telemetryData, err := d.GetMapTelemetry(device.DeviceID)
+		if err != nil {
+			return nil, err
+		}
+		telemetryDataList = append(telemetryDataList, telemetryData)
+	}
+
+	return telemetryDataList, nil
 }

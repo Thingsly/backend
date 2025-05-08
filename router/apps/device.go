@@ -60,6 +60,9 @@ func (*Device) InitDevice(Router *gin.RouterGroup) {
 		deviceapi.GET("/metrics/chart", api.Controllers.DeviceApi.HandleDeviceMetricsChart)
 
 		deviceapi.GET("/selector", api.Controllers.DeviceApi.HandleDeviceSelector)
+
+		// The telemetry data of the three devices with the latest data from the tenant
+		deviceapi.GET("/telemetry/latest", api.Controllers.DeviceApi.HandleTenantTelemetryData)
 	}
 
 	deviceTemplateapi := deviceapi.Group("template")

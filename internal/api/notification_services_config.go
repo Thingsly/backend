@@ -30,7 +30,7 @@ func (*NotificationServicesConfigApi) SaveNotificationServicesConfig(c *gin.Cont
 	}
 
 	// Validate notification type, currently supports email and SMS
-	if req.NoticeType != model.NoticeType_Email && req.NoticeType != model.NoticeType_SME {
+	if req.NoticeType != model.NoticeType_Email && req.NoticeType != model.NoticeType_SME_CODE {
 		c.Error(errcode.WithData(errcode.CodeSystemError, map[string]interface{}{
 			"noticeType": "noticeType is not email or sme",
 		}))

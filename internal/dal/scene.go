@@ -21,7 +21,7 @@ func CreateSceneInfo(req model.CreateSceneReq, claims *utils.UserClaims) (string
 		return "", err
 	}
 
-	var sceneInfo = model.SceneInfo{}
+	sceneInfo := model.SceneInfo{}
 
 	t := time.Now().UTC()
 	sceneInfo.ID = uuid.New()
@@ -40,7 +40,7 @@ func CreateSceneInfo(req model.CreateSceneReq, claims *utils.UserClaims) (string
 	}
 
 	for _, v := range req.Actions {
-		var sceneAction = model.SceneActionInfo{}
+		sceneAction := model.SceneActionInfo{}
 		sceneAction.ID = uuid.New()
 		sceneAction.SceneID = sceneInfo.ID
 		sceneAction.ActionTarget = v.ActionTarget
@@ -75,7 +75,7 @@ func UpdateSceneInfo(req model.UpdateSceneReq, claims *utils.UserClaims) (string
 		return "", err
 	}
 
-	var sceneInfo = model.SceneInfo{}
+	sceneInfo := model.SceneInfo{}
 
 	t := time.Now().UTC()
 	//sceneInfo.ID = req.ID
@@ -101,7 +101,7 @@ func UpdateSceneInfo(req model.UpdateSceneReq, claims *utils.UserClaims) (string
 	}
 
 	for _, v := range req.Actions {
-		var sceneAction = model.SceneActionInfo{}
+		sceneAction := model.SceneActionInfo{}
 		sceneAction.ID = uuid.New()
 		sceneAction.SceneID = req.ID
 		sceneAction.ActionTarget = v.ActionTarget
@@ -166,7 +166,7 @@ func GetSceneInfoByPage(req *model.GetSceneListByPageReq, tenant_id string) (int
 		queryBuilder = queryBuilder.Offset((req.Page - 1) * req.PageSize)
 	}
 
-	queryBuilder = queryBuilder.Where(q.Order(q.CreatedAt.Desc()))
+	queryBuilder = queryBuilder.Order(q.CreatedAt.Desc())
 
 	sceneList, err := queryBuilder.Find()
 	if err != nil {

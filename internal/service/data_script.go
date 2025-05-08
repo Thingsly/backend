@@ -22,18 +22,18 @@ type DataScript struct{}
 
 // DelDataScriptCache
 func DelDataScriptCache(data_script *model.DataScript) error {
-	deviceIDs, err := dal.GetDeviceIDsByDataScriptID(data_script.ID)
-	if err != nil {
-		logrus.Error(err)
-		return errcode.WithData(errcode.CodeDBError, map[string]interface{}{
-			"sql_error": err.Error(),
-		})
-	}
+	// deviceIDs, err := dal.GetDeviceIDsByDataScriptID(data_script.ID)
+	// if err != nil {
+	// 	logrus.Error(err)
+	// 	return errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+	// 		"sql_error": err.Error(),
+	// 	})
+	// }
 
-	for _, deviceID := range deviceIDs {
-		_ = global.REDIS.Del(context.Background(), deviceID+"_"+data_script.ScriptType+"_script").Err()
-	}
-	return nil
+	// for _, deviceID := range deviceIDs {
+	// 	_ = global.REDIS.Del(context.Background(), deviceID+"_"+data_script.ScriptType+"_script").Err()
+	// }
+	return global.REDIS.Del(context.Background(), data_script.DeviceConfigID+"_"+data_script.ScriptType+"_script").Err()
 }
 
 func (*DataScript) CreateDataScript(req *model.CreateDataScriptReq) (data_script model.DataScript, err error) {

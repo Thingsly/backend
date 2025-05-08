@@ -31,6 +31,7 @@ type apps struct {
 	ExpectedData
 	OpenAPIKey
 	MessagePush
+	SystemMonitor
 }
 
 var Model = new(apps)

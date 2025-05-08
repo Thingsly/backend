@@ -8,6 +8,7 @@ import (
 
 	"github.com/Thingsly/backend/internal/model"
 	"github.com/Thingsly/backend/internal/query"
+	"github.com/Thingsly/backend/pkg/errcode"
 
 	"github.com/sirupsen/logrus"
 )
@@ -120,21 +121,23 @@ func GetServicePluginByID(id string) (*model.ServicePlugin, error) {
 func GetServicePluginHttpAddressByID(id string) (*model.ServicePlugin, string, error) {
 	servicePlugin, err := GetServicePluginByID(id)
 	if err != nil {
-		return nil, "", err
+		return nil, "", errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+			"sql_error": err.Error(),
+		})
 	}
 
 	if servicePlugin.ServiceConfig == nil || *servicePlugin.ServiceConfig == "" {
-		return nil, "", errors.New("service plugin config error, can not get form")
+		return nil, "", errcode.New(200065)
 	}
 
 	var serviceAccessConfig model.ServiceAccessConfig
 	err = json.Unmarshal([]byte(*servicePlugin.ServiceConfig), &serviceAccessConfig)
 	if err != nil {
-		return nil, "", errors.New("service plugin config error: " + err.Error())
+		return nil, "", errcode.New(200066)
 	}
 
 	if serviceAccessConfig.HttpAddress == "" {
-		return nil, "", errors.New("The service plugin HTTP service address is not configured. Please contact the system administrator to check the configuration.")
+		return nil, "", errcode.New(200067)
 	}
 	return servicePlugin, serviceAccessConfig.HttpAddress, nil
 }

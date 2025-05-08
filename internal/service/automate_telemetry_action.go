@@ -10,6 +10,7 @@ import (
 	"github.com/Thingsly/backend/internal/dal"
 	model "github.com/Thingsly/backend/internal/model"
 	"github.com/Thingsly/backend/pkg/constant"
+	"github.com/Thingsly/backend/initialize"
 
 	"github.com/sirupsen/logrus"
 )
@@ -20,7 +21,7 @@ const (
 	AUTOMATE_ACTION_PARAM_TYPE_C_TELEMETRY  = "c_telemetry"
 	AUTOMATE_ACTION_PARAM_TYPE_ATTR         = "ATTR"
 	AUTOMATE_ACTION_PARAM_TYPE_ATTRIBUTES   = "attributes"
-	AUTOMATE_ACTION_PARAM_TYPE_C_ATTRIBUTES = "c_attributes"
+	AUTOMATE_ACTION_PARAM_TYPE_C_ATTRIBUTES = "c_attribute"
 	AUTOMATE_ACTION_PARAM_TYPE_CMD          = "CMD"
 	AUTOMATE_ACTION_PARAM_TYPE_COMMAND      = "command"
 	AUTOMATE_ACTION_PARAM_TYPE_C_COMMAND    = "c_command"
@@ -32,16 +33,24 @@ type AutomateTelemetryAction interface {
 
 func AutomateActionDeviceMqttSend(deviceId string, action model.ActionInfo, tenantID string) (string, error) {
 
-	executeMsg := fmt.Sprintf("Device ID: %s", deviceId)
+	var executeMsg string
+	// Get device cache information
+	deviceInfo, err := initialize.GetDeviceCacheById(deviceId)
+	if err != nil {
+		executeMsg = fmt.Sprintf("Device ID: %s", deviceId)
+	} else {
+		executeMsg = fmt.Sprintf("Device Name: %s", *deviceInfo.Name)
+	}
+
 	if action.ActionParamType == nil {
 		return executeMsg + " ActionParamType does not exist ", errors.New("ActionParamType does not exist.")
 	}
 	if action.ActionValue == nil {
 		return executeMsg + " Action target value does not exist", errors.New("Action target value does not exist")
 	}
-	if action.ActionParam == nil {
-		return executeMsg + " Identifier does not exist", errors.New("Identifier does not exist")
-	}
+	// if action.ActionParam == nil {
+	// 	return executeMsg + " Identifier does not exist", errors.New("Identifier does not exist")
+	// }
 	ctx := context.Background()
 
 	var userId string
@@ -149,14 +158,16 @@ func (a *AutomateTelemetryActionScene) AutomateActionRun(action model.ActionInfo
 	if action.ActionTarget == nil {
 		return "Scene activation", errors.New("Scene ID does not exist")
 	}
-	// return GroupApp.SceneAutomation.SwitchSceneAutomation(*action.ActionTarget, "Y")
-
-	return "Scene activation", GroupApp.ActiveSceneExecute(*action.ActionTarget, a.TenantID)
+	// Retrieve scene information
+	sceneInfo, err := dal.GetSceneInfo(*action.ActionTarget)
+	if err != nil {
+		return "Scene activation", err
+	}
+	return fmt.Sprintf("Scene activation: %s", sceneInfo.Name), GroupApp.ActiveSceneExecute(*action.ActionTarget, a.TenantID)
 }
 
 // Service 30
-type AutomateTelemetryActionAlarm struct {
-}
+type AutomateTelemetryActionAlarm struct {}
 
 func (*AutomateTelemetryActionAlarm) AutomateActionRun(action model.ActionInfo) (string, error) {
 
@@ -166,16 +177,26 @@ func (*AutomateTelemetryActionAlarm) AutomateActionRun(action model.ActionInfo) 
 		return "Alarm service", errors.New("Alarm ID does not exist")
 	}
 
-	if ok, alarmName := AlarmExecute(*action.ActionTarget, action.SceneAutomationID); ok {
+	ok, alarmName, reason := AlarmExecute(*action.ActionTarget, action.SceneAutomationID)
+	if ok {
 		return fmt.Sprintf("Alarm service(%s)", alarmName), nil
 	}
-	alarmName := dal.GetAlarmNameWithCache(*action.ActionTarget)
-	return fmt.Sprintf("Alarm service(%s)", alarmName), errors.New("Execution failed")
+	// Retrieve alarm name; display it regardless of execution success
+	alarmName = dal.GetAlarmNameWithCache(*action.ActionTarget)
+
+	// Handle case where the alarm already exists – do not treat as an error
+	if reason == "Alarm already exists" {
+		logrus.Debugf("Alarm (%s) already exists, skipping re-trigger", alarmName)
+		return fmt.Sprintf("Alarm service (%s) - already exists, skipping re-trigger", alarmName), nil
+	}
+
+	// Other failure cases
+	errRsp := errors.New("Execution failed, " + reason)
+	return fmt.Sprintf("Alarm service (%s)", alarmName), errRsp
 }
 
 // Service 40
-type AutomateTelemetryActionService struct {
-}
+type AutomateTelemetryActionService struct {}
 
 func (*AutomateTelemetryActionService) AutomateActionRun(_ model.ActionInfo) (string, error) {
 	//todo To be implemented

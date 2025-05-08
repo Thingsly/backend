@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 // NotificationHistory table definition:
 // type NotificationHistory struct {
 // 	ID               string    `gorm:"column:id;primaryKey" json:"id"`
@@ -14,9 +16,9 @@ package model
 
 type GetNotificationHistoryListByPageReq struct {
 	PageReq
-	SendTarget       *string `json:"send_target" form:"send_target" validate:"omitempty"`                                       // Send target
-	NotificationType *string `json:"notification_type" form:"notification_type" validate:"omitempty" example:"MEMBER"`          // Notification type
-	SendTimeStart    *string `json:"send_time_start" form:"send_time_start" validate:"omitempty" example:"2006-01-02 15:04:05"` // Start of send time range
-	SendTimeStop     *string `json:"send_time_stop" form:"send_time_stop" validate:"omitempty" example:"2006-01-02 15:04:05"`   // End of send time range
-	TenantID         string  `json:"tenant_id"  validate:"omitempty"`                                                           // Tenant ID
+	SendTarget       *string    `json:"send_target" form:"send_target" validate:"omitempty"`                                            
+	NotificationType *string    `json:"notification_type" form:"notification_type" validate:"omitempty" example:"MEMBER"`               
+	SendTimeStart    *time.Time `json:"send_time_start" form:"send_time_start" validate:"omitempty" example:"2024-04-12T00:00:00.000Z"` 
+	SendTimeStop     *time.Time `json:"send_time_stop" form:"send_time_stop" validate:"omitempty" example:"2024-04-12T00:00:00.000Z"`   
+	TenantID         string     `json:"tenant_id"  validate:"omitempty"`
 }

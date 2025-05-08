@@ -10,6 +10,7 @@ import (
 	utils "github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -42,6 +43,7 @@ func JWTAuth() gin.HandlerFunc {
 				return
 			}
 			// JWT validation failed, continue to try APIKey
+			return
 		}
 
 		// 2. Try APIKey validation
@@ -72,6 +74,8 @@ func isValidJWT(c *gin.Context, token string) bool {
 
 	// Refresh the token expiration time
 	timeout := viper.GetInt("session.timeout")
+	logrus.Infof("Refreshed token expiration time: %d minutes", timeout)
+	logrus.Infof("token: %s", token)
 	global.REDIS.Set(context.Background(), token, "1", time.Duration(timeout)*time.Minute)
 
 	// Validate the JWT token

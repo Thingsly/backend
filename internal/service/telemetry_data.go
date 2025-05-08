@@ -505,7 +505,7 @@ func (*TelemetryData) GetTelemetrHistoryDataByPageV2(req *model.GetTelemetryHist
 	return dataRsp, nil
 }
 
-func (*TelemetryData) ServeEchoData(req *model.ServeEchoDataReq) (interface{}, error) {
+func (*TelemetryData) ServeEchoData(req *model.ServeEchoDataReq, clientIP string) (interface{}, error) {
 
 	deviceInfo, err := dal.GetDeviceByID(req.DeviceId)
 	if err != nil {
@@ -541,7 +541,11 @@ func (*TelemetryData) ServeEchoData(req *model.ServeEchoDataReq) (interface{}, e
 		return nil, errcode.NewWithMessage(errcode.CodeParamError, "mqtt access address is not exist")
 	}
 	accessAddressList := strings.Split(accessAddress, ":")
-	host = accessAddressList[0]
+	if clientIP == "{MQTT_HOST}" {
+		host = clientIP
+	} else {
+		host = accessAddressList[0]
+	}
 	post = accessAddressList[1]
 	topic := config.MqttConfig.Telemetry.SubscribeTopic
 	clientID = "mqtt_" + uuid.New()[0:12]
@@ -927,17 +931,29 @@ func formatTime(timestamp int64) string {
 	return time.Unix(timestamp/1000, 0).Format("2006-01-02 15:04:05")
 }
 
+// TelemetryPutMessage handles the dispatching of telemetry data.
+// Parameters:
+//
+//	ctx: Context for the request
+//	userID: User ID, used for operation logging
+//	param: The content of the telemetry message to be dispatched
+//	operationType: Type of the operation
+//
+// Returns:
+//
+//	error: Error encountered during processing
 func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, param *model.PutMessage, operationType string) error {
-	var (
-		log = dal.TelemetrySetLogsQuery{}
+	var errorMessage string
 
-		errorMessage string
-	)
-
+	// Step 1: Validate the input parameters
+	// ---------------------------------------------
+	// Validate that the parameter value is a valid JSON
 	if !json.Valid([]byte(param.Value)) {
 		errorMessage = "value must be json"
 	}
 
+	// Step 2: Get the device information
+	// ---------------------------------------------
 	deviceInfo, err := initialize.GetDeviceCacheById(param.DeviceID)
 	if err != nil {
 		logrus.Error(ctx, "[TelemetryPutMessage][GetDeviceCacheById]failed:", err)
@@ -946,11 +962,16 @@ func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, pa
 		})
 	}
 
-	var protocolType string
-	var deviceConfig *model.DeviceConfig
-	var deviceType string
+	// Step 3: Get the device configuration and protocol type
+	// ---------------------------------------------
+	var (
+		protocolType string
+		deviceConfig *model.DeviceConfig
+		deviceType   string
+	)
 
 	if deviceInfo.DeviceConfigID != nil {
+		// Get the device configuration
 		deviceConfig, err = dal.GetDeviceConfigByID(*deviceInfo.DeviceConfigID)
 		if err != nil {
 			logrus.Error(ctx, "[TelemetryPutMessage][GetDeviceConfigByID]failed:", err)
@@ -960,6 +981,7 @@ func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, pa
 		}
 		deviceType = deviceConfig.DeviceType
 
+		// Get the protocol type
 		if deviceConfig.ProtocolType != nil {
 			protocolType = *deviceConfig.ProtocolType
 		} else {
@@ -968,15 +990,18 @@ func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, pa
 			})
 		}
 	} else {
+		// If the device configuration is not found, set the protocol type to MQTT and the device type to 1
 		protocolType = "MQTT"
 		deviceType = "1"
 
 	}
 
+	// Step 4: Get the publish topic based on the protocol type
+	// ---------------------------------------------
 	var topic string
 	if protocolType == "MQTT" {
 
-		// messageID := common.GetMessageID()
+		// MQTT protocol: Get the topic based on the device type
 		topic, err = getTopicByDevice(deviceInfo, deviceType, param)
 		if err != nil {
 			logrus.Error(ctx, "failed to get topic", err)
@@ -984,44 +1009,8 @@ func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, pa
 				"error": err.Error(),
 			})
 		}
-
-		if deviceType == "3" || deviceType == "2" {
-
-			var inputData map[string]interface{}
-			if err := json.Unmarshal([]byte(param.Value), &inputData); err != nil {
-				return errcode.WithData(errcode.CodeParamError, map[string]interface{}{
-					"error": err.Error(),
-				})
-			}
-
-			var outputData map[string]interface{}
-			if deviceType == "3" {
-				if deviceInfo.SubDeviceAddr == nil {
-					return errcode.WithData(errcode.CodeParamError, map[string]interface{}{
-						"error": "subDeviceAddr is nil",
-					})
-				}
-				outputData = map[string]interface{}{
-					"sub_device_data": map[string]interface{}{
-						*deviceInfo.SubDeviceAddr: inputData,
-					},
-				}
-			} else {
-				outputData = map[string]interface{}{
-					"gateway_data": inputData,
-				}
-			}
-
-			output, err := json.Marshal(outputData)
-			if err != nil {
-				return errcode.WithData(errcode.CodeParamError, map[string]interface{}{
-					"error": err.Error(),
-				})
-			}
-			param.Value = string(output)
-		}
 	} else {
-
+		// Other protocols: Get the topic prefix from the service plugin
 		subTopicPrefix, err := dal.GetServicePluginSubTopicPrefixByDeviceConfigID(*deviceInfo.DeviceConfigID)
 		if err != nil {
 			logrus.Error(ctx, "failed to get sub topic prefix", err)
@@ -1033,28 +1022,81 @@ func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, pa
 
 	}
 
+	logrus.Info("topic:", topic)
+	logrus.Info("deviceInfo:", deviceInfo.DeviceConfigID)
+
+	// Step 5: Script processing - Execute after getting the topic, before modifying the payload for all protocol types
+	// ---------------------------------------------
 	if deviceInfo.DeviceConfigID != nil && *deviceInfo.DeviceConfigID != "" {
+		logrus.Debug("Starting script query")
 		script, err := initialize.GetScriptByDeviceAndScriptType(deviceInfo, "B")
 		if err != nil {
 			logrus.Error(err.Error())
 			return err
 		}
+		// If a script exists, use the script to process the payload
 		if script != nil && script.Content != nil && *script.Content != "" {
 			msg, err := utils.ScriptDeal(*script.Content, []byte(param.Value), topic)
 			if err != nil {
 				logrus.Error(err.Error())
 				return err
 			}
+			logrus.Debug("Script processing result:", msg)
 			param.Value = msg
 		}
 	}
+
+	// Step 6: Modify the payload (only for specific device types of the MQTT protocol)
+	// ---------------------------------------------
+	if protocolType == "MQTT" && (deviceType == "3" || deviceType == "2") {
+		// Parse JSON
+		var inputData map[string]interface{}
+		if err := json.Unmarshal([]byte(param.Value), &inputData); err != nil {
+			return errcode.WithData(errcode.CodeParamError, map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+
+		// Build different output data structures based on the device type
+		var outputData map[string]interface{}
+		if deviceType == "3" { // Sub-device
+			if deviceInfo.SubDeviceAddr == nil {
+				return errcode.WithData(errcode.CodeParamError, map[string]interface{}{
+					"error": "subDeviceAddr is nil",
+				})
+			}
+			outputData = map[string]interface{}{
+				"sub_device_data": map[string]interface{}{
+					*deviceInfo.SubDeviceAddr: inputData,
+				},
+			}
+		} else { // Gateway device
+			outputData = map[string]interface{}{
+				"gateway_data": inputData,
+			}
+		}
+
+		// Rebuild the payload
+		output, err := json.Marshal(outputData)
+		if err != nil {
+			return errcode.WithData(errcode.CodeParamError, map[string]interface{}{
+				"error": err.Error(),
+			})
+		}
+		param.Value = string(output)
+	}
+
+	// Step 7: Publish the message
+	// ---------------------------------------------
+
 	err = publish.PublishTelemetryMessage(topic, deviceInfo, param)
 	if err != nil {
 		logrus.Error(ctx, "Failed to dispatch", err)
 		errorMessage = err.Error()
 	}
-	// operationType := strconv.Itoa(constant.Manual)
 
+	// Step 8: Record the operation log
+	// ---------------------------------------------
 	description := "Send telemetry log records"
 	logInfo := &model.TelemetrySetLog{
 		ID:            uuid.New(),
@@ -1068,9 +1110,11 @@ func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, pa
 		UserID:        &userID,
 	}
 
+	// If the user ID is empty, set it to nil
 	if userID == "" {
 		logInfo.UserID = nil
 	}
+	// Set the operation status
 	if err != nil {
 		logInfo.ErrorMessage = &errorMessage
 		status := strconv.Itoa(constant.StatusFailed)
@@ -1079,7 +1123,8 @@ func (*TelemetryData) TelemetryPutMessage(ctx context.Context, userID string, pa
 		status := strconv.Itoa(constant.StatusOK)
 		logInfo.Status = &status
 	}
-	_, err = log.Create(ctx, logInfo)
+	// Write the log record
+	_, err = dal.TelemetrySetLogsQuery{}.Create(ctx, logInfo)
 	if err != nil {
 		logrus.Error(ctx, "failed to create telemetry set log", err)
 		return errcode.WithData(errcode.CodeDBError, map[string]interface{}{

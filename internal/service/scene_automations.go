@@ -27,7 +27,7 @@ func (s *SceneAutomation) CreateSceneAutomation(req *model.CreateSceneAutomation
 	}
 
 	// Insert scene_automation record
-	var sceneAutomation = model.SceneAutomation{}
+	sceneAutomation := model.SceneAutomation{}
 	sceneAutomation.ID = uuid.New()
 
 	sceneAutomationID = sceneAutomation.ID
@@ -69,7 +69,7 @@ func (s *SceneAutomation) CreateSceneAutomation(req *model.CreateSceneAutomation
 					multipleCondition = true
 				}
 				// Insert device trigger condition
-				var dtc = model.DeviceTriggerCondition{}
+				dtc := model.DeviceTriggerCondition{}
 				dtc.ID = uuid.New()
 				dtc.SceneAutomationID = sceneAutomationID
 				dtc.Enabled = req.Enabled
@@ -96,7 +96,7 @@ func (s *SceneAutomation) CreateSceneAutomation(req *model.CreateSceneAutomation
 
 			case "20":
 				// Insert one-time task
-				var ott = model.OneTimeTask{}
+				ott := model.OneTimeTask{}
 				ott.ID = uuid.New()
 				ott.SceneAutomationID = sceneAutomationID
 				if v2.ExecutionTime != nil {
@@ -118,7 +118,7 @@ func (s *SceneAutomation) CreateSceneAutomation(req *model.CreateSceneAutomation
 				}
 			case "21":
 				// Insert periodic task
-				var pt = model.PeriodicTask{}
+				pt := model.PeriodicTask{}
 				pt.ID = uuid.New()
 				pt.SceneAutomationID = sceneAutomationID
 				if v2.TaskType != nil {
@@ -133,6 +133,7 @@ func (s *SceneAutomation) CreateSceneAutomation(req *model.CreateSceneAutomation
 				if v2.ExpirationTime != nil {
 					pt.ExpirationTime = int64(*v2.ExpirationTime)
 				}
+				// pt.Enabled = req.Enabled
 				pt.Enabled = "Y"
 				// Create periodic task
 				logrus.Info("Creating periodic task")
@@ -160,7 +161,7 @@ func (s *SceneAutomation) CreateSceneAutomation(req *model.CreateSceneAutomation
 	// Handle actions
 	for _, v := range req.Actions {
 		// Insert action info
-		var actionInfo = model.ActionInfo{}
+		actionInfo := model.ActionInfo{}
 		actionInfo.ID = uuid.New()
 		actionInfo.SceneAutomationID = sceneAutomationID
 		actionInfo.ActionTarget = &v.ActionTarget
@@ -433,12 +434,13 @@ func (*SceneAutomation) SwitchSceneAutomation(scene_automation_id, target string
 	go func() {
 		// If the target is "Y", save automation cache information
 		// Uncomment the following block if required:
-		// if target == "Y" {
-		//     err = s.AutomateCacheSet(scene_automation_id)
-		//     if err != nil {
-		//         logrus.Error("Failed to save automation cache information while editing scene automation, error: ", err)
-		//     }
-		// }
+		if target == "Y" {
+			sa := SceneAutomation{}
+			err := sa.AutomateCacheSet(scene_automation_id)
+			if err != nil {
+				logrus.Error("Failed to save automation cache information for the edited scene automation, err: ", err)
+			}
+		}
 
 		// If the target is "N", delete the automation cache
 		if target == "N" {
@@ -492,7 +494,7 @@ func (*SceneAutomation) UpdateSceneAutomation(req *model.UpdateSceneAutomationRe
 	scene_automation_id = req.ID
 	t := utils.GetUTCTime()
 
-	var sceneAutomation = model.SceneAutomation{}
+	sceneAutomation := model.SceneAutomation{}
 	sceneAutomation.ID = scene_automation_id
 	sceneAutomation.Name = req.Name
 	sceneAutomation.Description = &req.Description
@@ -557,7 +559,7 @@ func (*SceneAutomation) UpdateSceneAutomation(req *model.UpdateSceneAutomationRe
 			switch v2.TriggerConditionsType {
 			case "10", "11", "22":
 
-				var dtc = model.DeviceTriggerCondition{}
+				dtc := model.DeviceTriggerCondition{}
 				dtc.ID = uuid.New()
 				dtc.SceneAutomationID = scene_automation_id
 				dtc.Enabled = req.Enabled
@@ -584,7 +586,7 @@ func (*SceneAutomation) UpdateSceneAutomation(req *model.UpdateSceneAutomationRe
 
 			case "20":
 
-				var ott = model.OneTimeTask{}
+				ott := model.OneTimeTask{}
 				ott.ID = uuid.New()
 				ott.SceneAutomationID = scene_automation_id
 				if v2.ExecutionTime != nil {
@@ -611,7 +613,7 @@ func (*SceneAutomation) UpdateSceneAutomation(req *model.UpdateSceneAutomationRe
 					})
 				}
 			case "21":
-				var pt = model.PeriodicTask{}
+				pt := model.PeriodicTask{}
 				pt.ID = uuid.New()
 				pt.SceneAutomationID = scene_automation_id
 				if v2.TaskType != nil {
@@ -648,7 +650,7 @@ func (*SceneAutomation) UpdateSceneAutomation(req *model.UpdateSceneAutomationRe
 	}
 
 	for _, v := range req.Actions {
-		var actionInfo = model.ActionInfo{}
+		actionInfo := model.ActionInfo{}
 		actionInfo.ID = uuid.New()
 		actionInfo.SceneAutomationID = scene_automation_id
 		actionInfo.ActionTarget = &v.ActionTarget
@@ -670,20 +672,32 @@ func (*SceneAutomation) UpdateSceneAutomation(req *model.UpdateSceneAutomationRe
 
 	// Commit transaction
 	go func() {
-		err1 := initialize.NewAutomateCache().DeleteCacheBySceneAutomationId(scene_automation_id)
-		if err1 != nil {
+		// Delete automation cache
+		err := initialize.NewAutomateCache().DeleteCacheBySceneAutomationId(scene_automation_id)
+		if err != nil {
 			logrus.Error("Failed to delete automation cache while editing, error: ", err)
 		}
-		//data, index, _ := initialize.NewAutomateCache().GetCacheByDeviceId("2dffdf60-f937-8d60-b141-6faf9935a7ab", "")
-		//logrus.Info(" ,data:", data, ";index:", index)
-		//data, index, _ = initialize.NewAutomateCache().GetCacheByDeviceId("2dffdf60-f937-8d60-b141-6faf9935a7ab", "903aa8a2-e03b-9ab1-10b8-87d82e1a6216")
-		//logrus.Info(" ,data:", data, ";index:", index)
-		//if req.Enabled == "Y" {
-		//	err1 = s.AutomateCacheSet(scene_automation_id)
-		//	if err1 != nil {
-		//		logrus.Error("Fail to set cache ，err: ", err)
-		//	}
-		//}
+
+		// Delete alarm cache
+		alarmCache := initialize.NewAlarmCache()
+		groupIds, err := alarmCache.GetBySceneAutomationId(scene_automation_id)
+		if err == nil && len(groupIds) > 0 {
+			for _, group_id := range groupIds {
+				err = alarmCache.DeleteBygroupId(group_id)
+				if err != nil {
+					logrus.Error("Failed to delete alarm cache while editing, error: ", err)
+				}
+			}
+		}
+
+		// If the scene automation is enabled, rebuild the cache
+		if req.Enabled == "Y" {
+			sa := SceneAutomation{}
+			err = sa.AutomateCacheSet(scene_automation_id)
+			if err != nil {
+				logrus.Error("Failed to rebuild automation cache while editing, error: ", err)
+			}
+		}
 	}()
 	//time.Sleep(time.Second * 5)
 	return scene_automation_id, nil

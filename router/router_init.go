@@ -20,6 +20,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	api "github.com/Thingsly/backend/internal/api"
+	service "github.com/Thingsly/backend/internal/service"
 )
 
 // swagger embed files
@@ -31,12 +32,19 @@ func RouterInit() *gin.Engine {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	m := metrics.NewMetrics("Thingsly")
+	// Create a memory storage implementation
+	memStorage := metrics.NewMemoryStorage()
+	// Set the storage implementation
+	m.SetHistoryStorage(memStorage)
 
 	m.StartMetricsCollection(15 * time.Second)
 
 	router.Use(middleware.MetricsMiddleware(m))
 
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
+	// Set the metrics manager to the system monitoring service
+	service.SetMetricsManager(m)
 
 	router.StaticFile("/metrics-viewer", "./static/metrics-viewer.html")
 
@@ -94,6 +102,9 @@ func RouterInit() *gin.Engine {
 			v1.POST("/device/gateway-register", controllers.DeviceApi.GatewayRegister)
 
 			v1.POST("/device/gateway-sub-register", controllers.DeviceApi.GatewaySubRegister)
+
+			// Get system version
+			v1.GET("sys_version", controllers.SystemApi.HandleSysVersion)
 		}
 
 		v1.Use(middleware.JWTAuth())
@@ -162,6 +173,9 @@ func RouterInit() *gin.Engine {
 			apps.Model.OpenAPIKey.InitOpenAPIKey(v1)
 
 			apps.Model.MessagePush.Init(v1)
+
+			// Initialize system monitoring routes
+			apps.Model.SystemMonitor.InitSystemMonitor(v1, m)
 		}
 	}
 

@@ -47,10 +47,13 @@ type Controller struct {
 	ExpectedDataApi               // Expected data
 	OpenAPIKeyApi                 // OpenAPI keys
 	MessagePushApi                // Message push
+	SystemMonitorApi              // System monitor
 }
 
-var Controllers = new(Controller)
-var Validate *validator.Validate
+var (
+	Controllers = new(Controller)
+	Validate    *validator.Validate
+)
 
 func init() {
 	Validate = validator.New()

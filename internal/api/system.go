@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/Thingsly/backend/pkg/global"
 	"github.com/Thingsly/backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
@@ -16,4 +17,9 @@ func (*SystemApi) HandleSystime(c *gin.Context) {
 // Health check /health
 func (*SystemApi) HealthCheck(c *gin.Context) {
 	c.Set("data", nil)
+}
+
+// Get system version /api/v1/sys_version
+func (*SystemApi) HandleSysVersion(c *gin.Context) {
+	c.Set("data", map[string]interface{}{"version": global.SYSTEM_VERSION})
 }

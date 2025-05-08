@@ -14,7 +14,7 @@ import (
 // @return error
 func ActionAfterAlarm(actions []model.ActionInfo, actionResultErr error) error {
 
-	var scene_automation_id = actions[0].SceneAutomationID
+	scene_automation_id := actions[0].SceneAutomationID
 	alarmCache := initialize.NewAlarmCache()
 	groupIds, err := alarmCache.GetBySceneAutomationId(scene_automation_id)
 	if err != nil {
@@ -105,22 +105,25 @@ func ConditionAfterAlarm(ok bool, conditions initialize.DTConditions, deviceId s
 // param alarm_config_id string
 // param scene_automation_id
 // @return bool
-func AlarmExecute(alarm_config_id, scene_automation_id string) (bool, string) {
+func AlarmExecute(alarm_config_id, scene_automation_id string) (bool, string, string) {
 	var (
 		alarmName string
 		resultOk  bool
+		reason    string
 	)
 
 	alarmCache := initialize.NewAlarmCache()
 	groupIds, err := alarmCache.GetBySceneAutomationId(scene_automation_id)
 	logrus.Debugf("Cache 11: %#v, Scene ID: %#v", groupIds, scene_automation_id)
 	if err != nil || len(groupIds) == 0 {
-		return resultOk, alarmName
+		reason = "Alarm cache does not exist"
+		return resultOk, alarmName, reason
 	}
 	for _, group_id := range groupIds {
 		cache, err := alarmCache.GetByGroupId(group_id)
 		if err != nil {
-			return resultOk, alarmName
+			reason = "Alarm cache does not exist"
+			return resultOk, alarmName, reason
 		}
 		logrus.Debugf("Query before alarm execution: %#v", cache)
 		var isOk bool
@@ -131,6 +134,9 @@ func AlarmExecute(alarm_config_id, scene_automation_id string) (bool, string) {
 			}
 		}
 		if isOk {
+			// Alarm ID already exists in cache, indicating the alarm has been triggered before
+			reason = "Alarm already exists"
+			logrus.Debugf("Alarm already exists in cache, skipping execution")
 			continue
 		}
 		var content string
@@ -138,9 +144,9 @@ func AlarmExecute(alarm_config_id, scene_automation_id string) (bool, string) {
 		for _, strval := range cache.Contents {
 			content += ";" + strval
 		}
-		resultOk, alarmName = GroupApp.AlarmExecute(alarm_config_id, content, scene_automation_id, group_id, cache.AlaramDeviceIdList)
+		resultOk, alarmName, reason = GroupApp.AlarmExecute(alarm_config_id, content, scene_automation_id, group_id, cache.AlaramDeviceIdList)
 	}
-	return resultOk, alarmName
+	return resultOk, alarmName, reason
 }
 
 // AlarmRecovery

@@ -73,3 +73,9 @@ func ValidateInput(input string) ValidateResult {
 		Message: "input format is incorrect",
 	}
 }
+
+// ValidateEmail validate the email format
+func ValidateEmail(email string) bool {
+	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
+	return emailRegex.MatchString(email)
+}

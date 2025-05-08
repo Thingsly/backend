@@ -55,20 +55,27 @@ func DeviceEvent(payload []byte, topic string) (string, string, string, error) {
 
 func deviceEventHandle(device *model.Device, eventValues *model.EventInfo, topic string) error {
 
+	// Script processing - Only execute when the device configuration is valid and the data processing script is enabled
 	if device.DeviceConfigID != nil && *device.DeviceConfigID != "" {
-		eventValuesByte, err := json.Marshal(eventValues)
-		if err != nil {
-			logrus.Error("JSON marshaling failed:", err)
-			return err
-		}
-		neweventValues, err := service.GroupApp.DataScript.Exec(device, "F", eventValuesByte, topic)
-		if err != nil {
-			logrus.Error("Error in event script processing: ", err.Error())
-		}
-		if neweventValues != nil {
-			err = json.Unmarshal(neweventValues, &eventValues)
+		// Get the script from the cache or database
+		script, err := initialize.GetScriptByDeviceAndScriptType(device, "F")
+		// Only execute when the script exists and the content is not empty
+		if err == nil && script != nil && script.Content != nil && *script.Content != "" {
+			logrus.Debug("Execute data processing script")
+			eventValuesByte, err := json.Marshal(eventValues)
 			if err != nil {
-				logrus.Error("Error in attribute script processing: ", err.Error())
+				logrus.Error("JSON marshaling failed:", err)
+				return err
+			}
+			neweventValues, err := service.GroupApp.DataScript.Exec(device, "F", eventValuesByte, topic)
+			if err != nil {
+				logrus.Error("Error in event script processing: ", err.Error())
+			}
+			if neweventValues != nil {
+				err = json.Unmarshal(neweventValues, &eventValues)
+				if err != nil {
+					logrus.Error("Error in attribute script processing: ", err.Error())
+				}
 			}
 		}
 	}

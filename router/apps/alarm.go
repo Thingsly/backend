@@ -12,6 +12,9 @@ func (*Alarm) Init(Router *gin.RouterGroup) {
 	url := Router.Group("alarm")
 	alarmconfig(url)
 	alarminfo(url)
+
+	// Device statistics related interfaces
+	url.GET("device/counts", api.Controllers.AlarmApi.GetAlarmDeviceCountsByTenant)
 }
 
 func alarmconfig(Router *gin.RouterGroup) {

@@ -3,7 +3,7 @@ package initialize
 import (
 	"fmt"
 	"log"
-	"path/filepath"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -18,43 +18,51 @@ func (*customFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	var levelText string
 	switch entry.Level {
 	case logrus.DebugLevel:
-		levelColor, levelText = "34", "DEBUG"
+		levelColor, levelText = "34", "DEBUG" 
 	case logrus.InfoLevel:
-		levelColor, levelText = "36", "INFO "
+		levelColor, levelText = "36", "INFO " 
 	case logrus.WarnLevel:
-		levelColor, levelText = "33", "WARN "
+		levelColor, levelText = "33", "WARN " 
 	case logrus.ErrorLevel:
-		levelColor, levelText = "31", "ERROR"
+		levelColor, levelText = "31", "ERROR" 
 	case logrus.FatalLevel, logrus.PanicLevel:
-		levelColor, levelText = "31", "FATAL"
+		levelColor, levelText = "31", "FATAL" 
 	default:
-		levelColor, levelText = "0", "UNKNOWN"
+		levelColor, levelText = "0", "UNKNOWN" 
 	}
 
 	var fileAndLine string
 	if entry.HasCaller() {
-		dir := filepath.Dir(entry.Caller.File)
-		fileAndLine = fmt.Sprintf("%s/%s:%d", filepath.Base(dir), filepath.Base(entry.Caller.File), entry.Caller.Line)
+		filePath := entry.Caller.File
+		if idx := strings.Index(filePath, "backend"); idx != -1 {
+			filePath = filePath[idx+len("backend"):]
+			if strings.HasPrefix(filePath, "/") || strings.HasPrefix(filePath, "\\") {
+				filePath = "." + filePath
+			} else {
+				filePath = "./" + filePath
+			}
+		}
+		fileAndLine = fmt.Sprintf("%s:%d", filePath, entry.Caller.Line)
 	}
 
-	msg := fmt.Sprintf("\033[1;%sm%s\033[0m \033[4;1;%sm[%s]\033[0m \033[1;%sm[%s]\033[0m %s\n",
+	msg := fmt.Sprintf("\033[1;%sm%s\033[0m \033[4;1;%sm[%s]\033[0m %s \033[1;%sm[%s]\033[0m\n",
 		levelColor, levelText,
 		levelColor, entry.Time.Format("2006-01-02 15:04:05.9999"),
-		levelColor, fileAndLine,
 		entry.Message,
+		levelColor, fileAndLine,
 	)
 
 	return []byte(msg), nil
 }
-func LogInIt() {
 
+func LogInIt() error {
 	logrus.SetReportCaller(true)
 	logrus.SetFormatter(&customFormatter{logrus.TextFormatter{
 		ForceColors:   true,
 		FullTimestamp: true,
 	}})
 
-	var logLevels = map[string]logrus.Level{
+	logLevels := map[string]logrus.Level{
 		"panic": logrus.PanicLevel,
 		"fatal": logrus.FatalLevel,
 		"error": logrus.ErrorLevel,
@@ -72,5 +80,6 @@ func LogInIt() {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 
-	log.Println("Logrus setup complete")
+	log.Println("Logrus setup completed")
+	return nil
 }

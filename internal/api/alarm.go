@@ -19,7 +19,7 @@ func (*AlarmApi) CreateAlarmConfig(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 	req.TenantID = userClaims.TenantID
 	data, err := service.GroupApp.Alarm.CreateAlarmConfig(&req)
 	if err != nil {
@@ -54,7 +54,7 @@ func (*AlarmApi) UpdateAlarmConfig(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 	req.TenantID = &userClaims.TenantID
 	data, err := service.GroupApp.Alarm.UpdateAlarmConfig(&req)
 	if err != nil {
@@ -70,7 +70,7 @@ func (*AlarmApi) ServeAlarmConfigListByPage(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 	req.TenantID = userClaims.TenantID
 
 	data, err := service.GroupApp.Alarm.GetAlarmConfigListByPage(&req)
@@ -87,7 +87,7 @@ func (*AlarmApi) UpdateAlarmInfo(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
 	data, err := service.GroupApp.Alarm.UpdateAlarmInfo(&req, userClaims.ID)
 	if err != nil {
@@ -104,7 +104,7 @@ func (*AlarmApi) BatchUpdateAlarmInfo(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
 	err := service.GroupApp.Alarm.UpdateAlarmInfoBatch(&req, userClaims.ID)
 	if err != nil {
@@ -120,7 +120,7 @@ func (*AlarmApi) HandleAlarmInfoListByPage(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 	req.TenantID = userClaims.TenantID
 
 	data, err := service.GroupApp.Alarm.GetAlarmInfoListByPage(&req)
@@ -138,7 +138,7 @@ func (*AlarmApi) HandleAlarmHisttoryListByPage(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
 	data, err := service.GroupApp.Alarm.GetAlarmHisttoryListByPage(&req, userClaims.TenantID)
 	if err != nil {
@@ -155,7 +155,7 @@ func (*AlarmApi) AlarmHistoryDescUpdate(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
 	err := service.GroupApp.Alarm.AlarmHistoryDescUpdate(&req, userClaims.TenantID)
 	if err != nil {
@@ -166,12 +166,11 @@ func (*AlarmApi) AlarmHistoryDescUpdate(c *gin.Context) {
 }
 
 func (*AlarmApi) HandleDeviceAlarmStatus(c *gin.Context) {
-	//
 	var req model.GetDeviceAlarmStatusReq
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	//var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	// var userClaims = c.MustGet("claims").(*utils.UserClaims)
 
 	ok := service.GroupApp.Alarm.GetDeviceAlarmStatus(&req)
 	c.Set("data", map[string]bool{
@@ -186,7 +185,7 @@ func (*AlarmApi) HandleConfigByDevice(c *gin.Context) {
 	if !BindAndValidate(c, &req) {
 		return
 	}
-	//var userClaims = c.MustGet("claims").(*utils.UserClaims)
+	// var userClaims = c.MustGet("claims").(*utils.UserClaims)
 
 	list, err := service.GroupApp.Alarm.GetConfigByDevice(&req)
 	if err != nil {
@@ -213,4 +212,24 @@ func (*AlarmApi) HandleAlarmInfoHistory(c *gin.Context) {
 	}
 
 	c.Set("data", data)
+}
+
+// GetAlarmDeviceCountsByTenant 
+// @Summary 
+// @Description 
+// @Tags 
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.AlarmDeviceCountsResponse
+// @Router /api/v1/alarm/device/counts [get]
+func (api *AlarmApi) GetAlarmDeviceCountsByTenant(c *gin.Context) {
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
+
+	counts, err := service.GroupApp.Alarm.GetAlarmDeviceCountsByTenant(userClaims.TenantID)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	c.Set("data", counts)
 }

@@ -117,7 +117,16 @@ func (*ServiceAccess) Update(req *model.UpdateAccessReq) error {
 }
 
 func (*ServiceAccess) Delete(id string) error {
-	err := dal.DeleteServiceAccess(id)
+	devices, err := dal.GetServiceDeviceList(id)
+	if err != nil {
+		return errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+			"sql_error": err.Error(),
+		})
+	}
+	if len(devices) > 0 {
+		return errcode.New(200064)
+	}
+	err = dal.DeleteServiceAccess(id)
 	if err != nil {
 		return errcode.WithData(errcode.CodeDBError, map[string]interface{}{
 			"sql_error": err.Error(),
@@ -130,9 +139,7 @@ func (*ServiceAccess) GetVoucherForm(req *model.GetServiceAccessVoucherFormReq) 
 
 	servicePlugin, httpAddress, err := dal.GetServicePluginHttpAddressByID(req.ServicePluginID)
 	if err != nil {
-		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
-			"sql_error": err.Error(),
-		})
+		return nil, err
 	}
 	data, err := http_client.GetPluginFromConfigV2(httpAddress, servicePlugin.ServiceIdentifier, "", "SVCR")
 	if err != nil {

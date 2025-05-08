@@ -105,6 +105,9 @@ messages:
   200013:
     vi_VN: "Vui lòng nhập đúng email hoặc số điện thoại"
     en_US: "Please enter a valid email or phone number"
+  200014:
+    vi_VN: "Email không hợp lệ"
+    en_US: "Email format is incorrect"
 
   # Password-Related Errors (200040–200049)
   200040:
@@ -154,6 +157,27 @@ messages:
   200063:
     vi_VN: "Thiết bị con đang có thiết bị cha, vui lòng hủy liên kết với thiết bị cha trước"
     en_US: "Sub-device has a parent device. Please remove the parent device association first"
+  200064:
+    vi_VN: "Điểm truy cập dịch vụ còn thiết bị chưa được xóa"
+    en_US: "Service access point has devices that have not been deleted"
+  200065:
+    vi_VN: "Plugin dịch vụ thất bại, không thể lấy được biểu mẫu"
+    en_US: "Service plugin error, can not get form"
+  200066:
+    vi_VN: "Lỗi phân tích cấu hình dịch vụ"
+    en_US: "Parse service config error"
+  200067:
+    vi_VN: "Địa chỉ HTTP dịch vụ plugin không được cấu hình, vui lòng liên hệ quản trị viên để kiểm tra cấu hình"
+    en_US: "Service plugin HTTP service address not configured, please contact the system administrator to check the configuration"
+  200068:
+    vi_VN: "Plugin giao thức không được khởi chạy hoặc không được cài đặt, vui lòng liên hệ quản trị viên để xử lý."
+    en_US: "The protocol plugin is not started or not installed, please contact the administrator to handle."
+  200069:
+    vi_VN: "Yêu cầu plugin thất bại, vui lòng kiểm tra plugin có chạy bình thường không."
+    en_US: "Plugin request failed, please check if the plugin is running normally."
+  200070:
+    vi_VN: "Loại giao thức/dịch vụ không tồn tại"
+    en_US: "The protocol/service type does not exist"
 
   # Permission Module Errors (201xxx)
   201001:

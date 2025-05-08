@@ -25,6 +25,7 @@ type Automate struct {
 	device  *model.Device
 	formExt AutomateFromExt
 	mu      sync.Mutex
+	executedSceneIDs map[string]bool
 }
 
 var conditionAfterDecoration = []ConditionAfterFunc{
@@ -35,8 +36,10 @@ var actionAfterDecoration = []ActionAfterFunc{
 	ActionAfterAlarm,
 }
 
-type ConditionAfterFunc = func(ok bool, conditions initialize.DTConditions, deviceId string, contents []string) error
-type ActionAfterFunc = func(actions []model.ActionInfo, err error) error
+type (
+	ConditionAfterFunc = func(ok bool, conditions initialize.DTConditions, deviceId string, contents []string) error
+	ActionAfterFunc    = func(actions []model.ActionInfo, err error) error
+)
 
 type AutomateFromExt struct {
 	TriggerParamType string
@@ -83,7 +86,7 @@ func (a *Automate) Execute(deviceInfo *model.Device, fromExt AutomateFromExt) er
 	defer a.ErrorRecover()
 	a.device = deviceInfo
 	a.formExt = fromExt
-	//
+	a.executedSceneIDs = make(map[string]bool)
 
 	// Single-category device t
 	if deviceInfo.DeviceConfigID != nil {
@@ -96,18 +99,31 @@ func (a *Automate) Execute(deviceInfo *model.Device, fromExt AutomateFromExt) er
 	return a.telExecute(deviceInfo.ID, "", fromExt)
 }
 
+// telExecute is the main function for executing automation tasks
+// @description: Executes automation tasks based on the device ID and device configuration ID. The process includes:
+//  1. Retrieve automation task information from the cache
+//  2. If not found in the cache, query from the database and write to the cache
+//  3. Filter automation tasks that meet the specified conditions
+//  4. Execute the automation tasks
+//
+// @param deviceId string ID of the device
+// @param deviceConfigId string ID of the device configuration
+// @param fromExt AutomateFromExt Additional trigger information for automation, including trigger parameter types and values
+// @return error Error encountered during the execution process
 func (a *Automate) telExecute(deviceId, deviceConfigId string, fromExt AutomateFromExt) error {
 	info, resultInt, err := initialize.NewAutomateCache().GetCacheByDeviceId(deviceId, deviceConfigId)
-	logrus.Debugf("Automation execution started: info:%#v, resultInt:%d", info, resultInt)
+	logrus.Debugf("Automation execution started - cache result flag: %d", resultInt)
 	if err != nil {
 		return pkgerrors.Wrap(err, "Failed to query cache information")
 	}
 	// No automation task for the current device
 	if resultInt == initialize.AUTOMATE_CACHE_RESULT_NOT_TASK {
+		logrus.Debugf("No automation tasks found")
 		return nil
 	}
 	// Cache data not found, query the database and set the cache
 	if resultInt == initialize.AUTOMATE_CACHE_RESULT_NOT_FOUND {
+		logrus.Debugf("Cache data not found, querying database and setting cache")
 		info, resultInt, err = a.QueryAutomateInfoAndSetCache(deviceId, deviceConfigId)
 		if err != nil {
 			return pkgerrors.Wrap(err, "Failed to query and set cache")
@@ -117,10 +133,13 @@ func (a *Automate) telExecute(deviceId, deviceConfigId string, fromExt AutomateF
 			return nil
 		}
 	}
-	logrus.Debugf("Automation execution started 2: info:%#v, resultInt:%d", info, resultInt)
+	logrus.Debugf("Data found in cache")
+	logrus.Debugf("Number of related scene linkages: %d", len(info.AutomateExecteSceeInfos))
+	logrus.Debugf("Data: %#v", info)
 	// Filter automation trigger conditions
 	info = a.AutomateFilter(info, fromExt)
-	logrus.Debugf("Automation execution started 3: info:%#v, resultInt:%v", info, fromExt)
+	logrus.Debugf("Number of scene linkages after condition filtering: %d", len(info.AutomateExecteSceeInfos))
+	logrus.Debugf("Data: %#v", info)
 	// Execute automation
 	return a.ExecuteRun(info)
 }
@@ -134,23 +153,26 @@ func (a *Automate) AutomateFilter(info initialize.AutomateExecteParams, fromExt 
 				continue
 			}
 			condTriggerParamType := strings.ToUpper(*cond.TriggerParamType)
+			logrus.Debugf("TriggerParamType: %s", condTriggerParamType)
+			logrus.Debugf("TriggerParam: %s", *cond.TriggerParam)
+			logrus.Debugf("fromExt.TriggerParamType: %s", fromExt.TriggerParamType)
 			switch fromExt.TriggerParamType {
-			case model.TRIGGER_PARAM_TYPE_TEL:
+			case model.TRIGGER_PARAM_TYPE_TEL: // Telemetry (TEL or TELEMETRY)
 				if condTriggerParamType == model.TRIGGER_PARAM_TYPE_TEL || condTriggerParamType == model.TRIGGER_PARAM_TYPE_TELEMETRY {
 					if a.containString(fromExt.TriggerParam, *cond.TriggerParam) {
 						isExists = true
 					}
 				}
-			case model.TRIGGER_PARAM_TYPE_STATUS:
+			case model.TRIGGER_PARAM_TYPE_STATUS: 
 				if condTriggerParamType == model.TRIGGER_PARAM_TYPE_STATUS {
 					isExists = true
 				}
-			case model.TRIGGER_PARAM_TYPE_EVT:
+			case model.TRIGGER_PARAM_TYPE_EVT: // Event (EVT or EVENT)
 				if (condTriggerParamType == model.TRIGGER_PARAM_TYPE_EVT || condTriggerParamType == model.TRIGGER_PARAM_TYPE_EVENT) && a.containString(fromExt.TriggerParam, *cond.TriggerParam) {
 					isExists = true
 				}
-			case model.TRIGGER_PARAM_TYPE_ATTR:
-				if condTriggerParamType == model.TRIGGER_PARAM_TYPE_ATTR && a.containString(fromExt.TriggerParam, *cond.TriggerParam) {
+			case model.TRIGGER_PARAM_TYPE_ATTR: // Attribute (ATTR or ATTRIBUTE)
+				if (condTriggerParamType == model.TRIGGER_PARAM_TYPE_ATTR || condTriggerParamType == model.TRIGGER_PARAM_TYPE_ATTRIBUTES) && a.containString(fromExt.TriggerParam, *cond.TriggerParam) {
 					isExists = true
 				}
 			}
@@ -183,10 +205,16 @@ func (*Automate) LimiterAllow(id string) bool {
 // @params info initialize.AutomateExecteParams
 // @return error
 func (a *Automate) ExecuteRun(info initialize.AutomateExecteParams) error {
+	logrus.Debugf("Starting action execution, acquiring lock --------------------------------")
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	for _, v := range info.AutomateExecteSceeInfos {
-		// Scene frequency limit (based on scene ID)
+		// Check if the scene has already been executed; skip if it has
+		if a.executedSceneIDs[v.SceneAutomationId] {
+			logrus.Debugf("Scene %s has already been executed in this device report, skipping", v.SceneAutomationId)
+			continue
+		}
+		// Scene execution frequency limit (based on scene ID)
 		if !a.LimiterAllow(v.SceneAutomationId) {
 			continue
 		}
@@ -204,8 +232,11 @@ func (a *Automate) ExecuteRun(info initialize.AutomateExecteParams) error {
 		err := a.SceneAutomateExecute(v.SceneAutomationId, []string{info.DeviceId}, v.Actions)
 		// Post-action decoration
 		a.actionAfterDecorationRun(v.Actions, err)
+
+		a.executedSceneIDs[v.SceneAutomationId] = true
 	}
 
+	logrus.Debugf("Action execution completed, releasing lock --------------------------------")
 	return nil
 }
 
@@ -282,19 +313,25 @@ func (a *Automate) ActiveSceneExecute(scene_id, tenantID string) error {
 // @params info initialize.AutomateExecteParams
 // @return error
 func (*Automate) sceneExecuteLogSave(scene_id, details string, err error) error {
-	var exeResult string
-	if err == nil {
-		exeResult = "S"
-	} else {
+	exeResult := "S"
+	logDetail := details
+
+	if err != nil {
 		exeResult = "F"
+		errorMsg := err.Error()
+		logDetail = fmt.Sprintf("%s[%s]", details, errorMsg)
 	}
-	logrus.Debug(details)
+
+	logrus.Debug(logDetail)
+
+	ctx := context.Background()
+	tenantID := dal.GetSceneAutomationTenantID(ctx, scene_id)
 	return dal.SceneAutomationLogInsert(&model.SceneAutomationLog{
 		SceneAutomationID: scene_id,
 		ExecutedAt:        time.Now().UTC(),
-		Detail:            details,
+		Detail:            logDetail,
 		ExecutionResult:   exeResult,
-		TenantID:          dal.GetSceneAutomationTenantID(context.Background(), scene_id),
+		TenantID:          tenantID,
 	})
 }
 
@@ -461,7 +498,17 @@ func (a *Automate) automateConditionCheckWithDevice(cond model.DeviceTriggerCond
 		deviceName      string
 	)
 
-	if a.device.Name != nil {
+	// Single device setting: get the reported setting for a single device using the device ID from the setting
+	if cond.TriggerConditionType == model.DEVICE_TRIGGER_CONDITION_TYPE_ONE {
+		deviceId = *cond.TriggerSource
+		// Retrieve device information from cache
+		device, err := initialize.GetDeviceCacheById(deviceId)
+		if err != nil {
+			logrus.Error("Failed to retrieve device information", err)
+			return false, ""
+		}
+		deviceName = *device.Name
+	} else {
 		deviceName = *a.device.Name
 	}
 
@@ -483,7 +530,7 @@ func (a *Automate) automateConditionCheckWithDevice(cond model.DeviceTriggerCond
 		dataValue := a.getTriggerParamsValue(triggerKey, dal.GetIdentifierNameTelemetry())
 		result = fmt.Sprintf("Device(%s) %s [%s]: %v %s %v", deviceName, trigger, dataValue, actualValue, triggerOperator, triggerValue)
 
-	case model.TRIGGER_PARAM_TYPE_ATTR: // Attribute
+	case model.TRIGGER_PARAM_TYPE_ATTR, model.TRIGGER_PARAM_TYPE_ATTRIBUTES: // Attribute
 		trigger = "Attribute"
 		actualValue, _ = a.getActualValue(deviceId, *cond.TriggerParam, model.TRIGGER_PARAM_TYPE_ATTR)
 		triggerValue = cond.TriggerValue
@@ -496,6 +543,7 @@ func (a *Automate) automateConditionCheckWithDevice(cond model.DeviceTriggerCond
 		actualValue, _ = a.getActualValue(deviceId, *cond.TriggerParam, model.TRIGGER_PARAM_TYPE_EVT)
 		triggerValue = cond.TriggerValue
 		triggerKey = *cond.TriggerParam
+		triggerOperator = "="
 		logrus.Debugf("Event evaluation - actual:%#v, expected:%#v", actualValue, triggerValue)
 		dataValue := a.getTriggerParamsValue(triggerKey, dal.GetIdentifierNameEvent())
 		result = fmt.Sprintf("Device(%s) %s [%s]: %v %s %v", deviceName, trigger, dataValue, actualValue, triggerOperator, triggerValue)
@@ -540,6 +588,7 @@ func (*Automate) getTriggerParamsValue(triggerKey string, fc DataIdentifierName)
 // @params actualValue interface{} - The value retrieved from the device
 // @return bool - Whether the condition is met
 func (a *Automate) automateConditionCheckByOperator(operator string, condValue string, actualValue interface{}) bool {
+	// logrus.Warningf("Comparison - operator: %s, condValue: %s, actualValue: %s, result: %d", operator, condValue, actualValue, strings.Compare(actualValue, condValue))
 	switch value := actualValue.(type) {
 	case string:
 		return a.automateConditionCheckByOperatorWithString(operator, condValue, value)

@@ -1081,3 +1081,15 @@ func (*DeviceApi) HandleDeviceSelector(c *gin.Context) {
 	}
 	c.Set("data", list)
 }
+
+// /api/v1/device/telemetry/latest [get]
+func (*DeviceApi) HandleTenantTelemetryData(c *gin.Context) {
+	userClaims := c.MustGet("claims").(*utils.UserClaims)
+
+	data, err := service.GroupApp.Device.GetTenantTelemetryData(userClaims.TenantID)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+	c.Set("data", data)
+}

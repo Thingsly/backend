@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/Thingsly/backend/internal/dal"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/go-basic/uuid"
 	"github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 
 	"github.com/jinzhu/copier"
 )
@@ -176,7 +178,12 @@ func (*ServicePlugin) GetPluginForm(protocolType string, deviceType string, form
 
 	servicePlugin, err := dal.GetServicePluginByServiceIdentifier(protocolType)
 	if err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errcode.New(200070)
+		}
+		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+			"sql_error": err.Error(),
+		})
 	}
 
 	_, host, err := dal.GetServicePluginHttpAddressByID(servicePlugin.ID)
@@ -195,7 +202,7 @@ func (p *ServicePlugin) GetProtocolPluginFormByProtocolType(protocolType string,
 	}
 	data, err := p.GetPluginForm(protocolType, deviceType, string(constant.CONFIG_FORM))
 	if err != nil {
-		return nil, errcode.NewWithMessage(105001, err.Error())
+		return nil, err
 	}
 	return data, err
 }

@@ -10,6 +10,7 @@ const (
 	TRIGGER_PARAM_TYPE_TEL       = "TEL"       // Telemetry (abbreviation)
 	TRIGGER_PARAM_TYPE_TELEMETRY = "TELEMETRY" // Telemetry (full name)
 	TRIGGER_PARAM_TYPE_ATTR      = "ATTR"      // Attribute
+	TRIGGER_PARAM_TYPE_ATTRIBUTES = "ATTRIBUTES" // Attributes
 	TRIGGER_PARAM_TYPE_EVT       = "EVT"       // Event (abbreviation)
 	TRIGGER_PARAM_TYPE_EVENT     = "EVENT"     // Event (full name)
 	TRIGGER_PARAM_TYPE_STATUS    = "STATUS"    // Device status
