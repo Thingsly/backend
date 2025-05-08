@@ -47,6 +47,7 @@ func RouterInit() *gin.Engine {
 	service.SetMetricsManager(m)
 
 	router.StaticFile("/metrics-viewer", "./static/metrics-viewer.html")
+	router.StaticFile("/metrics-viewer-en", "./static/metrics-viewer_en.html")
 
 	router.GET("/files/*filepath", func(c *gin.Context) {
 		filepath := c.Param("filepath")
