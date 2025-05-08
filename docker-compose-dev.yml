@@ -1,6 +1,20 @@
-version: '3.8'
-
 services:
+  # frontend:
+  #   image: hantdev1/thingsly-vue:v1.0.2-alpha.4
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - "TZ=Asia/Ho_Chi_Minh"
+  #     - "BACKEND_HOST=http://backend:9999"
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
+  #   volumes:
+  #     - nginx:/etc/nginx
+  #   restart: unless-stopped
+  #   networks:
+  #     - thingsly_network
+
   postgres:
     image: timescale/timescaledb:2.8.1-pg14
     volumes:
@@ -66,6 +80,38 @@ services:
     restart: unless-stopped
     networks:
       - thingsly_network
+
+  # backend:
+  #   image: hantdev1/thingsly-go:v1.0.4
+  #   ports:
+  #     - "9999:9999"
+  #   environment:
+  #     - "TZ=Asia/Ho_Chi_Minh"
+  #     - "THINGSLY_DB_PSQL_HOST=postgres"
+  #     - "THINGSLY_DB_PSQL_PORT=5432"
+  #     - "THINGSLY_DB_PSQL_USERNAME=postgres"
+  #     - "THINGSLY_DB_PSQL_PASSWORD=postgresThingsly"
+  #     - "THINGSLY_DB_PSQL_DBNAME=Thingsly"
+  #     - "THINGSLY_DB_PSQL_LOG_LEVEL=3"
+  #     - "THINGSLY_DB_REDIS_ADDR=redis:6379"
+  #     - "THINGSLY_DB_REDIS_PASSWORD=redis"
+  #     - "THINGSLY_MQTT_SERVER=gmqtt"
+  #     - "THINGSLY_MQTT_ACCESS_ADDRESS=gmqtt:1883"
+  #     - "THINGSLY_MQTT_BROKER=gmqtt:1883"
+  #     - "THINGSLY_LOG_LEVEL=error"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #     gmqtt:
+  #       condition: service_started
+  #   volumes:
+  #     - go_files:/go/src/app/files
+  #     - go_configs:/go/src/app/configs
+  #   restart: unless-stopped
+  #   networks:
+  #     - thingsly_network
 
 volumes:
   go_files:
