@@ -7,4 +7,9 @@ System Administrator: demo-super@thingsly.vn / 123456
 Tenant Administrator: demo-tenant@thingsly.vn / 123456
 
 psql -U postgres -d Thingsly
+
+http://localhost:9999/swagger/index.html
+http://localhost:9999/metrics-viewer
+
+ngrok tcp 1883
 ```

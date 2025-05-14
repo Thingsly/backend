@@ -151,3 +151,12 @@ session:
   timeout: 6000
   # Optional: whether to reset the timeout on each request
   reset_on_request: false
+
+smtp:
+  host: "smtp.gmail.com"
+  port: 465
+  username: "captainnemot1k60@gmail.com"
+  password: "fpqu rcfv hnze zuck"
+  from_email: "captainnemot1k60@gmail.com"
+  to_email: "hantdev@gmail.com"
+  ssl: true

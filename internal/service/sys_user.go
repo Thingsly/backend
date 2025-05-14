@@ -291,7 +291,78 @@ func (*User) GetVerificationCode(email, isRegister string) error {
 	logrus.Warningf("Verification code:%s", verificationCode)
 	err = GroupApp.NotificationServicesConfig.SendTestEmail(&model.SendTestEmailReq{
 		Email: email,
-		Body:  fmt.Sprintf("Your verification code is %s", verificationCode),
+		Body: fmt.Sprintf(`
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        .verification-code {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+            letter-spacing: 5px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .important {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Verification Code</h1>
+        </div>
+        <p>Hello,</p>
+        <p>Thank you for using Thingsly Platform. To complete your verification, please use the following code:</p>
+        
+        <div class="verification-code">%s</div>
+        
+        <p class="important">This code will expire in 5 minutes.</p>
+        
+        <p>If you didn't request this verification code, please ignore this email or contact our support team if you have concerns.</p>
+        
+        <div class="footer">
+            <p>This is an automated message, please do not reply to this email.</p>
+            <p>&copy; 2025 Thingsly Platform. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>`, verificationCode),
 	})
 	if err != nil {
 		return errcode.WithData(200010, map[string]interface{}{
