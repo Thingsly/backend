@@ -298,140 +298,64 @@ func (*User) GetVerificationCode(email, isRegister string) error {
     <meta charset="UTF-8">
     <style>
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
-            color: #2c3e50;
+            color: #333;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f6fa;
         }
         .container {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .header {
             text-align: center;
-            margin-bottom: 35px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 30px;
         }
-        .header h1 {
-            color: #2c3e50;
-            font-size: 28px;
-            margin: 0;
-            font-weight: 600;
-        }
-        .welcome-text {
-            font-size: 18px;
-            color: #34495e;
-            margin-bottom: 25px;
-            text-align: center;
+        .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
         }
         .verification-code {
-            background: linear-gradient(135deg, #f6f9fc 0%, #f1f4f8 100%);
-            padding: 25px;
-            border-radius: 8px;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
             text-align: center;
-            font-size: 32px;
+            font-size: 24px;
             font-weight: bold;
-            color: #3498db;
-            margin: 30px 0;
-            letter-spacing: 8px;
-            border: 1px solid #e1e8ed;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            color: #2c3e50;
+            margin: 20px 0;
+            letter-spacing: 5px;
         }
-        .content {
-            color: #34495e;
-            font-size: 16px;
-            line-height: 1.8;
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
         }
         .important {
             color: #e74c3c;
-            font-weight: 600;
-            background-color: #fff5f5;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid #e74c3c;
-            margin: 20px 0;
-        }
-        .steps {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 25px 0;
-        }
-        .steps ol {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .steps li {
-            margin: 10px 0;
-            color: #2c3e50;
-        }
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 13px;
-            color: #7f8c8d;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
-        }
-        .social-links {
-            margin: 20px 0;
-        }
-        .social-links a {
-            color: #3498db;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        .support {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 30px;
-            font-size: 14px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome to Thingsly IoT Platform</h1>
-        </div>
-        
-        <div class="welcome-text">
-            Thank you for choosing Thingsly IoT Platform. We're excited to have you on board!
-        </div>
-        
-        <div class="content">
-            <p>To complete your registration and ensure the security of your account, please use the following verification code:</p>
-            
-            <div class="verification-code">%s</div>
-            
-            <div class="important">
-                ⚠️ This code will expire in 5 minutes for security reasons.
-            </div>
-
-            <div class="steps">
-                <h3>Next Steps:</h3>
-                <ol>
-                    <li>Enter the verification code above in the registration form</li>
-                    <li>Complete your profile information</li>
-                    <li>Set up your password</li>
-                    <li>Start exploring Thingsly IoT Platform!</li>
-                </ol>
-            </div>
-            
-            <p>If you didn't request this verification code, please ignore this email or contact our support team if you have any concerns.</p>
+            <h1>Verification Code</h1>
         </div>
 
-        <div class="support">
-            <p>Need help? Our support team is available 24/7 to assist you.</p>
-            <p>Email: support@thingsly.com</p>
-        </div>
+        <p>Hello,</p>
+        <p>Thank you for using Thingsly IoT Platform. To complete your verification, please use the following code:</p>
+        
+        <div class="verification-code">%s</div>
+        
+        <p class="important">This code will expire in 5 minutes.</p>
+        
+        <p>If you didn't request this verification code, please ignore this email or contact our support team if you have concerns.</p>
         
         <div class="footer">
             <p>This is an automated message, please do not reply to this email.</p>
