@@ -42,7 +42,7 @@ jobs:
           REDIS_PASSWORD: redis
 
       gmqtt:
-        image: hantdev1/thingsly-gmqtt:v1.0.0
+        image: hantdev1/thingsly-gmqtt:v1.0.1
         ports:
           - 1883:1883
         env:
