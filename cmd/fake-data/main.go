@@ -7,10 +7,10 @@ import (
 func main() {
 	broker := "localhost"
 	port := 1883
-	username := "440cc282-4fc9-c7c5-53d"
-	password := "ab57154"
-	clientId := "mqtt_c32768b6-013"
+	MQTT_username := "26fdbc41-9999-f981-26f"
+	MQTT_password := "7e00453"
+	MQTT_clientId := "mqtt_45d73c7f-b8a"
 
-	data.StartMQTTClient(broker, port, username, password, clientId)
-	// data.StartAbnormalMQTTClient(broker, port, username, password, clientId)
+	// data.StartMQTTClient(broker, port, MQTT_username, MQTT_password, MQTT_clientId)
+	data.StartAbnormalMQTTClient(broker, port, MQTT_username, MQTT_password, MQTT_clientId)
 }

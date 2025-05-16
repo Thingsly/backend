@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/Thingsly/backend/internal/dal"
@@ -207,8 +208,64 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
 	}
 
 	if alarmConfig.NotificationGroupID != "" {
-		title := alarmConfig.Name + "[" + alarmConfig.AlarmLevel + "]" + time.Now().Format("2006-01-02 15:04:05")
-		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, title, content)
+		title := fmt.Sprintf("🚨 %s - %s Alert", alarmConfig.Name, alarmConfig.AlarmLevel)
+		formattedContent := fmt.Sprintf(`
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .alert-level { font-weight: bold; color: #dc3545; }
+        .section { margin-bottom: 20px; }
+        .section-title { font-weight: bold; color: #495057; border-bottom: 2px solid #dee2e6; padding-bottom: 5px; margin-bottom: 10px; }
+        .info-row { margin: 5px 0; }
+        .label { font-weight: bold; color: #6c757d; }
+        .value { color: #212529; }
+        .footer { margin-top: 20px; font-size: 12px; color: #6c757d; border-top: 1px solid #dee2e6; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 style="margin: 0; color: #dc3545;">%s</h2>
+            <p style="margin: 5px 0 0 0;">Alert Level: <span class="alert-level">%s</span></p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Alert Details</div>
+            <div class="info-row">
+                <span class="label">Time:</span>
+                <span class="value">%s</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Description:</span>
+                <span class="value">%s</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Alert Information</div>
+            <div class="info-row">
+                <span class="value">%s</span>
+            </div>
+        </div>
+
+		<div class="section">
+			<div class="section-title">Recommended Actions</div>
+			<div class="info-row">
+				<span class="value">Please verify the alert condition and check the device status</span>
+			</div>
+		</div>
+
+        <div class="footer">
+            This is an automated message from the Thingsly IoT Platform. Please do not reply to this email.
+        </div>
+    </div>
+</body>
+</html>`, alarmConfig.Name, alarmConfig.AlarmLevel, time.Now().Format("2006-01-02 15:04:05"), alarmConfig.Description, content)
+		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, title, formattedContent)
 	}
 
 	id := uuid.New()
@@ -274,8 +331,57 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
 	}
 	alarmName = alarmConfig.Name
 	if alarmConfig.NotificationGroupID != "" {
-		title := alarmConfig.Name + "[" + alarmConfig.AlarmLevel + "]" + time.Now().Format("2006-01-02 15:04:05")
-		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, title, content)
+		title := fmt.Sprintf("🚨 %s - %s Alert", alarmConfig.Name, alarmConfig.AlarmLevel)
+		formattedContent := fmt.Sprintf(`
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .alert-level { font-weight: bold; color: #dc3545; }
+        .section { margin-bottom: 20px; }
+        .section-title { font-weight: bold; color: #495057; border-bottom: 2px solid #dee2e6; padding-bottom: 5px; margin-bottom: 10px; }
+        .info-row { margin: 5px 0; }
+        .label { font-weight: bold; color: #6c757d; }
+        .value { color: #212529; }
+        .footer { margin-top: 20px; font-size: 12px; color: #6c757d; border-top: 1px solid #dee2e6; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 style="margin: 0; color: #dc3545;">%s</h2>
+            <p style="margin: 5px 0 0 0;">Alert Level: <span class="alert-level">%s</span></p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Alert Details</div>
+            <div class="info-row">
+                <span class="label">Time:</span>
+                <span class="value">%s</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Description:</span>
+                <span class="value">%s</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Alert Information</div>
+            <div class="info-row">
+                <span class="value">%s</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            This is an automated message from the IoT Platform. Please do not reply to this email.
+        </div>
+    </div>
+</body>
+</html>`, alarmConfig.Name, alarmConfig.AlarmLevel, time.Now().Format("2006-01-02 15:04:05"), alarmConfig.Description, content)
+		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, title, formattedContent)
 	}
 	device_ids_str, _ := json.Marshal(device_ids)
 	id := uuid.New()
