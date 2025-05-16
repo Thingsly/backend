@@ -208,29 +208,110 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
 	}
 
 	if alarmConfig.NotificationGroupID != "" {
-		title := fmt.Sprintf("🚨 %s - %s Alert", alarmConfig.Name, alarmConfig.AlarmLevel)
+		alarmLevelText := ""
+		switch alarmConfig.AlarmLevel {
+		case "H":
+			alarmLevelText = "High"
+		case "M":
+			alarmLevelText = "Middle"
+		case "L":
+			alarmLevelText = "Low"
+		}
+		title := fmt.Sprintf("[%s Alert] %s %s", alarmLevelText, alarmConfig.Name, time.Now().Format("2006-01-02 15:04:05"))
 		formattedContent := fmt.Sprintf(`
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        .alert-level { font-weight: bold; color: #dc3545; }
-        .section { margin-bottom: 20px; }
-        .section-title { font-weight: bold; color: #495057; border-bottom: 2px solid #dee2e6; padding-bottom: 5px; margin-bottom: 10px; }
-        .info-row { margin: 5px 0; }
-        .label { font-weight: bold; color: #6c757d; }
-        .value { color: #212529; }
-        .footer { margin-top: 20px; font-size: 12px; color: #6c757d; border-top: 1px solid #dee2e6; padding-top: 10px; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #2c3e50;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container { 
+            max-width: 650px; 
+            margin: 20px auto; 
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header { 
+            background-color: #f8f9fa; 
+            padding: 25px; 
+            border-radius: 8px; 
+            margin-bottom: 30px;
+            border-left: 5px solid #dc3545;
+        }
+        .alert-level { 
+            font-weight: bold; 
+            color: #dc3545;
+            font-size: 1.2em;
+        }
+        .section { 
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .section-title { 
+            font-weight: bold; 
+            color: #2c3e50; 
+            border-bottom: 2px solid #e9ecef; 
+            padding-bottom: 10px; 
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .info-row { 
+            margin: 12px 0;
+            font-size: 1.1em;
+        }
+        .label { 
+            font-weight: 600; 
+            color: #495057;
+            display: inline-block;
+            min-width: 120px;
+        }
+        .value { 
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .footer { 
+            margin-top: 30px; 
+            font-size: 0.9em; 
+            color: #6c757d; 
+            border-top: 1px solid #e9ecef; 
+            padding-top: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin: 0;
+            color: #dc3545;
+            font-weight: 600;
+        }
+        .recommended-actions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        .recommended-actions .value {
+            color: #495057;
+            line-height: 1.8;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h2 style="margin: 0; color: #dc3545;">%s</h2>
-            <p style="margin: 5px 0 0 0;">Alert Level: <span class="alert-level">%s</span></p>
+            <h2>%s</h2>
+            <p style="margin: 10px 0 0 0; font-size: 1.1em;">Alert Level: <span class="alert-level">%s</span></p>
         </div>
 
         <div class="section">
@@ -239,10 +320,7 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
                 <span class="label">Time:</span>
                 <span class="value">%s</span>
             </div>
-            <div class="info-row">
-                <span class="label">Description:</span>
-                <span class="value">%s</span>
-            </div>
+            %s
         </div>
 
         <div class="section">
@@ -252,20 +330,32 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
             </div>
         </div>
 
-		<div class="section">
-			<div class="section-title">Recommended Actions</div>
-			<div class="info-row">
-				<span class="value">Please verify the alert condition and check the device status</span>
-			</div>
-		</div>
+        <div class="section">
+            <div class="section-title">Recommended Actions</div>
+            <div class="recommended-actions">
+                <div class="info-row">
+                    <span class="value">• Please verify the alert condition<br>• Check the device status<br>• Review system logs if necessary</span>
+                </div>
+            </div>
+        </div>
 
         <div class="footer">
-            This is an automated message from the Thingsly IoT Platform. Please do not reply to this email.
+            <p>This is an automated message from the Thingsly IoT Platform.</p>
+            <p>Please do not reply to this email.</p>
         </div>
     </div>
 </body>
-</html>`, alarmConfig.Name, alarmConfig.AlarmLevel, time.Now().Format("2006-01-02 15:04:05"), alarmConfig.Description, content)
-		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, title, formattedContent)
+</html>`, alarmConfig.Name, alarmLevelText, time.Now().Format("2006-01-02 15:04:05"),
+			func() string {
+				if alarmConfig.Description != nil && *alarmConfig.Description != "" {
+					return fmt.Sprintf(`<div class="info-row">
+                <span class="label">Description:</span>
+                <span class="value">%s</span>
+            </div>`, *alarmConfig.Description)
+				}
+				return ""
+			}(), content)
+		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, formattedContent, title)
 	}
 
 	id := uuid.New()
@@ -331,29 +421,110 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
 	}
 	alarmName = alarmConfig.Name
 	if alarmConfig.NotificationGroupID != "" {
-		title := fmt.Sprintf("🚨 %s - %s Alert", alarmConfig.Name, alarmConfig.AlarmLevel)
+		alarmLevelText := ""
+		switch alarmConfig.AlarmLevel {
+		case "H":
+			alarmLevelText = "High"
+		case "M":
+			alarmLevelText = "Middle"
+		case "L":
+			alarmLevelText = "Low"
+		}
+		title := fmt.Sprintf("[%s Alert] %s %s", alarmLevelText, alarmConfig.Name, time.Now().Format("2006-01-02 15:04:05"))
 		formattedContent := fmt.Sprintf(`
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        .alert-level { font-weight: bold; color: #dc3545; }
-        .section { margin-bottom: 20px; }
-        .section-title { font-weight: bold; color: #495057; border-bottom: 2px solid #dee2e6; padding-bottom: 5px; margin-bottom: 10px; }
-        .info-row { margin: 5px 0; }
-        .label { font-weight: bold; color: #6c757d; }
-        .value { color: #212529; }
-        .footer { margin-top: 20px; font-size: 12px; color: #6c757d; border-top: 1px solid #dee2e6; padding-top: 10px; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #2c3e50;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container { 
+            max-width: 650px; 
+            margin: 20px auto; 
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header { 
+            background-color: #f8f9fa; 
+            padding: 25px; 
+            border-radius: 8px; 
+            margin-bottom: 30px;
+            border-left: 5px solid #dc3545;
+        }
+        .alert-level { 
+            font-weight: bold; 
+            color: #dc3545;
+            font-size: 1.2em;
+        }
+        .section { 
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .section-title { 
+            font-weight: bold; 
+            color: #2c3e50; 
+            border-bottom: 2px solid #e9ecef; 
+            padding-bottom: 10px; 
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .info-row { 
+            margin: 12px 0;
+            font-size: 1.1em;
+        }
+        .label { 
+            font-weight: 600; 
+            color: #495057;
+            display: inline-block;
+            min-width: 120px;
+        }
+        .value { 
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .footer { 
+            margin-top: 30px; 
+            font-size: 0.9em; 
+            color: #6c757d; 
+            border-top: 1px solid #e9ecef; 
+            padding-top: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin: 0;
+            color: #dc3545;
+            font-weight: 600;
+        }
+        .recommended-actions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        .recommended-actions .value {
+            color: #495057;
+            line-height: 1.8;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h2 style="margin: 0; color: #dc3545;">%s</h2>
-            <p style="margin: 5px 0 0 0;">Alert Level: <span class="alert-level">%s</span></p>
+            <h2>%s</h2>
+            <p style="margin: 10px 0 0 0; font-size: 1.1em;">Alert Level: <span class="alert-level">%s</span></p>
         </div>
 
         <div class="section">
@@ -362,10 +533,7 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
                 <span class="label">Time:</span>
                 <span class="value">%s</span>
             </div>
-            <div class="info-row">
-                <span class="label">Description:</span>
-                <span class="value">%s</span>
-            </div>
+            %s
         </div>
 
         <div class="section">
@@ -375,13 +543,32 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
             </div>
         </div>
 
+        <div class="section">
+            <div class="section-title">Recommended Actions</div>
+            <div class="recommended-actions">
+                <div class="info-row">
+                    <span class="value">• Please verify the alert condition<br>• Check the device status<br>• Review system logs if necessary</span>
+                </div>
+            </div>
+        </div>
+
         <div class="footer">
-            This is an automated message from the IoT Platform. Please do not reply to this email.
+            <p>This is an automated message from the Thingsly IoT Platform.</p>
+            <p>Please do not reply to this email.</p>
         </div>
     </div>
 </body>
-</html>`, alarmConfig.Name, alarmConfig.AlarmLevel, time.Now().Format("2006-01-02 15:04:05"), alarmConfig.Description, content)
-		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, title, formattedContent)
+</html>`, alarmConfig.Name, alarmLevelText, time.Now().Format("2006-01-02 15:04:05"),
+			func() string {
+				if alarmConfig.Description != nil && *alarmConfig.Description != "" {
+					return fmt.Sprintf(`<div class="info-row">
+                <span class="label">Description:</span>
+                <span class="value">%s</span>
+            </div>`, *alarmConfig.Description)
+				}
+				return ""
+			}(), content)
+		GroupApp.NotificationServicesConfig.ExecuteNotification(alarmConfig.NotificationGroupID, formattedContent, title)
 	}
 	device_ids_str, _ := json.Marshal(device_ids)
 	id := uuid.New()

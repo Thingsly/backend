@@ -148,7 +148,7 @@ func sendEmailMessage(message string, subject string, tenantId string, to ...str
 	m := gomail.NewMessage()
 	m.SetHeader("From", emailConf.FromEmail)
 	m.SetHeader("To", to...)
-	m.SetBody("text/plain", message)
+	m.SetBody("text/html", message)
 	m.SetHeader("Subject", subject)
 
 	if err := d.DialAndSend(m); err != nil {

@@ -22,7 +22,7 @@ db:
   psql:
     host: 127.0.0.1 # Default is localhost
     #    host: 47.92.253.145 # Default is localhost
-    port: 5432 # Default is 5432
+    port: 5555 # For testing
     dbname: Thingsly
     username: postgres
     password: postgresThingsly
