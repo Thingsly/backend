@@ -13,6 +13,47 @@ jobs:
     name: Run Unit Tests
     runs-on: ubuntu-latest
     
+    services:
+      postgres:
+        image: timescale/timescaledb:2.8.1-pg14
+        env:
+          POSTGRES_DB: Thingsly
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgresThingsly
+          POSTGRES_HOST_AUTH_METHOD: md5
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:6.2.7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          REDIS_PASSWORD: redis
+
+      gmqtt:
+        image: hantdev1/thingsly-gmqtt:v1.0.0
+        ports:
+          - 1883:1883
+        env:
+          GMQTT_DB_REDIS_CONN: redis:6379
+          GMQTT_DB_REDIS_PASSWORD: redis
+          GMQTT_DB_PSQL_PSQLADDR: postgres
+          GMQTT_DB_PSQL_PSQLPORT: 5432
+          GMQTT_DB_PSQL_PSQLDB: Thingsly
+          GMQTT_DB_PSQL_PSQLUSER: postgres
+          GMQTT_DB_PSQL_PSQLPASSWORD: postgresThingsly
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,3 +69,16 @@ jobs:
 
       - name: Run tests
         run: go test -v ./...
+        env:
+          THINGSLY_DB_PSQL_HOST: localhost
+          THINGSLY_DB_PSQL_PORT: 5432
+          THINGSLY_DB_PSQL_USERNAME: postgres
+          THINGSLY_DB_PSQL_PASSWORD: postgresThingsly
+          THINGSLY_DB_PSQL_DBNAME: Thingsly
+          THINGSLY_DB_PSQL_LOG_LEVEL: 3
+          THINGSLY_DB_REDIS_ADDR: localhost:6379
+          THINGSLY_DB_REDIS_PASSWORD: redis
+          THINGSLY_MQTT_SERVER: localhost
+          THINGSLY_MQTT_ACCESS_ADDRESS: localhost:1883
+          THINGSLY_MQTT_BROKER: localhost:1883
+          THINGSLY_LOG_LEVEL: error
