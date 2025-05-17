@@ -1,3 +1,17 @@
+# Thingsly Backend Release Workflow
+#
+# Functionality:
+# 1. Automatically build and release the Thingsly Backend
+# 2. Create a release with the specified tag
+# 3. Upload the release assets to the release
+#
+# Triggers:
+# - Code Push: Automatically triggered when code is pushed to the main branch
+# - Manual Trigger: Can be manually triggered from the GitHub Actions interface
+#
+# Required Secrets:
+# - TOKEN_RELEASE: GitHub access token with write permissions
+
 name: Build and Release
 on:
   push:

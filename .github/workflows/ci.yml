@@ -1,4 +1,14 @@
-name: CI
+# Thingsly Backend Continuous Integration Workflow
+#
+# Functionality:
+# 1. Automatically run unit tests when a pull request is created or updated
+# 2. Automatically run unit tests when code is pushed to the main branch
+#
+# Triggers:
+# - Pull Request: Automatically triggered when a pull request is created or updated
+# - Code Push: Automatically triggered when code is pushed to the main branch
+
+name: Continuous Integration
 
 on:
   pull_request:
