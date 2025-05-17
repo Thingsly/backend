@@ -1,0 +1,147 @@
+name: Build and Release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag name'
+        required: false
+        default: 'latest'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.24.2'
+    
+    - name: Determine Release Tag
+      id: determine-tag
+      run: echo "RELEASE_TAG=$(if [ '${{ github.event_name }}' == 'push' ]; then echo 'latest'; else echo '${{ github.event.inputs.tag }}'; fi)" >> $GITHUB_ENV
+    
+    - name: Delete existing release if it exists
+      id: delete_release
+      run: |
+        tag=${{ github.event.inputs.tag || 'latest' }}
+        release_id=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tag" | \
+          jq -r '.id')
+        if [ "$release_id" != "null" ]; then
+          echo "Deleting existing release with ID $release_id"
+          curl -s -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/$release_id"
+        else
+          echo "No existing release found for tag $tag"
+        fi
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ github.event.inputs.tag || 'latest' }}
+          release_name: Release ${{ github.event.inputs.tag || 'latest' }}
+          body: Release created by GitHub Actions. Tag ${{ github.event.inputs.tag || 'latest' }}
+          draft: false
+          prerelease: false
+    
+    - name: Build and package for multiple platforms
+      run: |
+        # Define the platforms and their configurations
+        # Format: "GOOS/GOARCH/GOARM" (GOARM is optional)
+        platforms=(
+          "windows/amd64" 
+          "linux/amd64" 
+          "linux/arm64" 
+          "linux/arm/7"  # ARMv7 with GOARM=7
+          "linux/386" 
+          "darwin/amd64"
+          "darwin/arm64"
+        )
+        
+        for platform in "${platforms[@]}"; do
+          # Split the platform string
+          IFS="/" read -r os arch arm_version <<< "$platform"
+          
+          # Set build environment variables
+          export GOOS=$os
+          export GOARCH=$arch
+          export CGO_ENABLED=0
+          
+          # Set GOARM if specified
+          if [ ! -z "$arm_version" ]; then
+            export GOARM=$arm_version
+            platform_suffix="$os-$arch-v$arm_version"
+          else
+            unset GOARM
+            platform_suffix="$os-$arch"
+          fi
+          
+          echo "Building for $GOOS/$GOARCH${GOARM:+/v$GOARM}..."
+          
+          # Create output directory
+          mkdir -p "dist/$platform_suffix"
+          
+          # Copy necessary files
+          cp -r configs "dist/$platform_suffix/" 2>/dev/null || echo "No configs directory found"
+          cp -r sql "dist/$platform_suffix/" 2>/dev/null || echo "No sql directory found"
+          cp -r files "dist/$platform_suffix/" 2>/dev/null || echo "No files directory found"
+          
+          # Adjust output file name for Windows
+          if [ "$os" == "windows" ]; then
+             output_file="dist/$platform_suffix/thingsly-backend.exe"
+          else
+             output_file="dist/$platform_suffix/thingsly-backend"
+          fi
+          
+          # Build for each platform
+          go build -o "$output_file"
+          
+          # Check if build was successful
+          if [ $? -ne 0 ]; then
+            echo "Failed to build for $GOOS/$GOARCH${GOARM:+/v$GOARM}, skipping..."
+            rm -rf "dist/$platform_suffix"
+            continue
+          fi
+          
+          # Create archive name
+          if [ "$os" == "windows" ]; then
+            archive_name="thingsly-backend-$platform_suffix.zip"
+            # Package into zip for Windows
+            (cd dist && zip -r "../$archive_name" "$platform_suffix")
+          else
+            archive_name="thingsly-backend-$platform_suffix.tar.gz"
+            # Package into tar.gz for other platforms
+            tar -czf "$archive_name" -C dist "$platform_suffix"
+          fi
+          
+          echo "Created archive: $archive_name"
+        done
+        
+        # List all created archives
+        ls -la *.tar.gz *.zip 2>/dev/null || echo "No archives created"
+    
+    - name: Upload Release Assets
+      id: upload-release-assets
+      run: |
+        for asset in ./thingsly-backend-*.tar.gz ./thingsly-backend-*.zip; do
+          if [ -f "$asset" ]; then
+            asset_name=$(basename "$asset")
+            echo "Uploading $asset_name..."
+            
+            content_type="application/gzip"
+            if [[ "$asset" == *.zip ]]; then
+              content_type="application/zip"
+            fi
+            
+            curl -XPOST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: $content_type" \
+              --data-binary "@$asset" \
+              "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets?name=$asset_name"
+          fi
+        done
