@@ -164,5 +164,4 @@ smtp:
   username: "captainnemot1k60@gmail.com"
   password: "fpqu rcfv hnze zuck"
   from_email: "captainnemot1k60@gmail.com"
-  to_email: "hantdev@gmail.com"
   ssl: true
