@@ -1,0 +1,61 @@
+# Thingsly Backend Docker Image Auto-Build Workflow
+#
+# Functionality:
+# 1. Automatically build Docker images and push them to the following registries:
+#    - DockerHub (hantdev1/thingsly-go)
+#    - GitHub Container Registry (ghcr.io)
+#
+# Triggers:
+# - On Release: Automatically triggered when a Release is created or updated
+# - Manual Trigger: Can be manually triggered via the GitHub Actions interface
+#
+# Version Tag Handling:
+# - On Release: Uses the Release tag as the version
+# - Manual Trigger: Uses the latest tag as the version
+# - No Tags: Defaults to 'latest' as the version
+#
+# Required Secrets:
+# - DOCKERHUB_USERNAME: DockerHub username
+# - DOCKERHUB_TOKEN: DockerHub access token
+# - GITHUB_TOKEN: GitHub access token (automatically provided)
+
+name: Docker Image Build
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Version Tag
+        id: get_version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo 'latest')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          # Convert repository owner to lowercase
+          echo "OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      - name: Log In to Container Registries
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+      - name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and Push to GitHub/DockerHub
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            hantdev1/thingsly-go:${{ env.VERSION }}
+            ghcr.io/${{ env.OWNER_LC }}/thingsly-go:${{ env.VERSION }}
