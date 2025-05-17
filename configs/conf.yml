@@ -2,8 +2,9 @@
 
 service:
   http:
-    host: 0.0.0.0 # Default is localhost
-    port: # Default is 9999
+    # host: 0.0.0.0 # Default is localhost
+    host: 103.124.93.210 # Server teacher Tien
+    port: 9999 # Default is 9999
 
 log:
   # 0 - Console output, 1 - File output, 2 - Both file and console output
