@@ -1,12 +1,11 @@
 # syntax=docker/dockerfile:1
-ARG TARGETPLATFORM=linux/amd64
-FROM --platform=$TARGETPLATFORM golang:alpine AS builder
+FROM golang:alpine AS builder
 WORKDIR $GOPATH/src/app
 ADD . ./
 ENV GO111MODULE=on
 RUN go build -o thingsly-go .
 
-FROM --platform=$TARGETPLATFORM alpine:latest
+FROM alpine:latest
 LABEL description="Thingsly Go Backend"
 WORKDIR /go/src/app
 RUN apk update && apk add --no-cache tzdata
