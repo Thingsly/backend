@@ -19,7 +19,7 @@
 # - DOCKERHUB_TOKEN: DockerHub access token
 # - GITHUB_TOKEN: GitHub access token (automatically provided)
 
-name: Docker Image Build
+name: Docker Image Build & Deploy Backend to server Teacher Tien
 
 on:
   push:
@@ -65,3 +65,25 @@ jobs:
           tags: |
             hantdev1/thingsly-go:${{ env.VERSION }}
             ghcr.io/${{ env.OWNER_LC }}/thingsly-go:${{ env.VERSION }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Server Teacher Tien
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.C_HOST }}
+          username: ${{ secrets.C_USER }}
+          password: ${{ secrets.C_PASS }}
+          script: |
+            cd /home/hant/docker
+            # Remove old image first
+            docker image rm hantdev1/thingsly-go:latest || true
+            
+            # Pull latest image
+            docker pull hantdev1/thingsly-go:latest
+            
+            # Restart backend service
+            docker compose up -d --no-deps backend
+  
