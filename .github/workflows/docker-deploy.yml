@@ -10,7 +10,7 @@
 # - Manual Trigger: Can be manually triggered via the GitHub Actions interface
 #
 # Version Tag Handling:
-# - On Release: Uses the Release tag as the version
+# - On Release: Uses the Release tag as the version and also tags as latest
 # - Manual Trigger: Uses the latest tag as the version
 # - No Tags: Defaults to 'latest' as the version
 #
@@ -44,8 +44,15 @@ jobs:
       - name: Get Version Tag
         id: get_version
         run: |
-          VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo 'latest')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "TAG_LATEST=true" >> $GITHUB_ENV
+          else
+            VERSION="latest"
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "TAG_LATEST=false" >> $GITHUB_ENV
+          fi
           # Convert repository owner to lowercase
           echo "OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
@@ -65,6 +72,7 @@ jobs:
           tags: |
             hantdev1/thingsly-go:${{ env.VERSION }}
             ghcr.io/${{ env.OWNER_LC }}/thingsly-go:${{ env.VERSION }}
+            ${{ env.TAG_LATEST == 'true' && format('hantdev1/thingsly-go:latest,ghcr.io/{0}/thingsly-go:latest', env.OWNER_LC) || '' }}
 
   deploy-to-server:
     needs: build-docker-image
