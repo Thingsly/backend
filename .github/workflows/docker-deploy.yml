@@ -30,7 +30,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-docker-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -66,8 +66,8 @@ jobs:
             hantdev1/thingsly-go:${{ env.VERSION }}
             ghcr.io/${{ env.OWNER_LC }}/thingsly-go:${{ env.VERSION }}
 
-  deploy:
-    needs: build
+  deploy-to-server:
+    needs: build-docker-image
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Server Teacher Tien
