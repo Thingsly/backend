@@ -209,13 +209,17 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
 
 	if alarmConfig.NotificationGroupID != "" {
 		alarmLevelText := ""
+		headerColor := ""
 		switch alarmConfig.AlarmLevel {
 		case "H":
 			alarmLevelText = "High"
+			headerColor = "#dc3545" // Red
 		case "M":
 			alarmLevelText = "Middle"
+			headerColor = "#ffc107" // Yellow
 		case "L":
 			alarmLevelText = "Low"
+			headerColor = "#28a745" // Green
 		}
 		title := fmt.Sprintf("[%s Alert] %s %s", alarmLevelText, alarmConfig.Name, time.Now().Format("2006-01-02 15:04:05"))
 		formattedContent := fmt.Sprintf(`
@@ -245,11 +249,11 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
             padding: 25px; 
             border-radius: 8px; 
             margin-bottom: 30px;
-            border-left: 5px solid #dc3545;
+            border-left: 5px solid %s;
         }
         .alert-level { 
             font-weight: bold; 
-            color: #dc3545;
+            color: %s;
             font-size: 1.2em;
         }
         .section { 
@@ -292,7 +296,7 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
         h2 {
             font-size: 1.8em;
             margin: 0;
-            color: #dc3545;
+            color: %s;
             font-weight: 600;
         }
         .recommended-actions {
@@ -304,6 +308,19 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
         .recommended-actions .value {
             color: #495057;
             line-height: 1.8;
+        }
+        .view-details {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: %s;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .view-details:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -339,13 +356,17 @@ func (*Alarm) AddAlarmInfo(alarmConfigID, content string) (bool, string) {
             </div>
         </div>
 
+        <div style="text-align: center;">
+            <a href="https://dangky.app/alarm/warning-message" class="view-details">View Full Alert Details</a>
+        </div>
+
         <div class="footer">
             <p>This is an automated message from the Thingsly IoT Platform.</p>
             <p>Please do not reply to this email.</p>
         </div>
     </div>
 </body>
-</html>`, alarmConfig.Name, alarmLevelText, time.Now().Format("2006-01-02 15:04:05"),
+</html>`, headerColor, headerColor, headerColor, headerColor, alarmConfig.Name, alarmLevelText, time.Now().Format("2006-01-02 15:04:05"),
 			func() string {
 				if alarmConfig.Description != nil && *alarmConfig.Description != "" {
 					return fmt.Sprintf(`<div class="info-row">
@@ -422,13 +443,17 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
 	alarmName = alarmConfig.Name
 	if alarmConfig.NotificationGroupID != "" {
 		alarmLevelText := ""
+		headerColor := ""
 		switch alarmConfig.AlarmLevel {
 		case "H":
 			alarmLevelText = "High"
+			headerColor = "#dc3545" // Red
 		case "M":
 			alarmLevelText = "Middle"
+			headerColor = "#ffc107" // Yellow
 		case "L":
 			alarmLevelText = "Low"
+			headerColor = "#28a745" // Green
 		}
 		title := fmt.Sprintf("[%s Alert] %s %s", alarmLevelText, alarmConfig.Name, time.Now().Format("2006-01-02 15:04:05"))
 		formattedContent := fmt.Sprintf(`
@@ -458,11 +483,11 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
             padding: 25px; 
             border-radius: 8px; 
             margin-bottom: 30px;
-            border-left: 5px solid #dc3545;
+            border-left: 5px solid %s;
         }
         .alert-level { 
             font-weight: bold; 
-            color: #dc3545;
+            color: %s;
             font-size: 1.2em;
         }
         .section { 
@@ -505,7 +530,7 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
         h2 {
             font-size: 1.8em;
             margin: 0;
-            color: #dc3545;
+            color: %s;
             font-weight: 600;
         }
         .recommended-actions {
@@ -517,6 +542,19 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
         .recommended-actions .value {
             color: #495057;
             line-height: 1.8;
+        }
+        .view-details {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: %s;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .view-details:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -552,13 +590,17 @@ func (*Alarm) AlarmExecute(alarmConfigID, content, scene_automation_id, group_id
             </div>
         </div>
 
+        <div style="text-align: center;">
+            <a href="https://dangky.app/alarm/warning-message" class="view-details">View Full Alert Details</a>
+        </div>
+
         <div class="footer">
             <p>This is an automated message from the Thingsly IoT Platform.</p>
             <p>Please do not reply to this email.</p>
         </div>
     </div>
 </body>
-</html>`, alarmConfig.Name, alarmLevelText, time.Now().Format("2006-01-02 15:04:05"),
+</html>`, headerColor, headerColor, headerColor, headerColor, alarmConfig.Name, alarmLevelText, time.Now().Format("2006-01-02 15:04:05"),
 			func() string {
 				if alarmConfig.Description != nil && *alarmConfig.Description != "" {
 					return fmt.Sprintf(`<div class="info-row">
