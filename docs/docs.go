@@ -2547,7 +2547,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "v1.0.0",
-	Host:             "localhost:9999",
+	Host:             "103.124.93.210:9999",
 	BasePath:         "",
 	Schemes:          []string{"http", "https"},
 	Title:            "Thingsly IoT Platform API",
@@ -2577,12 +2577,6 @@ All API responses follow a standard format:
 
 ## Rate Limiting
 API requests are limited to 100 requests per minute per IP address.
-
-## Support
-For support, please contact:
-- Email: support@thingsly.vn
-- Website: https://thingsly.vn
-- Documentation: https://docs.thingsly.vn
 
 ## Source Code
 The source code for this API is available on GitHub:
