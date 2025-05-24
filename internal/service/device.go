@@ -11,6 +11,7 @@ import (
 
 	"github.com/Thingsly/backend/initialize"
 	protocolplugin "github.com/Thingsly/backend/internal/service/protocol_plugin"
+	"github.com/Thingsly/backend/mqtt/publish"
 	"github.com/Thingsly/backend/pkg/constant"
 	"github.com/Thingsly/backend/pkg/errcode"
 	global "github.com/Thingsly/backend/pkg/global"
@@ -97,6 +98,12 @@ func (*Device) CreateDevice(req model.CreateDeviceReq, claims *utils.UserClaims)
 		return device, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
 			"sql_error": err.Error(),
 		})
+	}
+
+	// Explicitly set device as offline through MQTT
+	err = publish.PublishOnlineMessage(device.ID, []byte("0"))
+	if err != nil {
+		logrus.Error("Failed to publish initial offline status:", err)
 	}
 
 	return device, err

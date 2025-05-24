@@ -14,7 +14,6 @@ import (
 )
 
 func HeartbeatDeal(device *model.Device) {
-
 	if device.DeviceConfigID == nil {
 		return
 	}
@@ -40,13 +39,16 @@ func HeartbeatDeal(device *model.Device) {
 	}
 
 	if otherConfig.Heartbeat > 0 {
-		if device.IsOnline != int16(1) {
-
-			DeviceOnline([]byte("1"), "devices/status/"+device.ID)
+		heartbeatKey := fmt.Sprintf("device:%s:heartbeat", device.ID)
+		hasHeartbeat, err := global.STATUS_REDIS.Get(context.Background(), heartbeatKey).Result()
+		if err == nil && hasHeartbeat == "1" {
+			if device.IsOnline != int16(1) {
+				DeviceOnline([]byte("1"), "devices/status/"+device.ID)
+			}
 		}
 
-		err := global.STATUS_REDIS.Set(context.Background(),
-			fmt.Sprintf("device:%s:heartbeat", device.ID),
+		err = global.STATUS_REDIS.Set(context.Background(),
+			heartbeatKey,
 			1,
 			time.Duration(otherConfig.Heartbeat)*time.Second,
 		).Err()
@@ -59,13 +61,16 @@ func HeartbeatDeal(device *model.Device) {
 	}
 
 	if otherConfig.OnlineTimeout > 0 {
-		if device.IsOnline != int16(1) {
-
-			DeviceOnline([]byte("1"), "devices/status/"+device.ID)
+		timeoutKey := fmt.Sprintf("device:%s:timeout", device.ID)
+		hasTimeout, err := global.STATUS_REDIS.Get(context.Background(), timeoutKey).Result()
+		if err == nil && hasTimeout == "1" {
+			if device.IsOnline != int16(1) {
+				DeviceOnline([]byte("1"), "devices/status/"+device.ID)
+			}
 		}
 
-		err := global.STATUS_REDIS.Set(context.Background(),
-			fmt.Sprintf("device:%s:timeout", device.ID),
+		err = global.STATUS_REDIS.Set(context.Background(),
+			timeoutKey,
 			1,
 			time.Duration(otherConfig.OnlineTimeout)*time.Second,
 		).Err()
