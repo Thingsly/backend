@@ -146,49 +146,64 @@ func (w *WsMqttClient) SubscribeDeviceTelemetryByKeys(deviceId string, conn *web
 }
 
 func (w *WsMqttClient) SubscribeOnlineOffline(deviceId string, conn *websocket.Conn, msgType int, mu *sync.Mutex) error {
+	logrus.Debugf("Subscribing to online/offline status for device %s", deviceId)
+
 	err := w.CreateMqttClient()
 	if err != nil {
+		logrus.Errorf("Failed to create MQTT client for device %s: %v", deviceId, err)
 		return err
 	}
 
 	onlineOfflineHandler := func(_ mqtt.Client, d mqtt.Message) {
+		logrus.Debugf("Received online/offline message for device %s: %s", deviceId, string(d.Payload()))
 
 		payloadInt, err := strconv.Atoi(string(d.Payload()))
 		if err != nil {
-			logrus.Error(err.Error())
+			logrus.Errorf("Invalid payload for device %s: %v", deviceId, err)
 			return
 		}
 
-		payloadMap := make(map[string]interface{})
-		payloadMap["is_online"] = payloadInt
+		payloadMap := map[string]interface{}{
+			"is_online": payloadInt,
+			"timestamp": time.Now().Unix(),
+		}
 
 		data, err := json.Marshal(payloadMap)
 		if err != nil {
-			logrus.Error(err)
+			logrus.Errorf("Failed to marshal payload for device %s: %v", deviceId, err)
 			mu.Lock()
 			conn.WriteMessage(msgType, []byte(err.Error()))
 			mu.Unlock()
 			return
 		}
+
 		mu.Lock()
 		err = conn.WriteMessage(msgType, data)
 		mu.Unlock()
 		if err != nil {
-			logrus.Error(err)
+			logrus.Errorf("Failed to send WebSocket message for device %s: %v", deviceId, err)
 			conn.WriteMessage(msgType, []byte(err.Error()))
 			return
 		}
+
+		logrus.Debugf("Successfully sent online/offline status to WebSocket for device %s", deviceId)
 	}
+
 	onlineOfflineTopic := "devices/status/" + deviceId
 	onlineOfflineTopic = subscribe.GenTopic(onlineOfflineTopic)
 	onlineOfflineQos := byte(0)
+
+	logrus.Debugf("Subscribing to topic %s for device %s", onlineOfflineTopic, deviceId)
 	if token := w.Client.Subscribe(onlineOfflineTopic, onlineOfflineQos, onlineOfflineHandler); token.Wait() && token.Error() != nil {
-		logrus.Error(token.Error())
+		logrus.Errorf("Failed to subscribe to topic %s for device %s: %v", onlineOfflineTopic, deviceId, token.Error())
 		return token.Error()
 	}
+
+	logrus.Debugf("Successfully subscribed to online/offline status for device %s", deviceId)
 	return nil
 }
 
 func (w *WsMqttClient) Close() {
+	logrus.Debug("Closing MQTT client connection")
 	w.Client.Disconnect(250)
 }

@@ -247,17 +247,28 @@ func (*Board) GetDeviceByTenantID(ctx context.Context, tenantID string) (data *m
 		db        = dal.DeviceQuery{}
 	)
 
+	logrus.Debugf("Getting device counts for tenant %s", tenantID)
+
+	// Count total active devices
 	total, err = db.CountByWhere(ctx, device.TenantID.Eq(tenantID), device.ActivateFlag.Neq("inactive"))
 	if err != nil {
-		logrus.Error(ctx, "[GetDevice]Device count failed:", err)
-		return
+		logrus.Errorf("Failed to count total devices for tenant %s: %v", tenantID, err)
+		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+			"sql_error": err.Error(),
+		})
 	}
-	//
+
+	// Count online devices
 	on, err = db.CountByWhere(ctx, device.ActivateFlag.Eq("active"), device.TenantID.Eq(tenantID), device.IsOnline.Eq(1))
 	if err != nil {
-		logrus.Error(ctx, "[GetDevice]Device count/on failed:", err)
-		return
+		logrus.Errorf("Failed to count online devices for tenant %s: %v", tenantID, err)
+		return nil, errcode.WithData(errcode.CodeDBError, map[string]interface{}{
+			"sql_error": err.Error(),
+		})
 	}
+
+	logrus.Debugf("Device counts for tenant %s - Total: %d, Online: %d", tenantID, total, on)
+
 	data = &model.GetBoardDeviceRes{
 		DeviceTotal: total,
 		DeviceOn:    on,
