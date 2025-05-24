@@ -2,8 +2,8 @@
 
 service:
   http:
-    # host: 0.0.0.0 # Default is localhost
-    host: 103.124.93.210 # Server teacher Tien
+    host: 0.0.0.0 # Default is localhost
+    # host: 103.124.93.210 # Server teacher Tien
     port: 9999 # Default is 9999
 
 log:
@@ -54,7 +54,7 @@ grpc:
 mqtt_server: vernemq
 
 mqtt:
-  # access_address: 127.0.0.1:1883 # Default is localhost:1883  
+  # access_address: 127.0.0.1:1883 # Default is localhost:1883
   access_address: 103.124.93.210:1883 # Server teacher Tien
   # access_address: 47.128.231.67:1883 # Server AWS
   # broker: 127.0.0.1:1883 # Default is localhost:1883
