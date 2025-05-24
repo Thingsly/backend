@@ -69,6 +69,18 @@ func HeartbeatDeal(device *model.Device) {
 			return
 		}
 
+		pubsub := global.STATUS_REDIS.Subscribe(context.Background(), "__keyevent@0__:expired")
+		defer pubsub.Close()
+
+		go func() {
+			for msg := range pubsub.Channel() {
+				if msg.Payload == heartbeatKey {
+					logrus.Debugf("Heartbeat key expired for device %s, updating to offline status", device.ID)
+					DeviceOnline([]byte("0"), "devices/status/"+device.ID)
+				}
+			}
+		}()
+
 		logrus.Debugf("Successfully processed heartbeat for device %s", device.ID)
 		return
 	}
@@ -97,6 +109,18 @@ func HeartbeatDeal(device *model.Device) {
 			logrus.Errorf("Failed to set timeout key for device %s: %v", device.ID, err)
 			return
 		}
+
+		pubsub := global.STATUS_REDIS.Subscribe(context.Background(), "__keyevent@0__:expired")
+		defer pubsub.Close()
+
+		go func() {
+			for msg := range pubsub.Channel() {
+				if msg.Payload == timeoutKey {
+					logrus.Debugf("Timeout key expired for device %s, updating to offline status", device.ID)
+					DeviceOnline([]byte("0"), "devices/status/"+device.ID)
+				}
+			}
+		}()
 
 		logrus.Debugf("Successfully processed timeout for device %s", device.ID)
 	}
