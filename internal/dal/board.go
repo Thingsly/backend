@@ -141,31 +141,33 @@ func (BoardQuery) UpdateHomeFlagN(ctx context.Context, tenantid string) error {
 }
 
 // Add a default homepage dashboard for the newly added tenant.
-func (BoardQuery) CreateDefaultBoard(ctx context.Context, tenantid string) error {
+// Create a default homepage dashboard for a newly added tenant.
+func (BoardQuery) CreateDefaultBoard(ctx context.Context, tenantID string) error {
 	var (
 		board = query.Board
-		err   error
+		// JSON configuration for the default dashboard layout and widgets.
+		config = `[{"x":9,"y":0,"w":3,"h":2,"minW":2,"minH":2,"i":1745327924610429,"data":{"cardId":"alarm-count","type":"builtin","title":"Alarm Count","config":{},"layout":{"w":3,"h":2,"minH":2,"minW":2},"basicSettings":{},"dataSource":{"origin":"system","systemSource":[{}],"deviceSource":[{"metricsOptions":[],"metricsOptionsFetched":false}],"deviceCount":1}},"moved":false},
+		           {"x":3,"y":0,"w":3,"h":2,"minW":2,"minH":2,"i":1745306021843058,"data":{"cardId":"off-num","type":"builtin","title":"Offline Devices","config":{},"layout":{"w":3,"h":2,"minH":2,"minW":2},"basicSettings":{},"dataSource":{"origin":"system","systemSource":[{}],"deviceSource":[{}]}},"moved":false},
+		           {"x":0,"y":0,"w":3,"h":2,"minW":2,"minH":2,"i":1745296008998001,"data":{"cardId":"access-num","type":"builtin","title":"Total Devices","config":{},"layout":{"w":3,"h":2,"minH":2,"minW":2},"basicSettings":{},"dataSource":{"origin":"system","systemSource":[{}],"deviceSource":[{}]}},"moved":false},
+		           {"x":6,"y":0,"w":3,"h":2,"minW":2,"minH":2,"i":1745306022634299,"data":{"cardId":"on-num","type":"builtin","title":"Online Devices","config":{},"layout":{"w":3,"h":2,"minH":2,"minW":2},"basicSettings":{},"dataSource":{"origin":"system","systemSource":[{}],"deviceSource":[{}]}},"moved":false},
+		           {"x":3,"y":2,"w":2,"h":5,"minW":2,"minH":2,"i":1745499419664080,"data":{"cardId":"recently-visited","type":"builtin","title":"Recently Visited","config":{},"layout":{"w":3,"h":2,"minH":2,"minW":2},"basicSettings":{},"dataSource":{"origin":"system","systemSource":[{}],"deviceSource":[{}]}},"moved":false},
+		           {"x":5,"y":2,"w":4,"h":5,"minW":2,"minH":2,"i":1745306025963299,"data":{"cardId":"trend-online","type":"builtin","title":"Online Device Trend","config":{},"layout":{"w":4,"h":3,"minH":2,"minW":2},"basicSettings":{},"dataSource":{"origin":"system","systemSource":[{}],"deviceSource":[{}]}},"moved":false},
+		           {"x":0,"y":2,"w":3,"h":5,"minW":2,"minH":2,"i":1745374614338702,"data":{"cardId":"operation-guide","type":"builtin","title":"Operation Guide","config":{"guideList":[{"titleKey":"card.operationGuideCard.guideItems.addDevice.title","descriptionKey":"card.operationGuideCard.guideItems.addDevice.description","link":"/device/manage"},{"titleKey":"card.operationGuideCard.guideItems.configureDevice.title","descriptionKey":"card.operationGuideCard.guideItems.configureDevice.description"},{"titleKey":"card.operationGuideCard.guideItems.createDashboard.title","descriptionKey":"card.operationGuideCard.guideItems.createDashboard.description"}]},"layout":{"w":3,"h":5,"minW":2,"minH":2},"basicSettings":{},"dataSource":{"origin":"system","isSupportTimeRange":false,"dataTimeRange":"","isSupportAggregate":false,"dataAggregateRange":"","systemSource":[],"deviceSource":[]}},"moved":false},
+		           {"x":6,"y":7,"w":3,"h":6,"minW":2,"minH":2,"i":1745420206359165,"data":{"cardId":"reported-data","type":"builtin","title":"Reported Data","config":{},"layout":{"w":2,"h":2,"minW":2,"minH":2},"basicSettings":{},"dataSource":{"origin":"device","isSupportTimeRange":true,"dataTimeRange":"1h","isSupportAggregate":true,"dataAggregateRange":"1m","systemSource":[],"deviceSource":[]}},"moved":false},
+		           {"x":0,"y":7,"w":6,"h":6,"minW":2,"minH":2,"i":1745502189663242,"data":{"cardId":"alarm-info","type":"builtin","title":"Alarm Info","config":{},"layout":{"w":2,"h":2,"minW":2,"minH":2},"basicSettings":{},"dataSource":{"origin":"device","isSupportTimeRange":true,"dataTimeRange":"1h","isSupportAggregate":true,"dataAggregateRange":"1m","systemSource":[],"deviceSource":[]}},"moved":false},
+		           {"x":9,"y":7,"w":3,"h":6,"minW":2,"minH":1,"i":1745511464685393,"data":{"cardId":"version-info","type":"builtin","title":"Version Info","config":{},"layout":{"w":3,"h":1,"minW":2,"minH":1},"basicSettings":{},"dataSource":{"origin":"system","systemSource":[{}],"deviceSource":[{}]}},"moved":false}]`
 	)
 
-	// Get demo tenant's board configuration
-	demoBoard, err := board.WithContext(ctx).Where(query.Board.TenantID.Eq("d616bcbb"), query.Board.HomeFlag.Eq("Y")).First()
-	if err != nil {
-		logrus.Error(ctx, "[BoardQuery]GetDemoBoard failed:", err)
-		return err
-	}
-
-	// Create the default homepage dashboard with demo tenant's configuration
-	err = board.WithContext(ctx).Create(&model.Board{
-		ID:          uuid.New(),
-		Name:        demoBoard.Name,
-		Config:      demoBoard.Config,
-		TenantID:    tenantid,
-		CreatedAt:   time.Now().UTC(),
-		UpdatedAt:   time.Now().UTC(),
-		HomeFlag:    "Y",
-		Description: demoBoard.Description,
-		Remark:      demoBoard.Remark,
-		MenuFlag:    demoBoard.MenuFlag,
+	// Create a default homepage dashboard based on the above configuration
+	err := board.WithContext(ctx).Create(&model.Board{
+		ID:        uuid.New(),
+		Name:      "Home",
+		Config:    &config,
+		TenantID:  tenantID,
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+		HomeFlag:  "Y",
+		Remark:    nil,
 	})
 	if err != nil {
 		logrus.Error(ctx, "[BoardQuery]CreateDefaultBoard failed:", err)

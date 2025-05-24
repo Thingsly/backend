@@ -190,7 +190,6 @@ func (*BoardApi) HandleTenantDeviceInfo(c *gin.Context) {
 func (*BoardApi) HandleUserInfo(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
-	// 根据租户ID查询租户信息
 	users := service.UsersService{}
 	data, err := users.GetTenantInfo(c, userClaims.Email)
 	if err != nil {
