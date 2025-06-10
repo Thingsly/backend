@@ -29,3 +29,8 @@ go.work.sum
 .idea/
 
 configs/
+
+graduation-thesis/
+.DS_Store
+docs/.DS_Store
+
