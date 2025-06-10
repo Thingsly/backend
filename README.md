@@ -3,6 +3,10 @@
 The plug-in IoT platform developed by Go language has high performance, low entry and easy expansion. Support MQTT, multi type device access and visualization, automation, alarm, rule engine and other functions.
 
 ```cmd
+
+docker-compose -f docker-compose-dev.yml up --build
+docker-compose -f docker-compose-dev.yml down
+
 System Administrator: demo-super@thingsly.vn / 123456
 Tenant Administrator: demo-tenant@thingsly.vn / 123456
 

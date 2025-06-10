@@ -21,9 +21,9 @@ jwt:
 
 db:
   psql:
-    # host: 127.0.0.1 # Default is localhost
+    host: 127.0.0.1 # Default is localhost
     # host: 47.128.231.67 # Server AWS
-    host: 103.124.93.210 # Server teacher Tien
+    # host: 103.124.93.210 # Server teacher Tien
     port: 5432 # Default is 5432
     # port: 5555 # For testing
     dbname: Thingsly
@@ -39,8 +39,8 @@ db:
     slow_threshold: 200 # Default is 200 milliseconds
 
   redis:
-    # addr: 127.0.0.1:6379 # Default is localhost:6379
-    addr: 103.124.93.210:6379 # Server teacher Tien
+    addr: 127.0.0.1:6379 # Default is localhost:6379
+    # addr: 103.124.93.210:6379 # Server teacher Tien
     # addr: 47.128.231.67:6379 # Server AWS
     db: 1 # Default is 0
     db1: 10 # Default is 10, cannot be 0, used for user device status management
@@ -54,12 +54,12 @@ grpc:
 mqtt_server: vernemq
 
 mqtt:
-  # access_address: 127.0.0.1:1883 # Default is localhost:1883
-  access_address: 103.124.93.210:1883 # Server teacher Tien
+  access_address: 127.0.0.1:1883 # Default is localhost:1883
+  # access_address: 103.124.93.210:1883 # Server teacher Tien
   # access_address: 47.128.231.67:1883 # Server AWS
-  # broker: 127.0.0.1:1883 # Default is localhost:1883
+  broker: 127.0.0.1:1883 # Default is localhost:1883
   # broker: 47.128.231.67:1883
-  broker: 103.124.93.210:1883 # Server teacher Tien
+  # broker: 103.124.93.210:1883 # Server teacher Tien
   user: root # Default is root
   pass: root # Default is root
   channel_buffer_size: 10000 # Default is 10000

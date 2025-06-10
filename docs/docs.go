@@ -728,6 +728,193 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "put": {
+                "summary": "Update device status",
+                "description": "Update device status with the provided information",
+                "tags": ["device"],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "device",
+                        "in": "body",
+                        "description": "Device status information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateDeviceReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.Device"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Device not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/device/detail/{id}": {
+            "get": {
+                "summary": "Get device by ID",
+                "description": "Get detailed information about a specific device",
+                "tags": ["device"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.Device"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Device not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/device/{id}": {
+            "delete": {
+                "summary": "Delete device",
+                "description": "Delete a device by ID",
+                "tags": ["device"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "x-token",
+                        "in": "header",
+                        "description": "Authentication token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Device ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Device not found",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/errcode.Error"
+                        }
+                    }
+                }
             }
         },
         "/api/v1/device/active": {
@@ -855,11 +1042,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/api/v1/device/detail/{id}": {
-            "get": {
-                "responses": {}
             }
         },
         "/api/v1/device/group": {
@@ -1233,128 +1415,6 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Template not found",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/device/{id}": {
-            "get": {
-                "summary": "Get device by ID",
-                "description": "Get detailed information about a specific device",
-                "tags": ["device"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "x-token",
-                        "in": "header",
-                        "description": "Authentication token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Device ID",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/model.Device"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request parameters",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "Device not found",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete device",
-                "description": "Delete a device by ID",
-                "tags": ["device"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "x-token",
-                        "in": "header",
-                        "description": "Authentication token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Device ID",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/model.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request parameters",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/errcode.Error"
-                        }
-                    },
-                    "404": {
-                        "description": "Device not found",
                         "schema": {
                             "$ref": "#/definitions/errcode.Error"
                         }
@@ -1995,17 +2055,31 @@ const docTemplate = `{
                 }
             }
         },
-        "model.ActiveDeviceReq": {
+        "model.UpdateDeviceReq": {
             "type": "object",
-            "required": ["device_id", "activate_flag"],
+            "required": ["id", "is_online"],
             "properties": {
-                "device_id": {
+                "id": {
                     "type": "string",
                     "description": "Device ID"
                 },
-                "activate_flag": {
+                "is_online": {
+                    "type": "integer",
+                    "description": "Device online status"
+                }
+            }
+        },
+        "model.ActiveDeviceReq": {
+            "type": "object",
+            "required": ["device_number", "name"],
+            "properties": {
+                "device_number": {
                     "type": "string",
-                    "description": "Activation flag (active/inactive)"
+                    "description": "Device number"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Device name"
                 }
             }
         },
@@ -2547,7 +2621,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "v1.0.0",
-	Host:             "103.124.93.210:9999",
+	// Host:             "103.124.93.210:9999",
+	Host:             "127.0.0.1:9999",
 	BasePath:         "",
 	Schemes:          []string{"http", "https"},
 	Title:            "Thingsly IoT Platform API",
@@ -2574,9 +2649,6 @@ All API responses follow a standard format:
 - 403: Forbidden - Insufficient permissions
 - 404: Not Found - Resource not found
 - 500: Internal Server Error
-
-## Rate Limiting
-API requests are limited to 100 requests per minute per IP address.
 
 ## Source Code
 The source code for this API is available on GitHub:

@@ -19,7 +19,7 @@ func SetUpRouter() *gin.Engine {
 
 func TestHomepageHandler(t *testing.T) {
 	userApi := api.UserApi{}
-	// mockResponse := `{"message":"Welcome to the Tech Company listing API with Golang"}`
+	// mockResponse := `{"message":"Welcome to the API with Golang"}`
 	r := SetUpRouter()
 	r.GET("/api/v1/user", userApi.HandleUserListByPage)
 	req, _ := http.NewRequest("GET", "/api/v1/user?page=1&page_size=10", nil)

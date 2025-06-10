@@ -50,7 +50,8 @@ grpc:
 mqtt_server: vernemq
 
 mqtt:
-  access_address: 47.92.253.145:1883
+  access_address: 127.0.0.1:1883 # Default is localhost:1883
+  # access_address: 47.92.253.145:1883
   broker: 127.0.0.1:1883 # Default is localhost:1883
   #  broker: 47.92.253.145:1883
   user: root # Default is root

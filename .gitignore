@@ -34,3 +34,4 @@ graduation-thesis/
 .DS_Store
 docs/.DS_Store
 
+tmp/
