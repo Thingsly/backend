@@ -39,8 +39,10 @@ func main() {
 	// )
 	g.ApplyBasic(
 		// Generate structs from all tables of current database
-		g.GenerateAllTable()...,
-	//g.GenerateModel("devices"),
+		// g.GenerateAllTable()...,
+		//g.GenerateModel("devices"),
+		// Generate struct for test_table
+		// g.GenerateModel("test_table"),
 	)
 	// Generate the code
 	g.Execute()

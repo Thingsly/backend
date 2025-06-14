@@ -21,23 +21,23 @@ var (
 
 func TempHumSensor() {
 
-	createClient()
+	// createClient()
 
-	subscribeControlMessage()
+	// subscribeControlMessage()
 
-	go publishTelemetryMessage("devices/telemetry")
+	// go publishTelemetryMessage("devices/telemetry")
 
-	go publishAttributeMessage("devices/attributes/")
+	// go publishAttributeMessage("devices/attributes/")
 
-	go publishEventMessage("devices/event/")
+	// go publishEventMessage("devices/event/")
 
-	// createGatewayClient()
+	createGatewayClient()
 
-	// go publishGatewayTelemetryMessage("gateway/telemetry")
+	go publishGatewayTelemetryMessage("gateway/telemetry")
 
-	// go publishGatewayAttributeMessage("gateway/attributes/")
+	go publishGatewayAttributeMessage("gateway/attributes/")
 
-	// go publishGatewayEventMessage("gateway/event/")
+	go publishGatewayEventMessage("gateway/event/")
 	select {}
 }
 
@@ -45,8 +45,8 @@ func createClient() {
 
 	opts := MqttConfig{
 		Broker: "127.0.0.1:1883",
-		User:   "sensor1",
-		Pass:   "",
+		User:   "8cc60abf-40ab-b725-6d9",
+		Pass:   "b7e693c",
 	}
 	mqttClient = CreateMqttClient(opts)
 }
@@ -54,17 +54,17 @@ func createClient() {
 func createGatewayClient() {
 
 	opts := MqttConfig{
-		Broker: "localhost:1883",
+		Broker: "127.0.0.1:1883",
 		// Broker: "47.92.253.145:1883",
-		User: "3f07250e-bdcd-1692-ea2",
-		Pass: "",
+		User: "2ff45516-be20-1d3e-afc",
+		Pass: "ed287f9",
 	}
 	gatewayMqttClient = CreateMqttClient(opts)
 }
 
 // Subscribe to control messages
 func subscribeControlMessage() {
-	topic := "devices/telemetry/control/sensor1"
+	topic := "devices/telemetry/control/8cc60abf-40ab-b725-6d9"
 	token := (*mqttClient).Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {
 		var controlMsg map[string]interface{}
 		err := json.Unmarshal(msg.Payload(), &controlMsg)
@@ -275,7 +275,7 @@ func publishGatewayTelemetryMessage(topic string) {
 
 	for {
 		subDevice := make(map[string]map[string]interface{})
-		subDevice["3d6bd6af"] = *getTelemetryMessageParams()
+		subDevice["fb7871c3"] = *getTelemetryMessageParams()
 		payloads := &model.GatewayPublish{
 			GatewayData:   getTelemetryMessageParams(),
 			SubDeviceData: &subDevice,
@@ -299,7 +299,7 @@ func publishGatewayAttributeMessage(topic string) {
 
 	for {
 		subDevice := make(map[string]map[string]interface{})
-		subDevice["3d6bd6af"] = *getAttributeMessageParams()
+		subDevice["fb7871c3"] = *getAttributeMessageParams()
 		payloads := &model.GatewayPublish{
 			GatewayData:   getAttributeMessageParams(),
 			SubDeviceData: &subDevice,
@@ -324,7 +324,7 @@ func publishGatewayEventMessage(topic string) {
 
 	for {
 		subDevice := make(map[string]map[string]interface{})
-		subDevice["3d6bd6af"] = *getEventMessageParams()
+		subDevice["fb7871c3"] = *getEventMessageParams()
 		payloads := &model.GatewayPublish{
 			GatewayData:   getEventMessageParams(),
 			SubDeviceData: &subDevice,

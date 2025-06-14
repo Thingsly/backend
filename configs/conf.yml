@@ -25,7 +25,7 @@ db:
     # host: 47.128.231.67 # Server AWS
     # host: 103.124.93.210 # Server teacher Tien
     port: 5432 # Default is 5432
-    # port: 5555 # For testing
+    # port: 5555 # For gen model code
     dbname: Thingsly
     username: postgres
     password: postgresThingsly

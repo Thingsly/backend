@@ -38,7 +38,7 @@ func CreateMqttClient(config MqttConfig) *mqtt.Client {
 	})
 
 	opts.SetConnectionLostHandler(func(client mqtt.Client, err error) {
-		log.Println("mqtt connect  lost: ", err)
+		log.Println("mqtt connect lost: ", err)
 
 		for {
 			token := client.Connect()
