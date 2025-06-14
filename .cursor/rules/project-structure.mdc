@@ -1,0 +1,42 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Thingsly IoT Platform Structure
+
+## Core Directories
+- `cmd/`: Command-line tools and utilities
+- `configs/`: Configuration files
+- `docs/`: Project documentation
+- `files/`: File storage
+- `initialize/`: System initialization code
+- `internal/`: Main project implementation
+  - `api/`: API interfaces
+  - `app/`: Core application logic
+  - `dal/`: Data Access Layer
+  - `logic/`: Business logic
+  - `middleware/`: HTTP middleware
+  - `model/`: Data models
+  - `query/`: Query implementations
+  - `service/`: Service layer
+- `mqtt/`: MQTT protocol implementation
+- `pkg/`: External packages
+  - `utils/`: Utility functions
+  - `errcode/`: Error codes
+  - `global/`: Global variables
+  - `constant/`: Constants
+  - `common/`: Common functions
+- `router/`: Route definitions
+- `sql/`: Database scripts
+- `static/`: Static resources
+- `third_party/`: Third-party libraries
+- `test/`: Test code
+
+## Technology Stack
+- Backend: Go (Gin + Gorm)
+- Database: PostgreSQL with TimescaleDB
+- Cache: Redis
+- Message Queue: MQTT (GMQTT/VerneMQ)
+- Access Control: Casbin
+- Documentation: Swagger

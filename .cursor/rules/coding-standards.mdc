@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Thingsly Coding Standards
+
+## Naming Conventions
+- Package names: lowercase words, no underscores or mixed case
+- File names: lowercase with underscores (e.g., `device_model.go`)
+- Function names: camelCase, public functions start with uppercase
+- Variable names: camelCase, private variables start with lowercase
+
+## Comment Standards
+- Package comments: Block comments before package declaration
+- Function comments: Required for public functions
+- API comments: Swagger annotations for API documentation
+
+## Error Handling
+- Use error codes from `pkg/errcode`
+- Clear and specific error messages
+- Uniform error handling at API layer
+
+## API Response Format
+```json
+{
+  "code": 200,
+  "msg": "Operation successful",
+  "data": {}
+}
+```
+
+## Database Standards
+- Models defined in `internal/model`
+- Use gorm tags for field mappings
+- Table names in lowercase with underscores
+- Use gorm/gen for query generation
+- Complex queries in dal layer
+- Avoid raw SQL in business logic
+
+## RESTful API Standards
+- GET: Retrieve resources
+- POST: Create resources
+- PUT: Update resources
+- DELETE: Delete resources
+- Version control via URL (/api/v1/) or Accept header

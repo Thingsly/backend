@@ -1,0 +1,65 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Thingsly Development Workflow
+
+## Code Organization
+1. **Modular Design**
+   - Organize by functional modules
+   - Maintain module independence
+   - Clear module boundaries
+
+2. **Layered Architecture**
+   - API Layer: Request handling and validation
+   - Service Layer: Business logic implementation
+   - Repository Layer: Data access and persistence
+
+3. **Dependency Injection**
+   - Reduce module coupling
+   - Improve testability
+   - Clear dependency flow
+
+## Development Process
+1. **Planning**
+   - Define requirements
+   - Design architecture
+   - Plan implementation steps
+
+2. **Implementation**
+   - Follow coding standards
+   - Write unit tests
+   - Document code and APIs
+
+3. **Testing**
+   - Unit tests for business logic
+   - Integration tests for APIs
+   - Performance testing for critical paths
+
+4. **Review**
+   - Code review
+   - Documentation review
+   - Security review
+
+## Best Practices
+1. **Code Quality**
+   - Keep functions small and focused
+   - Use meaningful variable names
+   - Write self-documenting code
+
+2. **Error Handling**
+   - Handle all error cases
+   - Provide meaningful error messages
+   - Log errors appropriately
+
+3. **Performance**
+   - Optimize database queries
+   - Use caching where appropriate
+   - Monitor resource usage
+
+4. **Security**
+   - Validate all inputs
+   - Use proper authentication
+   - Implement access control
+   - Protect sensitive data
