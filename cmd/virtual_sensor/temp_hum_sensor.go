@@ -21,32 +21,34 @@ var (
 
 func TempHumSensor() {
 
-	// createClient()
+	createClient()
 
-	// subscribeControlMessage()
+	subscribeControlMessage()
 
-	// go publishTelemetryMessage("devices/telemetry")
+	go publishTelemetryMessage("devices/telemetry")
 
-	// go publishAttributeMessage("devices/attributes/")
+	go publishAttributeMessage("devices/attributes/")
 
-	// go publishEventMessage("devices/event/")
+	go publishEventMessage("devices/event/")
 
-	createGatewayClient()
+	// createGatewayClient()
 
-	go publishGatewayTelemetryMessage("gateway/telemetry")
+	// go publishGatewayTelemetryMessage("gateway/telemetry")
 
-	go publishGatewayAttributeMessage("gateway/attributes/")
+	// go publishGatewayAttributeMessage("gateway/attributes/")
 
-	go publishGatewayEventMessage("gateway/event/")
+	// go publishGatewayEventMessage("gateway/event/")
+
 	select {}
 }
 
 func createClient() {
 
 	opts := MqttConfig{
-		Broker: "127.0.0.1:1883",
-		User:   "8cc60abf-40ab-b725-6d9",
-		Pass:   "b7e693c",
+		// Broker: "127.0.0.1:1883",
+		Broker: "103.124.93.210:1883",
+		User:   "4418a5d3-6d8b-2545-1c8",
+		Pass:   "1d75f93",
 	}
 	mqttClient = CreateMqttClient(opts)
 }
@@ -54,17 +56,17 @@ func createClient() {
 func createGatewayClient() {
 
 	opts := MqttConfig{
-		Broker: "127.0.0.1:1883",
-		// Broker: "47.92.253.145:1883",
-		User: "2ff45516-be20-1d3e-afc",
-		Pass: "ed287f9",
+		// Broker: "127.0.0.1:1883",
+		Broker: "103.124.93.210:1883",
+		User:   "2ff45516-be20-1d3e-afc",
+		Pass:   "ed287f9",
 	}
 	gatewayMqttClient = CreateMqttClient(opts)
 }
 
 // Subscribe to control messages
 func subscribeControlMessage() {
-	topic := "devices/telemetry/control/8cc60abf-40ab-b725-6d9"
+	topic := "devices/telemetry/control/5cd3b3a7-ff2b-02d4-63e6-12797e223c11"
 	token := (*mqttClient).Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {
 		var controlMsg map[string]interface{}
 		err := json.Unmarshal(msg.Payload(), &controlMsg)
@@ -157,6 +159,8 @@ func publishAttributeMessage(topic string) {
 		message["version"] = "1.0.0"
 		message["status"] = "normal"
 		message["mac"] = "00:11:22:33:44:55"
+		message["longitude"] = 105.804817
+		message["latitude"] = 21.028511
 		// Convert to JSON format
 		var payload []byte
 		payload, err := json.Marshal(message)
@@ -234,14 +238,14 @@ func generateRandomFloat() (float64, error) {
 	// Generate the integer part between [10.00, 99.99]
 	integer, err := rand.Int(rand.Reader, big.NewInt(90))
 	if err != nil {
-		return 0, fmt.Errorf("Failed to generate integer part: %v", err)
+		return 0, fmt.Errorf("failed to generate integer part: %v", err)
 	}
 	integer = integer.Add(integer, big.NewInt(10))
 
 	// Generate the decimal part between [0, 99]
 	decimal, err := rand.Int(rand.Reader, big.NewInt(100))
 	if err != nil {
-		return 0, fmt.Errorf("Failed to generate decimal part: %v", err)
+		return 0, fmt.Errorf("failed to generate decimal part: %v", err)
 	}
 
 	// Combine the integer and decimal parts
@@ -255,6 +259,8 @@ func getAttributeMessageParams() *map[string]interface{} {
 	message["version"] = "1.0.0"
 	message["status"] = "normal"
 	message["mac"] = "00:11:22:33:44:55"
+	message["longitude"] = 105.804817
+	message["latitude"] = 21.028511
 
 	return &message
 }

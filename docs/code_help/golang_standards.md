@@ -4,7 +4,7 @@
 
 **Reference Repository**: [https://github.com/golang-standards](https://github.com/golang-standards)
 
-**Documentation**: [https://github.com/golang-standards/project-layout/blob/master/README_zh.md](https://github.com/golang-standards/project-layout/blob/master/README.md)
+**Documentation**: [https://github.com/golang-standards/project-layout/blob/master/README.md](https://github.com/golang-standards/project-layout/blob/master/README.md)
 
 1. **Positive Feedback**: Many developers praise the clear structure and well-organized project layout provided. Especially for beginners and developers transitioning from other programming languages to Go, these guidelines serve as a great starting point, helping them quickly get started and follow generally accepted best practices.
 
