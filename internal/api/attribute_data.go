@@ -15,6 +15,13 @@ type AttributeDataApi struct{}
 
 // GetDataList
 // @Router   /api/v1/attribute/datas/{id} [get]
+// @Summary Get attribute data list
+// @Description Get the list of attribute data
+// @Tags Attribute Data
+// @Accept json
+// @Produce json
+// @Param id path string true "Attribute data ID"
+// @Success 200 {object} model.AttributeData "Attribute data list retrieved successfully"
 func (*AttributeDataApi) HandleDataList(c *gin.Context) {
 	id := c.Param("id")
 	data, err := service.GroupApp.AttributeData.GetAttributeDataList(id)
@@ -27,6 +34,13 @@ func (*AttributeDataApi) HandleDataList(c *gin.Context) {
 
 // Query device attributes by key
 // /api/v1/attribute/datas/key [get]
+// @Summary Get attribute data by key
+// @Description Get attribute data by its key
+// @Tags Attribute Data
+// @Accept json
+// @Produce json
+// @Param key query string true "Attribute key"
+// @Success 200 {object} model.AttributeData "Attribute data retrieved successfully"
 func (*AttributeDataApi) HandleAttributeDataByKey(c *gin.Context) {
 	var req model.GetDataListByKeyReq
 	if !BindAndValidate(c, &req) {
@@ -42,6 +56,13 @@ func (*AttributeDataApi) HandleAttributeDataByKey(c *gin.Context) {
 
 // DeleteData - Delete Attribute Data
 // @Router   /api/v1/attribute/datas/{id} [delete]
+// @Summary Delete attribute data
+// @Description Delete attribute data by its ID
+// @Tags Attribute Data
+// @Accept json
+// @Produce json
+// @Param id path string true "Attribute data ID"
+// @Success 200 {object} model.AttributeData "Attribute data deleted successfully"
 func (*AttributeDataApi) DeleteData(c *gin.Context) {
 	id := c.Param("id")
 	err := service.GroupApp.AttributeData.DeleteAttributeData(id)
@@ -54,6 +75,13 @@ func (*AttributeDataApi) DeleteData(c *gin.Context) {
 
 // GetAttributeSetLogsDataListByPage - Attribute Distribution Record Query (Pagination)
 // @Router   /api/v1/attribute/datas/set/logs [get]
+// @Summary Get attribute set logs data list by page
+// @Description Get the list of attribute set logs data by page
+// @Tags Attribute Data
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number"
+// @Success 200 {object} model.AttributeData "Attribute set logs data list retrieved successfully"
 func (*AttributeDataApi) HandleAttributeSetLogsDataListByPage(c *gin.Context) {
 	var req model.GetAttributeSetLogsListByPageReq
 	if !BindAndValidate(c, &req) {

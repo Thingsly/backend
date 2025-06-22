@@ -12,6 +12,13 @@ type DeviceConfigApi struct{}
 
 // CreateDeviceConfig
 // @Router   /api/v1/device_config [post]
+// @Summary Create device config
+// @Description Create a new device configuration
+// @Tags Device Config
+// @Accept json
+// @Produce json
+// @Param create_device_config_req body model.CreateDeviceConfigReq true "Device configuration details"
+// @Success 200 {object} model.CreateDeviceConfigReq "Device configuration created successfully"
 func (*DeviceConfigApi) CreateDeviceConfig(c *gin.Context) {
 	var req model.CreateDeviceConfigReq
 	if !BindAndValidate(c, &req) {
@@ -29,6 +36,13 @@ func (*DeviceConfigApi) CreateDeviceConfig(c *gin.Context) {
 
 // UpdateDeviceConfig
 // @Router   /api/v1/device_config [put]
+// @Summary Update device config
+// @Description Update the device configuration
+// @Tags Device Config
+// @Accept json
+// @Produce json
+// @Param update_device_config_req body model.UpdateDeviceConfigReq true "Device configuration details"
+// @Success 200 {object} model.UpdateDeviceConfigReq "Device configuration updated successfully"
 func (*DeviceConfigApi) UpdateDeviceConfig(c *gin.Context) {
 	var req model.UpdateDeviceConfigReq
 	if !BindAndValidate(c, &req) {
@@ -46,6 +60,13 @@ func (*DeviceConfigApi) UpdateDeviceConfig(c *gin.Context) {
 
 // DeleteDeviceConfig
 // @Router   /api/v1/device_config/{id} [delete]
+// @Summary Delete device config
+// @Description Delete the device configuration
+// @Tags Device Config
+// @Accept json
+// @Produce json
+// @Param id path string true "Device configuration ID"
+// @Success 200 {object} model.DeviceConfig "Device configuration deleted successfully"
 func (*DeviceConfigApi) DeleteDeviceConfig(c *gin.Context) {
 	id := c.Param("id")
 	err := service.GroupApp.DeviceConfig.DeleteDeviceConfig(id)
@@ -58,6 +79,13 @@ func (*DeviceConfigApi) DeleteDeviceConfig(c *gin.Context) {
 
 // GetDeviceConfigById
 // @Router   /api/v1/device_config/{id} [get]
+// @Summary Get device config by ID
+// @Description Get the device configuration by its ID
+// @Tags Device Config
+// @Accept json
+// @Produce json
+// @Param id path string true "Device configuration ID"
+// @Success 200 {object} model.DeviceConfig "Device configuration retrieved successfully"
 func (*DeviceConfigApi) HandleDeviceConfigById(c *gin.Context) {
 	id := c.Param("id")
 	info, err := service.GroupApp.DeviceConfig.GetDeviceConfigByID(c, id)
@@ -70,6 +98,13 @@ func (*DeviceConfigApi) HandleDeviceConfigById(c *gin.Context) {
 
 // GetDeviceConfigListByPage
 // @Router   /api/v1/device_config [get]
+// @Summary Get device config list by page
+// @Description Get the list of device configurations by page
+// @Tags Device Config
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number"
+// @Success 200 {object} model.GetDeviceConfigListByPageReq "Device configuration list retrieved successfully"
 func (*DeviceConfigApi) HandleDeviceConfigListByPage(c *gin.Context) {
 	var req model.GetDeviceConfigListByPageReq
 	if !BindAndValidate(c, &req) {

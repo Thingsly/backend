@@ -16,6 +16,12 @@ type CommandSetLogApi struct{}
 
 // ServeSetLogsDataListByPage - Command Distribution Record Query (Pagination)
 // @Router   /api/v1/command/datas/set/logs [get]
+// @Summary Get command list
+// @Description Get a list of commands
+// @Tags Command Set Log
+// @Accept json
+// @Produce json
+// @Param id path string true "Command ID"
 func (CommandSetLogApi) ServeSetLogsDataListByPage(c *gin.Context) {
 	var req model.GetCommandSetLogsListByPageReq
 	if !BindAndValidate(c, &req) {
@@ -32,6 +38,13 @@ func (CommandSetLogApi) ServeSetLogsDataListByPage(c *gin.Context) {
 }
 
 // /api/v1/command/datas/pub [post]
+// @Summary Send command data
+// @Description Send command data to the server
+// @Tags Command Set Log
+// @Accept json
+// @Produce json
+// @Param command_data body model.PutMessageForCommand true "Command data to send"
+// @Success 200 {object} model.PutMessageForCommand "Command data sent successfully"
 func (CommandSetLogApi) CommandPutMessage(c *gin.Context) {
 	var req model.PutMessageForCommand
 	if !BindAndValidate(c, &req) {
@@ -47,7 +60,13 @@ func (CommandSetLogApi) CommandPutMessage(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// /api/v1/command/datas/{id}
+// /api/v1/command/datas/{id} [get]
+// @Summary Get command list
+// @Description Get a list of commands
+// @Tags Command Set Log
+// @Accept json
+// @Produce json
+// @Param id path string true "Command ID"
 func (CommandSetLogApi) HandleCommandList(c *gin.Context) {
 	id := c.Param("id")
 

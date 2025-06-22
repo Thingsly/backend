@@ -14,6 +14,12 @@ var casbinService = service.GroupApp.Casbin
 
 // AddFunctionToRole
 // @Router   /api/v1/casbin/function [post]
+// @Summary Add functions to role
+// @Description Add functions to a specific role
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param functions_role_validate body model.FunctionsRoleValidate true "Functions and role details"
 func (*CasbinApi) AddFunctionToRole(c *gin.Context) {
 	var req model.FunctionsRoleValidate
 	if !BindAndValidate(c, &req) {
@@ -62,6 +68,12 @@ func (*CasbinApi) HandleFunctionFromRole(c *gin.Context) {
 
 // UpdateFunctionFromRole
 // @Router   /api/v1/casbin/function [put]
+// @Summary Update functions from role
+// @Description Update functions for a specific role
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param functions_role_validate body model.FunctionsRoleValidate true "Functions and role details"
 func (*CasbinApi) UpdateFunctionFromRole(c *gin.Context) {
 	var req model.FunctionsRoleValidate
 	if !BindAndValidate(c, &req) {
@@ -102,6 +114,12 @@ func (*CasbinApi) UpdateFunctionFromRole(c *gin.Context) {
 
 // DeleteFunctionFromRole
 // @Router   /api/v1/casbin/function/{id} [delete]
+// @Summary Delete functions from role
+// @Description Delete functions from a specific role
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param id path string true "Role ID"
 func (*CasbinApi) DeleteFunctionFromRole(c *gin.Context) {
 	id := c.Param("id")
 	ok := casbinService.RemoveRoleAndFunction(id)
@@ -117,6 +135,12 @@ func (*CasbinApi) DeleteFunctionFromRole(c *gin.Context) {
 
 // AddRoleToUser
 // @Router   /api/v1/casbin/user [post]
+// @Summary Add roles to user
+// @Description Add roles to a specific user
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param roles_user_validate body model.RolesUserValidate true "Roles and user details"
 func (*CasbinApi) AddRoleToUser(c *gin.Context) {
 	var req model.RolesUserValidate
 	if !BindAndValidate(c, &req) {
@@ -139,6 +163,13 @@ func (*CasbinApi) AddRoleToUser(c *gin.Context) {
 
 // GetRolesFromUser
 // @Router   /api/v1/casbin/user [get]
+// @Summary Get roles from user
+// @Description Get roles from a specific user
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param user_id path string true "User ID"
+// @Success 200 {object} model.UserValidate "Roles retrieved successfully"
 func (*CasbinApi) HandleRolesFromUser(c *gin.Context) {
 	var req model.UserValidate
 	if !BindAndValidate(c, &req) {
@@ -160,6 +191,12 @@ func (*CasbinApi) HandleRolesFromUser(c *gin.Context) {
 
 // UpdateRolesFromUser
 // @Router   /api/v1/casbin/user [put]
+// @Summary Update roles from user
+// @Description Update roles for a specific user
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param roles_user_validate body model.RolesUserValidate true "Roles and user details"
 func (*CasbinApi) UpdateRolesFromUser(c *gin.Context) {
 	var req model.RolesUserValidate
 	if !BindAndValidate(c, &req) {
@@ -189,6 +226,12 @@ func (*CasbinApi) UpdateRolesFromUser(c *gin.Context) {
 
 // DeleteRolesFromUser
 // @Router   /api/v1/casbin/user/{id} [delete]
+// @Summary Delete roles from user
+// @Description Delete roles from a specific user
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
 func (*CasbinApi) DeleteRolesFromUser(c *gin.Context) {
 	id := c.Param("id")
 	ok := casbinService.RemoveUserAndRole(id)

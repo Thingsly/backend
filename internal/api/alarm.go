@@ -239,6 +239,13 @@ func (*AlarmApi) HandleDeviceAlarmStatus(c *gin.Context) {
 }
 
 // /api/v1/alarm/info/config/device [get]
+// @Summary Get alarm config by device
+// @Description Get alarm config by device
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param device_id query string true "Device ID"
+// @Success 200 {object} model.AlarmConfig "Alarm config retrieved successfully"
 func (*AlarmApi) HandleConfigByDevice(c *gin.Context) {
 	//
 	var req model.GetDeviceAlarmStatusReq

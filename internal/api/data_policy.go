@@ -11,6 +11,13 @@ type DataPolicyApi struct{}
 
 // UpdateDataPolicy
 // @Router   /api/v1/datapolicy [put]
+// @Summary Update data policy
+// @Description Update the data policy
+// @Tags Data Policy
+// @Accept json
+// @Produce json
+// @Param update_data_policy_req body model.UpdateDataPolicyReq true "Data policy details"
+// @Success 200 {object} model.UpdateDataPolicyReq "Data policy updated successfully"
 func (*DataPolicyApi) UpdateDataPolicy(c *gin.Context) {
 	var req model.UpdateDataPolicyReq
 	if !BindAndValidate(c, &req) {
@@ -27,6 +34,13 @@ func (*DataPolicyApi) UpdateDataPolicy(c *gin.Context) {
 
 // GetDataPolicyListByPage
 // @Router   /api/v1/datapolicy [get]
+// @Summary Get data policy list by page
+// @Description Get the list of data policies by page
+// @Tags Data Policy
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number"
+// @Success 200 {object} model.GetDataPolicyListByPageReq "Data policy list retrieved successfully"
 func (*DataPolicyApi) HandleDataPolicyListByPage(c *gin.Context) {
 	var req model.GetDataPolicyListByPageReq
 	if !BindAndValidate(c, &req) {

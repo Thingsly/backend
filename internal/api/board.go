@@ -13,6 +13,13 @@ type BoardApi struct{}
 
 // CreateBoard
 // @Router   /api/v1/board [post]
+// @Summary Create board
+// @Description Create a new board
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param create_board_req body model.CreateBoardReq true "Board information details"
+// @Success 200 {object} model.CreateBoardReq "Board created successfully"
 func (*BoardApi) CreateBoard(c *gin.Context) {
 	var req model.CreateBoardReq
 	if !BindAndValidate(c, &req) {
@@ -33,6 +40,13 @@ func (*BoardApi) CreateBoard(c *gin.Context) {
 
 // UpdateBoard
 // @Router   /api/v1/board [put]
+// @Summary Update board
+// @Description Update the information of a board
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param update_board_req body model.UpdateBoardReq true "Board information details"
+// @Success 200 {object} model.UpdateBoardReq "Board information updated successfully"
 func (*BoardApi) UpdateBoard(c *gin.Context) {
 	var req model.UpdateBoardReq
 	if !BindAndValidate(c, &req) {
@@ -58,6 +72,13 @@ func (*BoardApi) UpdateBoard(c *gin.Context) {
 
 // DeleteBoard
 // @Router   /api/v1/board/{id} [delete]
+// @Summary Delete board
+// @Description Delete a board by its ID
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param id path string true "Board ID"
+// @Success 200 {object} model.UsersUpdateReq "Board deleted successfully"
 func (*BoardApi) DeleteBoard(c *gin.Context) {
 	id := c.Param("id")
 	err := service.GroupApp.Board.DeleteBoard(id)
@@ -70,6 +91,13 @@ func (*BoardApi) DeleteBoard(c *gin.Context) {
 
 // GetBoardListByPage
 // @Router   /api/v1/board [get]
+// @Summary Get board list by page
+// @Description Get the list of boards by page
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number"
+// @Success 200 {object} model.UsersUpdateReq "Board list retrieved successfully"
 func (*BoardApi) HandleBoardListByPage(c *gin.Context) {
 	var req model.GetBoardListByPageReq
 	if !BindAndValidate(c, &req) {
@@ -86,6 +114,13 @@ func (*BoardApi) HandleBoardListByPage(c *gin.Context) {
 
 // GetBoard
 // @Router   /api/v1/board/{id} [get]
+// @Summary Get board by ID
+// @Description Get the information of a board by its ID
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param id path string true "Board ID"
+// @Success 200 {object} model.UsersUpdateReq "Board information retrieved successfully"
 func (*BoardApi) HandleBoard(c *gin.Context) {
 	id := c.Param("id")
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
@@ -99,6 +134,12 @@ func (*BoardApi) HandleBoard(c *gin.Context) {
 
 // GetBoardListByTenantId
 // @Router   /api/v1/board/home [get]
+// @Summary Get board list by tenant ID
+// @Description Get the list of boards for a specific tenant
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.UsersUpdateReq "Board list retrieved successfully"
 func (*BoardApi) HandleBoardListByTenantId(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
@@ -112,6 +153,12 @@ func (*BoardApi) HandleBoardListByTenantId(c *gin.Context) {
 
 // GetDeviceTotal
 // @Router   /api/v1/board/device/total [get]
+// @Summary Get device total
+// @Description Get the total number of devices
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.UsersUpdateReq "Device total retrieved successfully"
 func (*BoardApi) HandleDeviceTotal(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
@@ -126,6 +173,12 @@ func (*BoardApi) HandleDeviceTotal(c *gin.Context) {
 
 // GetDevice
 // @Router   /api/v1/board/device [get]
+// @Summary Get device information
+// @Description Get the information of a device
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.UsersUpdateReq "Device information retrieved successfully"
 func (*BoardApi) HandleDevice(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
@@ -140,6 +193,12 @@ func (*BoardApi) HandleDevice(c *gin.Context) {
 
 // GetTenant
 // @Router   /api/v1/board/tenant [get]
+// @Summary Get tenant information
+// @Description Get the information of a tenant
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.UsersUpdateReq "Tenant information retrieved successfully"
 func (*BoardApi) HandleTenant(c *gin.Context) {
 	// TODO:: Unsure if user information needs to be revalidated
 	users := service.UsersService{}
@@ -153,6 +212,12 @@ func (*BoardApi) HandleTenant(c *gin.Context) {
 
 // GetTenantUserInfo
 // @Router   /api/v1/board/tenant/user/info [get]
+// @Summary Get user information
+// @Description Get the information of a user
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.UsersUpdateReq "User information retrieved successfully"
 func (*BoardApi) HandleTenantUserInfo(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 	tenantID := userClaims.TenantID
@@ -173,6 +238,12 @@ func (*BoardApi) HandleTenantUserInfo(c *gin.Context) {
 
 // GetTenantDeviceInfo
 // @Router   /api/v1/board/tenant/device/info [get]
+// @Summary Get device information
+// @Description Get the information of a device
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.UsersUpdateReq "Device information retrieved successfully"
 func (*BoardApi) HandleTenantDeviceInfo(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
@@ -187,6 +258,12 @@ func (*BoardApi) HandleTenantDeviceInfo(c *gin.Context) {
 
 // GetUserInfo
 // @Router   /api/v1/board/user/info [get]
+// @Summary Get user information
+// @Description Get the information of a user
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.UsersUpdateReq "User information retrieved successfully"
 func (*BoardApi) HandleUserInfo(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 
@@ -201,6 +278,13 @@ func (*BoardApi) HandleUserInfo(c *gin.Context) {
 
 // UpdateUserInfo
 // @Router   /api/v1/board/user/update [post]
+// @Summary Update user information
+// @Description Update the information of a user
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param users_update_req body model.UsersUpdateReq true "User information details"
+// @Success 200 {object} model.UsersUpdateReq "User information updated successfully"
 func (*BoardApi) UpdateUserInfo(c *gin.Context) {
 	var param model.UsersUpdateReq
 	if !BindAndValidate(c, &param) {
@@ -220,6 +304,13 @@ func (*BoardApi) UpdateUserInfo(c *gin.Context) {
 
 // UpdateUserInfoPassword
 // @Router   /api/v1/board/user/update/password [post]
+// @Summary Update user password
+// @Description Update the password of a user
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param users_update_password_req body model.UsersUpdatePasswordReq true "User password details"
+// @Success 200 {object} model.UsersUpdatePasswordReq "User password updated successfully"
 func (*BoardApi) UpdateUserInfoPassword(c *gin.Context) {
 	var param model.UsersUpdatePasswordReq
 	if !BindAndValidate(c, &param) {
@@ -239,6 +330,13 @@ func (*BoardApi) UpdateUserInfoPassword(c *gin.Context) {
 
 // GetDeviceTrend
 // @Router   /api/v1/board/trend [get]
+// @Summary Get device trend
+// @Description Get device trend data
+// @Tags Board
+// @Accept json
+// @Produce json
+// @Param device_trend_req body model.DeviceTrendReq true "Device trend request"
+// @Success 200 {object} model.DeviceTrend "Device trend data"
 func (*BoardApi) GetDeviceTrend(c *gin.Context) {
 	var deviceTrendReq model.DeviceTrendReq
 	if !BindAndValidate(c, &deviceTrendReq) {
