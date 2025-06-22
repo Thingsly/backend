@@ -130,6 +130,22 @@ services:
     networks:
       - thingsly_network
 
+  redisinsight:
+    image: redislabs/redisinsight:1.11.0
+    ports:
+      - "8001:8001"
+    volumes:
+      - redisinsight_data:/db
+    environment:
+      - "TZ=Asia/Ho_Chi_Minh"
+      - "REDIS_INSIGHT_PORT=8001"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - thingsly_network
+
 volumes:
   go_files:
   go_configs:
@@ -138,6 +154,7 @@ volumes:
   postgres_data:
   redis_data:
   pgadmin_data:
+  redisinsight_data:
 
 networks:
   thingsly_network:

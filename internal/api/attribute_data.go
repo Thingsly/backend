@@ -68,6 +68,13 @@ func (*AttributeDataApi) HandleAttributeSetLogsDataListByPage(c *gin.Context) {
 }
 
 // /api/v1/attribute/datas/pub [post]
+// @Summary Send attribute data
+// @Description Send attribute data to the server
+// @Tags Attribute Data
+// @Accept json
+// @Produce json
+// @Param attribute_data body model.AttributePutMessage true "Attribute data to send"
+// @Success 200 {object} model.AttributePutMessage "Attribute data sent successfully"
 func (*AttributeDataApi) AttributePutMessage(c *gin.Context) {
 	var req model.AttributePutMessage
 	if !BindAndValidate(c, &req) {
@@ -85,6 +92,13 @@ func (*AttributeDataApi) AttributePutMessage(c *gin.Context) {
 
 // Send request to get attributes
 // /api/v1/attribute/datas/get
+// @Summary Get attribute data
+// @Description Get attribute data from the server
+// @Tags Attribute Data
+// @Accept json
+// @Produce json
+// @Param attribute_data body model.AttributeGetMessageReq true "Attribute data to get"
+// @Success 200 {object} model.AttributeGetMessageReq "Attribute data retrieved successfully"
 func (*AttributeDataApi) AttributeGetMessage(c *gin.Context) {
 	var req model.AttributeGetMessageReq
 	if !BindAndValidate(c, &req) {

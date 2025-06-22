@@ -14,6 +14,13 @@ import (
 type AlarmApi struct{}
 
 // /api/v1/alarm/config [post]
+// @Summary Create alarm config
+// @Description Create a new alarm configuration
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param alarm_config body model.CreateAlarmConfigReq true "Alarm configuration details"
+// @Success 200 {object} model.AlarmConfig "Alarm configuration created successfully"
 func (*AlarmApi) CreateAlarmConfig(c *gin.Context) {
 	var req model.CreateAlarmConfigReq
 	if !BindAndValidate(c, &req) {
@@ -31,6 +38,13 @@ func (*AlarmApi) CreateAlarmConfig(c *gin.Context) {
 }
 
 // /api/v1/alarm/config/{id} [Delete]
+// @Summary Delete alarm config
+// @Description Delete an existing alarm configuration
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param id path string true "Alarm configuration ID"
+// @Success 200 {object} model.AlarmConfig "Alarm configuration deleted successfully"
 func (*AlarmApi) DeleteAlarmConfig(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -49,6 +63,13 @@ func (*AlarmApi) DeleteAlarmConfig(c *gin.Context) {
 }
 
 // /api/v1/alarm/config [PUT]
+// @Summary Update alarm config
+// @Description Update an existing alarm configuration
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param alarm_config body model.UpdateAlarmConfigReq true "Alarm configuration details"
+// @Success 200 {object} model.AlarmConfig "Alarm configuration updated successfully"
 func (*AlarmApi) UpdateAlarmConfig(c *gin.Context) {
 	var req model.UpdateAlarmConfigReq
 	if !BindAndValidate(c, &req) {
@@ -65,6 +86,12 @@ func (*AlarmApi) UpdateAlarmConfig(c *gin.Context) {
 }
 
 // /api/v1/alarm/config [GET]
+// @Summary Get alarm config list
+// @Description Get a list of alarm configurations
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number"
 func (*AlarmApi) ServeAlarmConfigListByPage(c *gin.Context) {
 	var req model.GetAlarmConfigListByPageReq
 	if !BindAndValidate(c, &req) {
@@ -82,6 +109,13 @@ func (*AlarmApi) ServeAlarmConfigListByPage(c *gin.Context) {
 }
 
 // /api/v1/alarm/info [put]
+// @Summary Update alarm info
+// @Description Update an existing alarm information
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param alarm_info body model.UpdateAlarmInfoReq true "Alarm information details"
+// @Success 200 {object} model.AlarmInfo "Alarm information updated successfully"
 func (*AlarmApi) UpdateAlarmInfo(c *gin.Context) {
 	var req model.UpdateAlarmInfoReq
 	if !BindAndValidate(c, &req) {
@@ -99,6 +133,13 @@ func (*AlarmApi) UpdateAlarmInfo(c *gin.Context) {
 }
 
 // /api/v1/alarm/info/batch [put]
+// @Summary Update alarm info batch
+// @Description Update multiple alarm information
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param alarm_info body model.UpdateAlarmInfoBatchReq true "Alarm information details"
+// @Success 200 {object} model.AlarmInfo "Alarm information updated successfully"
 func (*AlarmApi) BatchUpdateAlarmInfo(c *gin.Context) {
 	var req model.UpdateAlarmInfoBatchReq
 	if !BindAndValidate(c, &req) {
@@ -115,6 +156,12 @@ func (*AlarmApi) BatchUpdateAlarmInfo(c *gin.Context) {
 }
 
 // /api/v1/alarm/info [get]
+// @Summary Get alarm info list
+// @Description Get a list of alarm information
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number"
 func (*AlarmApi) HandleAlarmInfoListByPage(c *gin.Context) {
 	var req model.GetAlarmInfoListByPageReq
 	if !BindAndValidate(c, &req) {
@@ -132,6 +179,12 @@ func (*AlarmApi) HandleAlarmInfoListByPage(c *gin.Context) {
 }
 
 // /api/v1/alarm/info/history [get]
+// @Summary Get alarm history list
+// @Description Get a list of alarm history
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param page query int false "Page number"
 func (*AlarmApi) HandleAlarmHisttoryListByPage(c *gin.Context) {
 	//
 	var req model.GetAlarmHisttoryListByPage
@@ -149,6 +202,13 @@ func (*AlarmApi) HandleAlarmHisttoryListByPage(c *gin.Context) {
 }
 
 // /api/v1/alarm/info/history [put]
+// @Summary Update alarm history description
+// @Description Update the description of an alarm history
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param alarm_history body model.AlarmHistoryDescUpdateReq true "Alarm history details"
+// @Success 200 {object} model.AlarmInfo "Alarm history updated successfully"
 func (*AlarmApi) AlarmHistoryDescUpdate(c *gin.Context) {
 	//
 	var req model.AlarmHistoryDescUpdateReq
@@ -196,6 +256,13 @@ func (*AlarmApi) HandleConfigByDevice(c *gin.Context) {
 }
 
 // /api/v1/alarm/info/history/{id} [GET]
+// @Summary Get alarm history by ID
+// @Description Get alarm history by its ID
+// @Tags Alarm
+// @Accept json
+// @Produce json
+// @Param id path string true "Alarm history ID"
+// @Success 200 {object} model.AlarmInfo "Alarm history retrieved successfully"
 func (*AlarmApi) HandleAlarmInfoHistory(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {

@@ -14,8 +14,8 @@ import (
 )
 
 func InitSSEManager() {
-	TPSSEManager = NewSSEManager()
-	TPSSEManager.ListenForEvents()
+	TLSSEManager = NewSSEManager()
+	TLSSEManager.ListenForEvents()
 }
 
 type SSEManager struct {

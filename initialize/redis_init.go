@@ -187,19 +187,6 @@ func DelDeviceConfigCache(deviceConfigId string) error {
 }
 
 // Clear device corresponding script cache
-// func DelDeviceDataScriptCache(deviceID string) error {
-// 	scriptType := []string{"A", "B", "C", "D", "E", "F"}
-// 	var key []string
-// 	for _, scriptType := range scriptType {
-// 		key = append(key, deviceID+"_"+scriptType+"_script")
-// 	}
-
-//		err := global.REDIS.Del(context.Background(), key...).Err()
-//		if err != nil {
-//			logrus.Warn("del redis_cache key:", key, " failed with err:", err.Error())
-//		}
-//		return err
-//	}
 func DelDeviceDataScriptCache(deviceConfigID string) error {
 	scriptType := []string{"A", "B", "C", "D", "E", "F"}
 	var key []string

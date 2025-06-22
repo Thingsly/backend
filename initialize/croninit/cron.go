@@ -32,18 +32,19 @@ func CronInit() {
 		service.GroupApp.PeriodicTaskExecute()
 	})
 
-	// Data cleanup task, executed at 2 AM every day
+	// Data cleanup task, executed at 2 AM every day - 02:00:00
+	// Clean up system data, old logs, old caches
 	c.AddFunc("0 2 * * *", func() {
 		logrus.Debug("System data cleanup task starts:")
 		service.GroupApp.CleanSystemDataByCron()
 	})
 
-	// Run script task, executed at 1 AM every day
+	// Run script task, executed at 1 AM every day - 01:00:00
 	c.AddFunc("0 1 * * *", func() {
 		service.GroupApp.RunScript()
 	})
 
-	// Message push management cleanup task, executed at 2 AM every day
+	// Message push management cleanup task, executed at 00:00:02 every day
 	err := c.AddFunc("2 0 * * * *", func() {
 		logrus.Debug("Task starts:", time.Now())
 		service.GroupApp.MessagePush.MessagePushMangeClear()

@@ -28,7 +28,7 @@ func (rl *AutomateLimiter) GetLimiter(key string) *rate.Limiter {
 
 	limiter, ok := rl.limiters[key]
 	if !ok {
-		limiter = rate.NewLimiter(rate.Limit(1.0/3.0), 10) 
+		limiter = rate.NewLimiter(rate.Limit(1.0/3.0), 10) // 1 request per 3 seconds = 20 requests per minute, 10 requests được thực thi ngay lập tức sau đó sẽ bị giới hạn theo rate 1/3 requests/second
 		rl.limiters[key] = limiter
 	}
 	return limiter

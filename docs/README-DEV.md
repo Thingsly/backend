@@ -2,7 +2,7 @@
 
 ## Gen Tool (Must Read)
 
-**Model & Query Code Generation**: [Refer to the README](/cmd/gen/REANME.md)
+**Model & Query Code Generation**: [Refer to the README](/cmd/gen/README.md)
 
 ## Running & Debugging
 

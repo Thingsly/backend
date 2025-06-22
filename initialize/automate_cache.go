@@ -55,7 +55,7 @@ type AutimateCacheKeyDevice interface {
 
 // @description getAutomateCacheKey
 // @params cType string
-// @params id sting
+// @params id string
 // @return string
 func (c *AutomateCache) getAutomateCacheKey(cType string, id string) string {
 	return fmt.Sprintf("automate:v3:%s:%s:%s", c.device.GetAutomateCacheKeyPrefix(), cType, id)
@@ -67,16 +67,18 @@ func (c *AutomateCache) getAutomateCacheKeyBase(deviceId string) string {
 }
 
 func (c *AutomateCache) getAutomateCacheKeyGroup(groupId string) string {
+	// automate:v3:one:group:groupId
 	return c.getAutomateCacheKey("_group_", groupId)
 }
 
 func (c *AutomateCache) getAutomateCacheKeyAction(sceneAutomationId string) string {
+	// automate:v3:one:action:sceneAutomationId
 	return c.getAutomateCacheKey("_action_", sceneAutomationId)
 }
 
 func (c *AutomateCache) GetDeviceType() (AutimateCacheKeyDevice, error) {
 	if c.device == nil {
-		return nil, errors.New("未设置设备类型 单一设备或单类设备")
+		return nil, errors.New("device type not set, single device or single type device")
 	}
 	return c.device, nil
 }
@@ -112,7 +114,7 @@ func (*AutomateCache) scan(stringCmd *redis.StringCmd, val interface{}) (int, er
 	return AUTOMATE_CACHE_RESULT_OK, stringCmd.Scan(val)
 }
 
-// DeleteCacheBySceneAutomationId
+// DeleteCacheBySceneAutomationId - public method
 // @description
 // @params sceneAutomationId string
 // @return error
@@ -132,12 +134,12 @@ func (c *AutomateCache) DeleteCacheBySceneAutomationId(sceneAutomationId string)
 	return nil
 }
 
-// DeleteCacheBySceneAutomationId
+// deleteCacheBySceneAutId - private method
 // @description
 // @params sceneAutomationId string
 // @return error
 func (c *AutomateCache) deleteCacheBySceneAutId(sceneAutomationId string) error {
-
+	// 1. Query the action cache first
 	var (
 		action         AutomateActionInfo
 		deleteCacheKes []string
@@ -156,7 +158,7 @@ func (c *AutomateCache) deleteCacheBySceneAutId(sceneAutomationId string) error 
 		return nil
 	}
 	deleteCacheKes = append(deleteCacheKes, actionCacheKey)
-
+	// 2. Query group cache keys and query all devices associated with the given scene
 	for _, groupId := range action.GroupIds {
 		var (
 			groupCacheKey = c.getAutomateCacheKeyGroup(groupId)
@@ -173,7 +175,7 @@ func (c *AutomateCache) deleteCacheBySceneAutId(sceneAutomationId string) error 
 			}
 		}
 	}
-
+	// 3. Query device cache to delete (delete single device 1st level cache)
 	err = c.automateDeviceCacheDeleteHandel(sceneAutomationId, deviceIds, &deleteCacheKes)
 	if err != nil {
 		return err
@@ -241,7 +243,8 @@ func (c *AutomateCache) SetCacheBySceneAutomationId(sceneAutomationId string, co
 	return nil
 }
 
-// @description SetCacheBySceneAutomationId
+// setCacheBySceneAutId - private method
+// @description
 // @params sceneAutomationId string
 // @params contions []model.DeviceTriggerCondition
 // @params actions []model.ActionInfo
@@ -399,7 +402,8 @@ func (c *AutomateCache) SetCacheByDeviceId(deviceId, deviceConfigId string, cond
 	return c.setCache(deviceId, deviceConfigId, conditions, actions)
 }
 
-// @description setCacheByDeviceId
+// setCache - private method
+// @description
 // @params deviceId string
 // @params deviceConfigId string
 // @params conditions []model.DeviceTriggerCondition

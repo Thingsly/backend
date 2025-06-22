@@ -18,22 +18,25 @@ func (*customFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	var levelText string
 	switch entry.Level {
 	case logrus.DebugLevel:
-		levelColor, levelText = "34", "DEBUG" 
+		levelColor, levelText = "34", "DEBUG" // Màu xanh dương
 	case logrus.InfoLevel:
-		levelColor, levelText = "36", "INFO " 
+		levelColor, levelText = "36", "INFO " // Màu tím
 	case logrus.WarnLevel:
-		levelColor, levelText = "33", "WARN " 
+		levelColor, levelText = "33", "WARN " // Màu vàng
 	case logrus.ErrorLevel:
-		levelColor, levelText = "31", "ERROR" 
+		levelColor, levelText = "31", "ERROR" // Màu đỏ
 	case logrus.FatalLevel, logrus.PanicLevel:
-		levelColor, levelText = "31", "FATAL" 
+		levelColor, levelText = "31", "FATAL" // Màu đỏ
 	default:
-		levelColor, levelText = "0", "UNKNOWN" 
+		levelColor, levelText = "0", "UNKNOWN" // Không màu
 	}
 
 	var fileAndLine string
 	if entry.HasCaller() {
 		filePath := entry.Caller.File
+		// Chỉ lấy phần đường dẫn từ thư mục backend trở đi
+		// Input: /Users/hantdev/soict/backend/internal/service/user.go
+		// Output: /internal/service/user.go:123
 		if idx := strings.Index(filePath, "backend"); idx != -1 {
 			filePath = filePath[idx+len("backend"):]
 			if strings.HasPrefix(filePath, "/") || strings.HasPrefix(filePath, "\\") {
@@ -45,6 +48,7 @@ func (*customFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		fileAndLine = fmt.Sprintf("%s:%d", filePath, entry.Caller.Line)
 	}
 
+	// Output: INFO  [2024-01-15 14:30:25.1234] User login successful [./internal/service/auth.go:78]
 	msg := fmt.Sprintf("\033[1;%sm%s\033[0m \033[4;1;%sm[%s]\033[0m %s \033[1;%sm[%s]\033[0m\n",
 		levelColor, levelText,
 		levelColor, entry.Time.Format("2006-01-02 15:04:05.9999"),

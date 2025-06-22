@@ -12,7 +12,7 @@ type DeviceTriggerCondition struct {
 	SceneAutomationID    string  `gorm:"column:scene_automation_id;not null" json:"scene_automation_id"` // Scene automation ID (foreign key - cascade delete)
 	Enabled              string  `gorm:"column:enabled;not null" json:"enabled"` // Is enabled
 	GroupID              string  `gorm:"column:group_id;not null" json:"group_id"` // UUID
-	TriggerConditionType string  `gorm:"column:trigger_condition_type;not null" json:"trigger_condition_type"` // Condition type: 10 = single device, 11 = same type devices, 2 = time range
+	TriggerConditionType string  `gorm:"column:trigger_condition_type;not null" json:"trigger_condition_type"` // Condition type: 10 = single device, 11 = device type, 22 = time range
 	TriggerSource        *string `gorm:"column:trigger_source" json:"trigger_source"` // Trigger source: for type 10 = device ID, for type 11 = device config ID
 	TriggerParamType     *string `gorm:"column:trigger_param_type" json:"trigger_param_type"` // Parameter type: telemetry (TEL), attribute (ATTR), event (EVT), status (STATUS)
 	TriggerParam         *string `gorm:"column:trigger_param" json:"trigger_param"` // Trigger parameter (e.g., temperature)

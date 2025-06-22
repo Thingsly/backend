@@ -23,8 +23,6 @@ The offline detection of specific devices is implemented based on Redis expirati
 **PostgreSQL - devices table:**
 
 - `is_online`: boolean      // Device online status
-- `heartbeat_time`: int     // Heartbeat time, null indicates not set
-- `timeout`: int            // Timeout time, null indicates not set
 
 ### 3.2 Key Workflow
 

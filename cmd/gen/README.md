@@ -33,3 +33,13 @@ After generation is complete:
 - Paste the copied content back into the appropriate location.
 
 > ⚠️ Note: Always backup any manually written code before running the generation command, as it will be overwritten.
+
+### 5. Example gen struct and query from table 
+
+```
+docker exec -it backend-postgres-1 psql -U postgres -d Thingsly
+```
+
+```
+CREATE TABLE test_table (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name VARCHAR(255) NOT NULL, description TEXT, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+```

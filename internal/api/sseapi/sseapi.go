@@ -14,7 +14,13 @@ import (
 type SSEApi struct{}
 
 // api/v1/events
-
+// @Summary Handle system events
+// @Description Handle system events
+// @Tags SSE
+// @Accept json
+// @Produce text/event-stream
+// @Param tenantID path string true "Tenant ID"
+// @Param userID path string true "User ID"
 func (*SSEApi) HandleSystemEvents(c *gin.Context) {
 	userClaims, ok := c.MustGet("claims").(*utils.UserClaims)
 	if !ok {
@@ -35,8 +41,8 @@ func (*SSEApi) HandleSystemEvents(c *gin.Context) {
 	c.Writer.Header().Set("Connection", "keep-alive")
 	c.Writer.Header().Set("Transfer-Encoding", "chunked")
 
-	clientID := global.TPSSEManager.AddClient(userClaims.TenantID, userClaims.ID, c.Writer)
-	defer global.TPSSEManager.RemoveClient(userClaims.TenantID, clientID)
+	clientID := global.TLSSEManager.AddClient(userClaims.TenantID, userClaims.ID, c.Writer)
+	defer global.TLSSEManager.RemoveClient(userClaims.TenantID, clientID)
 
 	// Send initial success message
 	c.SSEvent("message", "Connected to system events")

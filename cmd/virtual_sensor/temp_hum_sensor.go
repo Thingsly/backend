@@ -45,10 +45,10 @@ func TempHumSensor() {
 func createClient() {
 
 	opts := MqttConfig{
-		// Broker: "127.0.0.1:1883",
-		Broker: "103.124.93.210:1883",
-		User:   "4418a5d3-6d8b-2545-1c8",
-		Pass:   "1d75f93",
+		Broker: "127.0.0.1:1883",
+		// Broker: "103.124.93.210:1883",
+		User:   "8cc60abf-40ab-b725-6d9",
+		Pass:   "b7e693c",
 	}
 	mqttClient = CreateMqttClient(opts)
 }

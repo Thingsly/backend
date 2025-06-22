@@ -29,7 +29,11 @@ const (
 
 // InitDeviceStatsCron initializes the device statistics scheduled task
 func InitDeviceStatsCron(c *cron.Cron) {
-	// Executes every hour on the hour
+	// Executes every hour 
+	// Vào giây 0, phút 0 của mỗi giờ
+	// 01:00:00
+	// 02:00:00
+	// 03:00:00
 	c.AddFunc("0 0 * * * *", func() {
 		collectDeviceStats()
 	})

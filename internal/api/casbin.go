@@ -35,6 +35,13 @@ func (*CasbinApi) AddFunctionToRole(c *gin.Context) {
 
 // GetFunctionFromRole
 // @Router   /api/v1/casbin/function [get]
+// @Summary Get functions from role
+// @Description Get functions from a specific role
+// @Tags Casbin
+// @Accept json
+// @Produce json
+// @Param role_id path string true "Role ID"
+// @Success 200 {object} model.RoleValidate "Functions retrieved successfully"
 func (*CasbinApi) HandleFunctionFromRole(c *gin.Context) {
 	var req model.RoleValidate
 	if !BindAndValidate(c, &req) {

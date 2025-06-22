@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/Thingsly/backend/data"
+	"github.com/Thingsly/backend/cmd/fake-data/data"
 )
 
 func main() {
 	broker := "103.124.93.210"
 	port := 1883
- 
+
 	// // Normal MQTT
 	// MQTT_username := "fdcf8b60-f795-25e8-b62"
 	// MQTT_password := "2e03a3a"

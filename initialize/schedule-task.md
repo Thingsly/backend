@@ -1,34 +1,61 @@
-# Scheduled Task Description
+# Scheduled Task Specification
 
 ## Cache
 
-- Redis Distributed Lock
+- Distributed locking using **Redis**
 
 ## Related Tables
 
-- One-Time Task Table: `one_time_tasks`
-- Periodic Task Table: `periodic_tasks`
+- `one_time_tasks`: Table for one-time scheduled tasks  
+- `periodic_tasks`: Table for recurring scheduled tasks
 
-## Business Flow
+## Business Logic
 
-Separate scheduled tasks for one-time and periodic tasks to scan the tables.
+Separate scheduled jobs are responsible for scanning each of the two tables: one-time and recurring tasks.
 
 ### One-Time Tasks
 
-1. Acquire Lock
-2. Retrieve the first 100 tasks (the quantity of 100 is configurable)
-3. Select tasks where `execution_time` is greater than the current time, `enabled` is 'Y' (enabled), and `executing_state` is 'NEX' (not executed)
-4. Directly update tasks to executed status
-5. Release Lock
-6. Check if the difference between the current time and `execution_time` exceeds `expiration_time`:
-   - If it does, update the execution status to `EXP` (expired, not executed)
-   - If not, call the **execute action method**, then update the status to `EXE` (executed)
-   - After execution, update the `executing_state`
+1. **Acquire a distributed lock**
+2. **Fetch up to 100 tasks**  
+   - The limit (default: 100) is configurable
+3. **Filter tasks** where:
+   - `execution_time` > current time
+   - `enabled` = `Y` (enabled)
+   - `executing_state` = `NEX` (not executed)
+4. **Mark tasks as executed**
+5. **Release the lock**
+6. **Process each task:**
+   - If `current_time - execution_time` > `expiration_time`:
+     - Set `executing_state` to `EXP` (expired, not executed)
+   - Else:
+     - Invoke the **action execution method**
+     - Set `executing_state` to `EXE` (executed)
 
 ### Periodic Tasks
 
-1. Acquire Lock
-2. Retrieve tasks
-3. Calculate the next execution time (using GPT for the algorithm) and update the `execution_time` field
-4. Release Lock
-5. Similar to the one-time task process, the **execute action method** is reused
+1. **Acquire a distributed lock**
+2. **Fetch all active periodic tasks**
+   Tính toán thời gian tiếp theo: Sử dụng `GetSceneExecuteTime()` để tính thời gian thực thi tiếp theo dựa trên:
+
+- HOUR: Thực thi mỗi giờ (VD: "30" = phút thứ 30 mỗi giờ)
+- DAY: Thực thi mỗi ngày (VD: "15:30:00+07:00")
+- WEEK: Thực thi theo tuần (VD: "1|15:30:00+07:00" = thứ 2 lúc 15:30)
+- MONTH: Thực thi theo tháng (VD: "15T15:30:00+07:00" = ngày 15 lúc 15:30)
+- CRON: Sử dụng cron expression
+  
+1. **Calculate next execution time**  
+   - Update `execution_time` field  
+   - (Use a GPT-generated algorithm)
+2. **Release the lock**
+3. **Reuse one-time task execution logic**  
+   - Invoke the **action execution method**
+   - Update `executing_state` accordingly
+
+```
+func AcquireLock(lockKey string, expiration time.Duration) bool {
+    ok, err := global.REDIS.SetNX(context.Background(), lockKey, true, expiration).Result()
+    return ok
+}
+```
+
+SETNX (SET if Not eXists)

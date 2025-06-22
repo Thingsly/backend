@@ -127,12 +127,12 @@ func PgConnect(config *DbConfig) (*gorm.DB, error) {
 		},
 	})
 	if err != nil {
-		return nil, fmt.Errorf("Failed to connect to the database: %v", err)
+		return nil, fmt.Errorf("failed to connect to the database: %v", err)
 	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get raw database connection: %v", err)
+		return nil, fmt.Errorf("failed to get raw database connection: %v", err)
 	}
 
 	sqlDB.SetMaxIdleConns(config.IdleConns)

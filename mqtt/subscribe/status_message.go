@@ -119,5 +119,5 @@ func toUserClient(device *model.Device, status int16) {
 		})
 		sseEvent.Message = string(jsonBytes)
 	}
-	global.TPSSEManager.BroadcastEventToTenant(device.TenantID, sseEvent)
+	global.TLSSEManager.BroadcastEventToTenant(device.TenantID, sseEvent)
 }
