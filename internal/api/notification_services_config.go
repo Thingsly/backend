@@ -13,6 +13,14 @@ import (
 type NotificationServicesConfigApi struct{}
 
 // SaveNotificationServicesConfig Create/Update notification service configuration (2-in-1 interface)
+// @Summary Create/Update notification service configuration
+// @Description Create/Update notification service configuration
+// @Tags notification_services_config
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param notification_services_config body model.SaveNotificationServicesConfigReq true "Notification services config"
+// @Success 200 {object} model.SaveNotificationServicesConfigRes
 // @Router   /api/v1/notification/services/config [post]
 func (*NotificationServicesConfigApi) SaveNotificationServicesConfig(c *gin.Context) {
 	var req model.SaveNotificationServicesConfigReq
@@ -54,6 +62,14 @@ func (*NotificationServicesConfigApi) SaveNotificationServicesConfig(c *gin.Cont
 }
 
 // GetNotificationServicesConfig Get notification service configuration
+// @Summary Get notification service configuration
+// @Description Get notification service configuration
+// @Tags notification_services_config
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param type path string true "Notification type"
+// @Success 200 {object} model.GetNotificationServicesConfigRes
 // @Router   /api/v1/notification/services/config/{type} [get]
 func (*NotificationServicesConfigApi) HandleNotificationServicesConfig(c *gin.Context) {
 	noticeType := c.Param("type")
@@ -74,6 +90,13 @@ func (*NotificationServicesConfigApi) HandleNotificationServicesConfig(c *gin.Co
 }
 
 // SendTestEmail Send test email
+// @Summary Send test email
+// @Description Send test email
+// @Tags notification_services_config
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param send_test_email body model.SendTestEmailReq true "Send test email"
 // @Router   /api/v1/notification/services/config/e-mail/test [post]
 func (*NotificationServicesConfigApi) SendTestEmail(c *gin.Context) {
 	var req model.SendTestEmailReq

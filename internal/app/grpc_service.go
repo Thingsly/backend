@@ -4,6 +4,7 @@ import (
 	tptodb "github.com/Thingsly/backend/third_party/grpc/tptodb_client"
 
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // GRPCService Implement the gRPC client service
@@ -25,6 +26,13 @@ func (s *GRPCService) Name() string {
 
 // Start Start the gRPC service
 func (s *GRPCService) Start() error {
+
+	// Check if gRPC is enabled
+	if !viper.GetBool("grpc.enabled") {
+		logrus.Info("gRPC client service is disabled, skipping initialization")
+		return nil
+	}
+
 	logrus.Info("Initializing gRPC client...")
 
 	// Initialize the gRPC client

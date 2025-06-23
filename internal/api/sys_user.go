@@ -66,7 +66,15 @@ func (*UserApi) Login(c *gin.Context) {
 	c.Set("data", loginRsp)
 }
 
-// GET /api/v1/user/logout
+// Logout
+// @Summary Logout
+// @Description Logout
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.LogoutRes
+// @Router   /api/v1/user/logout [get]
 func (*UserApi) Logout(c *gin.Context) {
 	token := c.GetHeader("x-token")
 	err := service.GroupApp.User.Logout(token)
@@ -77,7 +85,15 @@ func (*UserApi) Logout(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// GET /api/v1/user/refresh
+// Refresh token
+// @Summary Refresh token
+// @Description Refresh token
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.RefreshTokenRes
+// @Router   /api/v1/user/refresh [get]
 func (*UserApi) RefreshToken(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 	loginRsp, err := service.GroupApp.User.RefreshToken(userClaims)
@@ -88,7 +104,16 @@ func (*UserApi) RefreshToken(c *gin.Context) {
 	c.Set("data", loginRsp)
 }
 
-// GET /api/v1/verification/code
+// Get verification code
+// @Summary Get verification code
+// @Description Get verification code
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param email query string true "Email"
+// @Param is_register query string true "Is register"
+// @Success 200 {object} model.GetVerificationCodeRes
+// @Router   /api/v1/verification/code [get]
 func (*UserApi) HandleVerificationCode(c *gin.Context) {
 	email := c.Query("email")
 	isRegister := c.Query("is_register")
@@ -100,7 +125,15 @@ func (*UserApi) HandleVerificationCode(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// POST /api/v1/reset/password
+// Reset password
+// @Summary Reset password
+// @Description Reset password
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param reset_password_req body model.ResetPasswordReq true "Reset password request"
+// @Success 200 {object} model.ResetPasswordRes
+// @Router   /api/v1/reset/password [post]
 func (*UserApi) ResetPassword(c *gin.Context) {
 	var resetPasswordReq model.ResetPasswordReq
 	if !BindAndValidate(c, &resetPasswordReq) {
@@ -116,6 +149,13 @@ func (*UserApi) ResetPassword(c *gin.Context) {
 }
 
 // CreateUser
+// @Summary Create user
+// @Description Create user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param create_user_req body model.CreateUserReq true "Create user request"
+// @Success 200 {object} model.CreateUserRes
 // @Router   /api/v1/user [post]
 func (*UserApi) CreateUser(c *gin.Context) {
 	var createUserReq model.CreateUserReq
@@ -136,6 +176,13 @@ func (*UserApi) CreateUser(c *gin.Context) {
 }
 
 // GetUserListByPage
+// @Summary Get user list by page
+// @Description Get user list by page
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user_list_req body model.UserListReq true "User list request"
+// @Success 200 {object} model.UserListRes
 // @Router   /api/v1/user [get]
 func (*UserApi) HandleUserListByPage(c *gin.Context) {
 	var userListReq model.UserListReq
@@ -156,6 +203,13 @@ func (*UserApi) HandleUserListByPage(c *gin.Context) {
 }
 
 // UpdateUser
+// @Summary Update user
+// @Description Update user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param update_user_req body model.UpdateUserReq true "Update user request"
+// @Success 200 {object} model.UpdateUserRes
 // @Router   /api/v1/user [put]
 func (*UserApi) UpdateUser(c *gin.Context) {
 	var updateUserReq model.UpdateUserReq
@@ -176,6 +230,13 @@ func (*UserApi) UpdateUser(c *gin.Context) {
 }
 
 // DeleteUser
+// @Summary Delete user
+// @Description Delete user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id path string true "User id"
+// @Success 200 {object} model.DeleteUserRes
 // @Router   /api/v1/user/{id} [delete]
 func (*UserApi) DeleteUser(c *gin.Context) {
 	id := c.Param("id")
@@ -192,6 +253,13 @@ func (*UserApi) DeleteUser(c *gin.Context) {
 }
 
 // GetUser
+// @Summary Get user
+// @Description Get user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id path string true "User id"
+// @Success 200 {object} model.GetUserRes
 // @Router   /api/v1/user/{id} [get]
 func (*UserApi) HandleUser(c *gin.Context) {
 	id := c.Param("id")
@@ -210,6 +278,12 @@ func (*UserApi) HandleUser(c *gin.Context) {
 }
 
 // GetUserDetail
+// @Summary Get user detail
+// @Description Get user detail
+// @Tags user
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.GetUserDetailRes
 // @Router   /api/v1/user/detail [get]
 func (*UserApi) HandleUserDetail(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
@@ -224,6 +298,13 @@ func (*UserApi) HandleUserDetail(c *gin.Context) {
 }
 
 // UpdateUsers
+// @Summary Update users
+// @Description Update users
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param update_user_info_req body model.UpdateUserInfoReq true "Update user info request"
+// @Success 200 {object} model.UpdateUserInfoRes
 // @Router   /api/v1/user/update [put]
 func (*UserApi) UpdateUsers(c *gin.Context) {
 	var updateUserInfoReq model.UpdateUserInfoReq
@@ -242,7 +323,15 @@ func (*UserApi) UpdateUsers(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// /api/v1/user/transform
+// Transform user
+// @Summary Transform user
+// @Description Transform user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param transform_user_req body model.TransformUserReq true "Transform user request"
+// @Success 200 {object} model.TransformUserRes
+// @Router   /api/v1/user/transform [post]
 func (*UserApi) TransformUser(c *gin.Context) {
 	var transformUserReq model.TransformUserReq
 
@@ -261,8 +350,15 @@ func (*UserApi) TransformUser(c *gin.Context) {
 	c.Set("data", loginRsp)
 }
 
-// EmailRegister /api/v1/tenant/email/register POST
-// @description Tenant email registration
+// EmailRegister
+// @Summary Email register
+// @Description Email register
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param email_register_req body model.EmailRegisterReq true "Email register request"
+// @Success 200 {object} model.EmailRegisterRes
+// @Router   /api/v1/tenant/email/register [post]
 func (*UserApi) EmailRegister(c *gin.Context) {
 	var req model.EmailRegisterReq
 	if !BindAndValidate(c, &req) {
@@ -278,6 +374,12 @@ func (*UserApi) EmailRegister(c *gin.Context) {
 }
 
 // GetTenantID
+// @Summary Get tenant id
+// @Description Get tenant id
+// @Tags user
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.GetTenantIDRes
 // @Router   /api/v1/user/tenant/id [get]
 func (*UserApi) GetTenantID(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)

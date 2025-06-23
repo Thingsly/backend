@@ -12,6 +12,13 @@ import (
 type UiElementsApi struct{}
 
 // CreateUiElements
+// @Summary Create UI elements
+// @Description Create UI elements
+// @Tags ui_elements
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/ui_elements [post]
 func (*UiElementsApi) CreateUiElements(c *gin.Context) {
 	var req model.CreateUiElementsReq
@@ -28,6 +35,13 @@ func (*UiElementsApi) CreateUiElements(c *gin.Context) {
 }
 
 // UpdateUiElements
+// @Summary Update UI elements
+// @Description Update UI elements
+// @Tags ui_elements
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/ui_elements [put]
 func (*UiElementsApi) UpdateUiElements(c *gin.Context) {
 	var req model.UpdateUiElementsReq
@@ -52,6 +66,13 @@ func (*UiElementsApi) UpdateUiElements(c *gin.Context) {
 }
 
 // DeleteUiElements
+// @Summary Delete UI elements
+// @Description Delete UI elements
+// @Tags ui_elements
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/ui_elements/{id} [delete]
 func (*UiElementsApi) DeleteUiElements(c *gin.Context) {
 	id := c.Param("id")
@@ -64,6 +85,13 @@ func (*UiElementsApi) DeleteUiElements(c *gin.Context) {
 }
 
 // ServeUiElementsListByPage
+// @Summary Get UI elements list by page
+// @Description Get UI elements list by page
+// @Tags ui_elements
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/ui_elements [get]
 func (*UiElementsApi) ServeUiElementsListByPage(c *gin.Context) {
 	var req model.ServeUiElementsListByPageReq
@@ -80,6 +108,13 @@ func (*UiElementsApi) ServeUiElementsListByPage(c *gin.Context) {
 }
 
 // ServeUiElementsListByPage
+// @Summary Get UI elements list by authority
+// @Description Get UI elements list by authority
+// @Tags ui_elements
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/ui_elements/menu [get]
 func (*UiElementsApi) ServeUiElementsListByAuthority(c *gin.Context) {
 	var userClaims = c.MustGet("claims").(*utils.UserClaims)
@@ -93,7 +128,14 @@ func (*UiElementsApi) ServeUiElementsListByAuthority(c *gin.Context) {
 }
 
 // ServeUiElementsListByTenant
-// /api/v1/ui_elements/select/form GET
+// @Summary Get UI elements list by tenant
+// @Description Get UI elements list by tenant
+// @Tags ui_elements
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
+// @Router   /api/v1/ui_elements/select/form [get]
 func (*UiElementsApi) ServeUiElementsListByTenant(c *gin.Context) {
 	uiElementsList, err := service.GroupApp.UiElements.GetTenantUiElementsList()
 	if err != nil {

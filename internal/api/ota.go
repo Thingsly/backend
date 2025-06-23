@@ -23,6 +23,14 @@ import (
 type OTAApi struct{}
 
 // CreateOTAUpgradePackage
+// @Summary Create OTA upgrade package
+// @Description Create OTA upgrade package
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param ota_upgrade_package body model.CreateOTAUpgradePackageReq true "OTA upgrade package"
+// @Success 200 {object} model.CreateOTAUpgradePackageRes
 // @Router   /api/v1/ota/package [post]
 func (*OTAApi) CreateOTAUpgradePackage(c *gin.Context) {
 	var req model.CreateOTAUpgradePackageReq
@@ -39,6 +47,14 @@ func (*OTAApi) CreateOTAUpgradePackage(c *gin.Context) {
 }
 
 // DeleteOTAUpgradePackage
+// @Summary Delete OTA upgrade package
+// @Description Delete OTA upgrade package
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "OTA upgrade package id"
+// @Success 200 {object} model.DeleteOTAUpgradePackageRes
 // @Router   /api/v1/ota/package/{id} [delete]
 func (*OTAApi) DeleteOTAUpgradePackage(c *gin.Context) {
 	id := c.Param("id")
@@ -51,6 +67,14 @@ func (*OTAApi) DeleteOTAUpgradePackage(c *gin.Context) {
 }
 
 // UpdateOTAUpgradePackage
+// @Summary Update OTA upgrade package
+// @Description Update OTA upgrade package
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param ota_upgrade_package body model.UpdateOTAUpgradePackageReq true "OTA upgrade package"
+// @Success 200 {object} model.UpdateOTAUpgradePackageRes
 // @Router   /api/v1/ota/package/ [put]
 func (*OTAApi) UpdateOTAUpgradePackage(c *gin.Context) {
 	var req model.UpdateOTAUpgradePackageReq
@@ -66,6 +90,14 @@ func (*OTAApi) UpdateOTAUpgradePackage(c *gin.Context) {
 }
 
 // GetOTAUpgradePackageByPage
+// @Summary Get OTA upgrade package by page
+// @Description Get OTA upgrade package by page
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param ota_upgrade_package body model.GetOTAUpgradePackageLisyByPageReq true "OTA upgrade package"
+// @Success 200 {object} model.GetOTAUpgradePackageLisyByPageRes
 // @Router   /api/v1/ota/package [get]
 func (*OTAApi) HandleOTAUpgradePackageByPage(c *gin.Context) {
 	var req model.GetOTAUpgradePackageLisyByPageReq
@@ -83,6 +115,14 @@ func (*OTAApi) HandleOTAUpgradePackageByPage(c *gin.Context) {
 }
 
 // CreateOTAUpgradeTask
+// @Summary Create OTA upgrade task
+// @Description Create OTA upgrade task
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param ota_upgrade_task body model.CreateOTAUpgradeTaskReq true "OTA upgrade task"
+// @Success 200 {object} model.CreateOTAUpgradeTaskRes
 // @Router   /api/v1/ota/task [post]
 func (*OTAApi) CreateOTAUpgradeTask(c *gin.Context) {
 	var req model.CreateOTAUpgradeTaskReq
@@ -99,6 +139,14 @@ func (*OTAApi) CreateOTAUpgradeTask(c *gin.Context) {
 }
 
 // DeleteOTAUpgradeTask
+// @Summary Delete OTA upgrade task
+// @Description Delete OTA upgrade task
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "OTA upgrade task id"
+// @Success 200 {object} model.DeleteOTAUpgradeTaskRes
 // @Router   /api/v1/ota/task/{id} [delete]
 func (*OTAApi) DeleteOTAUpgradeTask(c *gin.Context) {
 	id := c.Param("id")
@@ -111,6 +159,14 @@ func (*OTAApi) DeleteOTAUpgradeTask(c *gin.Context) {
 }
 
 // GetOTAUpgradeTaskByPage
+// @Summary Get OTA upgrade task by page
+// @Description Get OTA upgrade task by page
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param ota_upgrade_task body model.GetOTAUpgradeTaskListByPageReq true "OTA upgrade task"
+// @Success 200 {object} model.GetOTAUpgradeTaskListByPageRes
 // @Router   /api/v1/ota/task [get]
 func (*OTAApi) HandleOTAUpgradeTaskByPage(c *gin.Context) {
 	var req model.GetOTAUpgradeTaskListByPageReq
@@ -126,6 +182,14 @@ func (*OTAApi) HandleOTAUpgradeTaskByPage(c *gin.Context) {
 }
 
 // GetOTAUpgradeTaskDetailByPage
+// @Summary Get OTA upgrade task detail by page
+// @Description Get OTA upgrade task detail by page
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param ota_upgrade_task_detail body model.GetOTAUpgradeTaskDetailReq true "OTA upgrade task detail"
+// @Success 200 {object} model.GetOTAUpgradeTaskDetailRes
 // @Router   /api/v1/ota/task/detail [get]
 func (*OTAApi) HandleOTAUpgradeTaskDetailByPage(c *gin.Context) {
 	var req model.GetOTAUpgradeTaskDetailReq
@@ -142,6 +206,14 @@ func (*OTAApi) HandleOTAUpgradeTaskDetailByPage(c *gin.Context) {
 }
 
 // UpdateOTAUpgradeTaskStatus
+// @Summary Update OTA upgrade task status
+// @Description Update OTA upgrade task status
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param ota_upgrade_task_status body model.UpdateOTAUpgradeTaskStatusReq true "OTA upgrade task status"
+// @Success 200 {object} model.UpdateOTAUpgradeTaskStatusRes
 // @Router   /api/v1/ota/task/detail [put]
 func (*OTAApi) UpdateOTAUpgradeTaskStatus(c *gin.Context) {
 	var req model.UpdateOTAUpgradeTaskStatusReq
@@ -156,7 +228,16 @@ func (*OTAApi) UpdateOTAUpgradeTaskStatus(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// GET /api/v1/ota/download/{filepath}
+// DownloadOTAUpgradePackage
+// @Summary Download OTA upgrade package
+// @Description Download OTA upgrade package
+// @Tags ota
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param filepath path string true "OTA upgrade package filepath"
+// @Success 200 {object} model.DownloadOTAUpgradePackageRes
+// @Router   /api/v1/ota/download/{filepath} [get]
 func (*OTAApi) DownloadOTAUpgradePackage(c *gin.Context) {
 	filePath := "./files/upgradePackage/" + c.Param("path") + "/" + c.Param("file")
 

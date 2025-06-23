@@ -158,12 +158,13 @@ type ApiResponse struct {
 
 func BindAndValidate(c *gin.Context, obj interface{}) bool {
 	// Determine the request method
-	if c.Request.Method == http.MethodGet {
+	switch c.Request.Method {
+	case http.MethodGet:
 		if err := c.ShouldBindQuery(obj); err != nil {
 			c.Error(errcode.NewWithMessage(errcode.CodeParamError, err.Error()))
 			return false
 		}
-	} else if c.Request.Method == http.MethodPost || c.Request.Method == http.MethodPut || c.Request.Method == http.MethodDelete {
+	case http.MethodPost, http.MethodPut, http.MethodDelete:
 		if err := c.ShouldBindJSON(obj); err != nil {
 			c.Error(errcode.NewWithMessage(errcode.CodeParamError, err.Error()))
 			return false

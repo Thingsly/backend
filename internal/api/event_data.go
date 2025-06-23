@@ -10,8 +10,16 @@ import (
 
 type EventDataApi struct{}
 
-// GetEventDatasListByPage
-// @Router   /api/v1/event/datas [get]
+// @Summary Get event data list by page
+// @Description Get event data list by page
+// @Tags event
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page number"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetEventDatasListByPageRes
+// @Router /api/v1/event/datas [get]
 func (*EventDataApi) HandleEventDatasListByPage(c *gin.Context) {
 	var req model.GetEventDatasListByPageReq
 	if !BindAndValidate(c, &req) {

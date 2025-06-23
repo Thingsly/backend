@@ -14,6 +14,14 @@ import (
 type RoleApi struct{}
 
 // CreateRole
+// @Summary Create role
+// @Description Create role
+// @Tags role
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param role body model.CreateRoleReq true "Role"
+// @Success 200 {object} model.CreateRoleRes
 // @Router   /api/v1/role [post]
 func (*RoleApi) CreateRole(c *gin.Context) {
 	var req model.CreateRoleReq
@@ -33,6 +41,14 @@ func (*RoleApi) CreateRole(c *gin.Context) {
 }
 
 // UpdateRole
+// @Summary Update role
+// @Description Update role
+// @Tags role
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param role body model.UpdateRoleReq true "Role"
+// @Success 200 {object} model.UpdateRoleRes
 // @Router   /api/v1/role [put]
 func (*RoleApi) UpdateRole(c *gin.Context) {
 	var req model.UpdateRoleReq
@@ -55,6 +71,14 @@ func (*RoleApi) UpdateRole(c *gin.Context) {
 }
 
 // DeleteRole
+// @Summary Delete role
+// @Description Delete role
+// @Tags role
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Role id"
+// @Success 200 {object} model.DeleteRoleRes
 // @Router   /api/v1/role/{id} [delete]
 func (*RoleApi) DeleteRole(c *gin.Context) {
 	id := c.Param("id")
@@ -77,6 +101,15 @@ func (*RoleApi) DeleteRole(c *gin.Context) {
 }
 
 // GetRoleListByPage
+// @Summary Get role list by page
+// @Description Get role list by page
+// @Tags role
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetRoleListByPageRes
 // @Router   /api/v1/role [get]
 func (*RoleApi) HandleRoleListByPage(c *gin.Context) {
 	var req model.GetRoleListByPageReq

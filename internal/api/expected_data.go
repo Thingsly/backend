@@ -12,8 +12,16 @@ import (
 
 type ExpectedDataApi struct{}
 
-// Query expected data list
-// /api/v1/expected/data/list
+// @Summary Query expected data list
+// @Description Query expected data list
+// @Tags expected
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page number"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetExpectedDataPageRes
+// @Router /api/v1/expected/data/list [get]
 func (*ExpectedDataApi) HandleExpectedDataList(c *gin.Context) {
 	var req model.GetExpectedDataPageReq
 	if !BindAndValidate(c, &req) {
@@ -29,7 +37,15 @@ func (*ExpectedDataApi) HandleExpectedDataList(c *gin.Context) {
 }
 
 // Add expected data
-// /api/v1/expected/data POST
+// @Summary Add expected data
+// @Description Add expected data
+// @Tags expected
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param expected_data body model.CreateExpectedDataReq true "Expected data"
+// @Success 200 {object} model.CreateExpectedDataRes
+// @Router /api/v1/expected/data [post]
 func (*ExpectedDataApi) CreateExpectedData(c *gin.Context) {
 	var req model.CreateExpectedDataReq
 	if !BindAndValidate(c, &req) {
@@ -45,7 +61,15 @@ func (*ExpectedDataApi) CreateExpectedData(c *gin.Context) {
 }
 
 // Delete expected data
-// /api/v1/expected/data/{id} DELETE
+// @Summary Delete expected data
+// @Description Delete expected data
+// @Tags expected
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Expected data ID"
+// @Success 200 {object} model.DeleteExpectedDataRes
+// @Router /api/v1/expected/data/{id} [delete]
 func (*ExpectedDataApi) DeleteExpectedData(c *gin.Context) {
 	id := c.Param("id")
 	err := service.GroupApp.ExpectedData.Delete(c, id)

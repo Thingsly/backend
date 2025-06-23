@@ -12,6 +12,14 @@ import (
 type OpenAPIKeyApi struct{}
 
 // CreateOpenAPIKey
+// @Summary Create open api key
+// @Description Create open api key
+// @Tags open_api_keys
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param open_api_key body model.CreateOpenAPIKeyReq true "Open api key"
+// @Success 200 {object} model.CreateOpenAPIKeyRes
 // @Router /api/v1/open/keys [post]
 func (*OpenAPIKeyApi) CreateOpenAPIKey(c *gin.Context) {
 	var createReq model.CreateOpenAPIKeyReq
@@ -31,6 +39,14 @@ func (*OpenAPIKeyApi) CreateOpenAPIKey(c *gin.Context) {
 }
 
 // GetOpenAPIKeyList
+// @Summary Get open api key list
+// @Description Get open api key list
+// @Tags open_api_keys
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param open_api_key body model.OpenAPIKeyListReq true "Open api key"
+// @Success 200 {object} model.OpenAPIKeyListRes
 // @Router /api/v1/open/keys [get]
 func (*OpenAPIKeyApi) GetOpenAPIKeyList(c *gin.Context) {
 	var listReq model.OpenAPIKeyListReq
@@ -50,6 +66,14 @@ func (*OpenAPIKeyApi) GetOpenAPIKeyList(c *gin.Context) {
 }
 
 // UpdateOpenAPIKey
+// @Summary Update open api key
+// @Description Update open api key
+// @Tags open_api_keys
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param open_api_key body model.UpdateOpenAPIKeyReq true "Open api key"
+// @Success 200 {object} model.UpdateOpenAPIKeyRes
 // @Router /api/v1/open/keys [put]
 func (*OpenAPIKeyApi) UpdateOpenAPIKey(c *gin.Context) {
 	var updateReq model.UpdateOpenAPIKeyReq
@@ -69,6 +93,14 @@ func (*OpenAPIKeyApi) UpdateOpenAPIKey(c *gin.Context) {
 }
 
 // DeleteOpenAPIKey
+// @Summary Delete open api key
+// @Description Delete open api key
+// @Tags open_api_keys
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Open api key id"
+// @Success 200 {object} model.DeleteOpenAPIKeyRes
 // @Router /api/v1/open/keys/{id} [delete]
 func (*OpenAPIKeyApi) DeleteOpenAPIKey(c *gin.Context) {
 	id := c.Param("id")

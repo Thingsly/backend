@@ -728,7 +728,7 @@ func (*DeviceApi) HandleDeviceList(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// @Summary Create son device
+// @Summary Create sub device
 // @Description Create a new sub-device
 // @Tags device
 // @Accept json
@@ -836,10 +836,10 @@ func (*DeviceApi) UpdateDeviceVoucher(c *gin.Context) {
 // @Router /api/v1/device/sub-list/{id} [get]
 func (*DeviceApi) HandleSubList(c *gin.Context) {
 	var req model.PageReq
-	parant_id := c.Param("id")
-	if parant_id == "" {
+	parent_id := c.Param("id")
+	if parent_id == "" {
 		c.Error(errcode.WithData(errcode.CodeParamError, map[string]interface{}{
-			"msg": "no parant_id",
+			"msg": "no parent_id",
 		}))
 		return
 	}
@@ -847,7 +847,7 @@ func (*DeviceApi) HandleSubList(c *gin.Context) {
 		return
 	}
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
-	list, total, err := service.GroupApp.Device.GetSubList(c, parant_id, int64(req.Page), int64(req.PageSize), userClaims)
+	list, total, err := service.GroupApp.Device.GetSubList(c, parent_id, int64(req.Page), int64(req.PageSize), userClaims)
 	if err != nil {
 		c.Error(err)
 		return
@@ -999,6 +999,15 @@ func (*DeviceApi) HandleDeviceOnlineStatus(c *gin.Context) {
 	c.Set("data", data)
 }
 
+// @Summary Gateway register
+// @Description Register a gateway device
+// @Tags device
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param gateway body model.GatewayRegisterReq true "Gateway registration information"
+// @Success 200 {object} SuccessResponse
+// @Router /api/v1/device/gateway/register [post]
 func (*DeviceApi) GatewayRegister(c *gin.Context) {
 	var req model.GatewayRegisterReq
 	if !BindAndValidate(c, &req) {
@@ -1013,6 +1022,15 @@ func (*DeviceApi) GatewayRegister(c *gin.Context) {
 	c.Set("data", data)
 }
 
+// @Summary Gateway sub register
+// @Description Register a sub-device of a gateway
+// @Tags device
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param gateway body model.GatewaySubRegisterReq true "Gateway sub-device registration information"
+// @Success 200 {object} SuccessResponse
+// @Router /api/v1/device/gateway/sub/register [post]
 func (*DeviceApi) GatewaySubRegister(c *gin.Context) {
 	var req model.DeviceRegisterReq
 	if !BindAndValidate(c, &req) {
@@ -1082,7 +1100,15 @@ func (*DeviceApi) HandleDeviceSelector(c *gin.Context) {
 	c.Set("data", list)
 }
 
-// /api/v1/device/telemetry/latest [get]
+// @Summary Get latest telemetry data
+// @Description Get the latest telemetry data for a specific device
+// @Tags device
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Device ID"
+// @Success 200 {object} map[string]interface{}
+// @Router /api/v1/device/telemetry/latest [get]
 func (*DeviceApi) HandleTenantTelemetryData(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 

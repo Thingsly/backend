@@ -26,11 +26,11 @@ type EmailConfig struct {
 }
 
 type SMEConfig struct {
-	Provider string `json:"provider" form:"provider" validate:"required,max=36,oneof=ALIYUN"`
-	AliyunSMSConfig *AliyunSMSConfig `json:"aliyun_sms_config" form:"aliyun_sms_config" validate:"omitempty"`
+	Provider string `json:"provider" form:"provider" validate:"required,max=36,oneof=TWILIO"`
+	TwilioSMSConfig *TwilioSMSConfig `json:"twilio_sms_config" form:"twilio_sms_config" validate:"omitempty"`
 }
 
-type AliyunSMSConfig struct {
+type TwilioSMSConfig struct {
 	AccessKeyID     string `json:"access_key_id" form:"access_key_id" validate:"required,max=100"`         
 	AccessKeySecret string `json:"access_key_secret" form:"access_key_secret" validate:"required,max=100"` 
 	Endpoint        string `json:"endpoint" form:"endpoint" validate:"required,max=100"`                   

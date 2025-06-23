@@ -10,7 +10,15 @@ import (
 type LogoApi struct{}
 
 // UpdateLogo
-// @Router   /api/v1/logo [put]
+// @Summary Update logo
+// @Description Update logo
+// @Tags logo
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param logo body model.UpdateLogoReq true "Logo"
+// @Success 200 {object} model.UpdateLogoRes
+// @Router /api/v1/logo [put]
 func (LogoApi) UpdateLogo(c *gin.Context) {
 	var req model.UpdateLogoReq
 	if !BindAndValidate(c, &req) {
@@ -27,7 +35,14 @@ func (LogoApi) UpdateLogo(c *gin.Context) {
 }
 
 // GetLogoListByPage
-// @Router   /api/v1/logo [get]
+// @Summary Get logo list
+// @Description Get logo list
+// @Tags logo
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.GetLogoListRes
+// @Router /api/v1/logo [get]
 func (LogoApi) HandleLogoList(c *gin.Context) {
 	logoList, err := service.GroupApp.Logo.GetLogoList()
 	if err != nil {

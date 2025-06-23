@@ -10,6 +10,14 @@ import (
 type ProtocolPluginApi struct{}
 
 // CreateProtocolPlugin
+// @Summary Create protocol plugin
+// @Description Create protocol plugin
+// @Tags protocol_plugin
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param protocol_plugin body model.CreateProtocolPluginReq true "Protocol plugin"
+// @Success 200 {object} model.CreateProtocolPluginRes
 // @Router   /api/v1/protocol_plugin [post]
 func (*ProtocolPluginApi) CreateProtocolPlugin(c *gin.Context) {
 	var req model.CreateProtocolPluginReq
@@ -25,6 +33,14 @@ func (*ProtocolPluginApi) CreateProtocolPlugin(c *gin.Context) {
 }
 
 // DeleteProtocolPlugin
+// @Summary Delete protocol plugin
+// @Description Delete protocol plugin
+// @Tags protocol_plugin
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Protocol plugin id"
+// @Success 200 {object} model.DeleteProtocolPluginRes
 // @Router   /api/v1/protocol_plugin/{id} [delete]
 func (*ProtocolPluginApi) DeleteProtocolPlugin(c *gin.Context) {
 	id := c.Param("id")
@@ -38,6 +54,14 @@ func (*ProtocolPluginApi) DeleteProtocolPlugin(c *gin.Context) {
 }
 
 // UpdateProtocolPlugin
+// @Summary Update protocol plugin
+// @Description Update protocol plugin
+// @Tags protocol_plugin
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param protocol_plugin body model.UpdateProtocolPluginReq true "Protocol plugin"
+// @Success 200 {object} model.UpdateProtocolPluginRes
 // @Router   /api/v1/protocol_plugin [put]
 func (*ProtocolPluginApi) UpdateProtocolPlugin(c *gin.Context) {
 	var req model.UpdateProtocolPluginReq
@@ -54,6 +78,15 @@ func (*ProtocolPluginApi) UpdateProtocolPlugin(c *gin.Context) {
 }
 
 // UpdateProtocolPlugin
+// @Summary Get protocol plugin list by page
+// @Description Get protocol plugin list by page
+// @Tags protocol_plugin
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetProtocolPluginListByPageRes
 // @Router   /api/v1/protocol_plugin [get]
 func (*ProtocolPluginApi) HandleProtocolPluginListByPage(c *gin.Context) {
 	var req model.GetProtocolPluginListByPageReq
@@ -70,6 +103,14 @@ func (*ProtocolPluginApi) HandleProtocolPluginListByPage(c *gin.Context) {
 }
 
 // GetProtocolPluginForm
+// @Summary Get protocol plugin form
+// @Description Get protocol plugin form
+// @Tags protocol_plugin
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param protocol_plugin body model.GetProtocolPluginFormReq true "Protocol plugin"
+// @Success 200 {object} model.GetProtocolPluginFormRes
 // @Router   /api/v1/protocol_plugin/device_config_form [get]
 func (*ProtocolPluginApi) HandleProtocolPluginForm(c *gin.Context) {
 	var req model.GetProtocolPluginFormReq
@@ -86,6 +127,14 @@ func (*ProtocolPluginApi) HandleProtocolPluginForm(c *gin.Context) {
 }
 
 // GetProtocolPluginForm
+// @Summary Get protocol plugin form by protocol type
+// @Description Get protocol plugin form by protocol type
+// @Tags protocol_plugin
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param protocol_plugin body model.GetProtocolPluginFormByProtocolTypeReq true "Protocol plugin"
+// @Success 200 {object} model.GetProtocolPluginFormByProtocolTypeRes
 // @Router   /api/v1/protocol_plugin/config_form [get]
 func (*ProtocolPluginApi) HandleProtocolPluginFormByProtocolType(c *gin.Context) {
 	var req model.GetProtocolPluginFormByProtocolType
@@ -101,8 +150,16 @@ func (*ProtocolPluginApi) HandleProtocolPluginFormByProtocolType(c *gin.Context)
 	c.Set("data", data)
 }
 
-// /api/v1/plugin/device/config
-// Protocol plugin retrieves device configuration
+// HandleDeviceConfigForProtocolPlugin
+// @Summary Protocol plugin retrieves device configuration
+// @Description Protocol plugin retrieves device configuration
+// @Tags protocol_plugin
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param protocol_plugin body model.GetDeviceConfigReq true "Protocol plugin"
+// @Success 200 {object} model.GetDeviceConfigRes
+// @Router   /api/v1/plugin/device/config [get]
 func (*ProtocolPluginApi) HandleDeviceConfigForProtocolPlugin(c *gin.Context) {
 	var req model.GetDeviceConfigReq
 	if !BindAndValidate(c, &req) {

@@ -10,7 +10,16 @@ import (
 
 type SceneApi struct{}
 
-// /api/v1/scene [post]
+// Create scene
+// @Summary Create scene
+// @Description Create scene
+// @Tags scene
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param scene body model.CreateSceneReq true "Scene"
+// @Success 200 {object} model.CreateSceneRes
+// @Router   /api/v1/scene [post]
 func (*SceneApi) CreateScene(c *gin.Context) {
 	var req model.CreateSceneReq
 	if !BindAndValidate(c, &req) {
@@ -25,7 +34,16 @@ func (*SceneApi) CreateScene(c *gin.Context) {
 	c.Set("data", map[string]interface{}{"scene_id": id})
 }
 
-// /api/v1/scene [delete]
+// Delete scene
+// @Summary Delete scene
+// @Description Delete scene
+// @Tags scene
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Scene id"
+// @Success 200 {object} model.DeleteSceneRes
+// @Router   /api/v1/scene [delete]
 func (*SceneApi) DeleteScene(c *gin.Context) {
 	id := c.Param("id")
 	err := service.GroupApp.Scene.DeleteScene(id)
@@ -36,7 +54,16 @@ func (*SceneApi) DeleteScene(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// /api/v1/scene [put]
+// Update scene
+// @Summary Update scene
+// @Description Update scene
+// @Tags scene
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param scene body model.UpdateSceneReq true "Scene"
+// @Success 200 {object} model.UpdateSceneRes
+// @Router   /api/v1/scene [put]
 func (*SceneApi) UpdateScene(c *gin.Context) {
 	var req model.UpdateSceneReq
 	if !BindAndValidate(c, &req) {
@@ -51,7 +78,16 @@ func (*SceneApi) UpdateScene(c *gin.Context) {
 	c.Set("data", map[string]interface{}{"scene_id": id})
 }
 
-// /api/v1/scene/detail/{id} [get]
+// Get scene by id
+// @Summary Get scene by id
+// @Description Get scene by id
+// @Tags scene
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Scene id"
+// @Success 200 {object} model.GetSceneRes
+// @Router   /api/v1/scene/detail/{id} [get]
 func (*SceneApi) HandleScene(c *gin.Context) {
 	id := c.Param("id")
 	data, err := service.GroupApp.Scene.GetScene(id)
@@ -62,7 +98,17 @@ func (*SceneApi) HandleScene(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// /api/v1/scene [get]
+// Get scene by page
+// @Summary Get scene by page
+// @Description Get scene by page
+// @Tags scene
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetSceneListByPageRes
+// @Router   /api/v1/scene [get]
 func (*SceneApi) HandleSceneByPage(c *gin.Context) {
 	var req model.GetSceneListByPageReq
 	if !BindAndValidate(c, &req) {
@@ -77,7 +123,16 @@ func (*SceneApi) HandleSceneByPage(c *gin.Context) {
 	c.Set("data", data)
 }
 
-// /api/v1/scene/active/{id} [post]
+// Active scene
+// @Summary Active scene
+// @Description Active scene
+// @Tags scene
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Scene id"
+// @Success 200 {object} model.ActiveSceneRes
+// @Router   /api/v1/scene/active/{id} [post]
 // todo: Incomplete
 func (*SceneApi) ActiveScene(c *gin.Context) {
 	id := c.Param("id")
@@ -91,7 +146,17 @@ func (*SceneApi) ActiveScene(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// /api/v1/scene/log [get]
+// Get scene log by page
+// @Summary Get scene log by page
+// @Description Get scene log by page
+// @Tags scene
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetSceneLogListByPageRes
+// @Router   /api/v1/scene/log [get]
 func (*SceneApi) HandleSceneLog(c *gin.Context) {
 	var req model.GetSceneLogListByPageReq
 	if !BindAndValidate(c, &req) {

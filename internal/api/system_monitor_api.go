@@ -15,11 +15,12 @@ import (
 type SystemMonitorApi struct{}
 
 // GetCurrentSystemMetrics
-// @Summary
-// @Description
-// @Tags
+// @Summary Get current system metrics
+// @Description Get current system metrics
+// @Tags system_monitor
 // @Accept  json
 // @Produce  json
+// @Param x-token header string true "Authentication token"
 // @Success 200 {object} response.Response
 // @Router /api/v1/system/metrics/current [get]
 func (api *SystemMonitorApi) GetCurrentSystemMetrics(c *gin.Context) {
@@ -38,11 +39,12 @@ func (api *SystemMonitorApi) GetCurrentSystemMetrics(c *gin.Context) {
 }
 
 // GetHistorySystemMetrics
-// @Summary
-// @Description
-// @Tags
+// @Summary Get history system metrics
+// @Description Get history system metrics
+// @Tags system_monitor
 // @Accept  json
 // @Produce  json
+// @Param x-token header string true "Authentication token"
 // @Param hours query int false "query hours" default(24)
 // @Success 200 {object} response.Response
 // @Router /api/v1/system/metrics/history [get]

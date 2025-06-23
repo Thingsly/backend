@@ -11,7 +11,16 @@ import (
 
 type ServiceAccessApi struct{}
 
-// /api/v1/service/access [post]
+// Create service access
+// @Summary Create service access
+// @Description Create service access
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param service_access body model.CreateAccessReq true "Service access"
+// @Success 200 {object} model.CreateAccessRes
+// @Router   /api/v1/service/access [post]
 func (*ServiceAccessApi) Create(c *gin.Context) {
 	var req model.CreateAccessReq
 	if !BindAndValidate(c, &req) {
@@ -26,7 +35,17 @@ func (*ServiceAccessApi) Create(c *gin.Context) {
 	c.Set("data", resp)
 }
 
-// /api/v1/service/access/list
+// Get service access by page
+// @Summary Get service access by page
+// @Description Get service access by page
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetServiceAccessByPageRes
+// @Router   /api/v1/service/access/list [get]
 func (*ServiceAccessApi) HandleList(c *gin.Context) {
 	var req model.GetServiceAccessByPageReq
 	if !BindAndValidate(c, &req) {
@@ -41,7 +60,16 @@ func (*ServiceAccessApi) HandleList(c *gin.Context) {
 	c.Set("data", resp)
 }
 
-// /api/v1/service/access [put]
+// Update service access
+// @Summary Update service access
+// @Description Update service access
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param service_access body model.UpdateAccessReq true "Service access"
+// @Success 200 {object} model.UpdateAccessRes
+// @Router   /api/v1/service/access [put]
 func (*ServiceAccessApi) Update(c *gin.Context) {
 	var req model.UpdateAccessReq
 	if !BindAndValidate(c, &req) {
@@ -55,7 +83,16 @@ func (*ServiceAccessApi) Update(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// /api/v1/service/access/:id [delete]
+// Delete service access
+// @Summary Delete service access
+// @Description Delete service access
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Service access id"
+// @Success 200 {object} model.DeleteAccessRes
+// @Router   /api/v1/service/access/:id [delete]
 func (*ServiceAccessApi) Delete(c *gin.Context) {
 	id := c.Param("id")
 	err := service.GroupApp.ServiceAccess.Delete(id)
@@ -66,8 +103,15 @@ func (*ServiceAccessApi) Delete(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// /api/v1/service/access/voucher/form [get]
-// Service access point credential form query
+// Get service access voucher form
+// @Summary Get service access voucher form
+// @Description Get service access voucher form
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.GetServiceAccessVoucherFormRes
+// @Router   /api/v1/service/access/voucher/form [get]
 func (*ServiceAccessApi) HandleVoucherForm(c *gin.Context) {
 	var req model.GetServiceAccessVoucherFormReq
 	if !BindAndValidate(c, &req) {
@@ -81,8 +125,15 @@ func (*ServiceAccessApi) HandleVoucherForm(c *gin.Context) {
 	c.Set("data", resp)
 }
 
-// /api/v1/service/access/device/list
-// Service access point device list query
+// Get service access device list
+// @Summary Get service access device list
+// @Description Get service access device list
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.GetServiceAccessDeviceListRes
+// @Router   /api/v1/service/access/device/list [get]
 func (*ServiceAccessApi) HandleDeviceList(c *gin.Context) {
 	var req model.ServiceAccessDeviceListReq
 	if !BindAndValidate(c, &req) {
@@ -97,8 +148,15 @@ func (*ServiceAccessApi) HandleDeviceList(c *gin.Context) {
 	c.Set("data", resp)
 }
 
-// /api/v1/plugin/service/access/list
-// Plugin service access point list query
+// Get plugin service access list
+// @Summary Get plugin service access list
+// @Description Get plugin service access list
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.GetPluginServiceAccessListRes
+// @Router   /api/v1/plugin/service/access/list [get]
 func (*ServiceAccessApi) HandlePluginServiceAccessList(c *gin.Context) {
 	logrus.Info("get plugin list")
 	var req model.GetPluginServiceAccessListReq
@@ -113,7 +171,15 @@ func (*ServiceAccessApi) HandlePluginServiceAccessList(c *gin.Context) {
 	c.Set("data", resp)
 }
 
-// /api/v1/pugin/service/access
+// Get plugin service access
+// @Summary Get plugin service access
+// @Description Get plugin service access
+// @Tags service_access
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.GetPluginServiceAccessRes
+// @Router   /api/v1/plugin/service/access [get]
 func (*ServiceAccessApi) HandlePluginServiceAccess(c *gin.Context) {
 	var req model.GetPluginServiceAccessReq
 	if !BindAndValidate(c, &req) {

@@ -64,8 +64,6 @@ func (s *MQTTService) Stop() error {
 	}
 
 	logrus.Info("Stopping MQTT service...")
-	// Here you can add the logic to stop the MQTT client
-	// If the mqtt package provides a close method, you can call it here
 
 	logrus.Info("MQTT service stopped")
 	return nil

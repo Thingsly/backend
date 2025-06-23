@@ -11,6 +11,15 @@ import (
 type NotificationHistoryApi struct{}
 
 // GetNotificationHistoryListByPage
+// @Summary Get notification history list by page
+// @Description Get notification history list by page
+// @Tags notification_history
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetNotificationHistoryListByPageOutSchema
 // @Router   /api/v1/notification_history/list [get]
 func (*NotificationHistoryApi) HandleNotificationHistoryListByPage(c *gin.Context) {
 	var req model.GetNotificationHistoryListByPageReq

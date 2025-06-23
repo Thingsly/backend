@@ -12,6 +12,14 @@ import (
 type DictApi struct{}
 
 // CreateDictColumn
+// @Summary Create dict column
+// @Description Create dict column
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param dict_column body model.CreateDictReq true "Dict column"
+// @Success 200 {object} model.CreateDictRes
 // @Router   /api/v1/dict/column [post]
 func (*DictApi) CreateDictColumn(c *gin.Context) {
 
@@ -31,6 +39,14 @@ func (*DictApi) CreateDictColumn(c *gin.Context) {
 }
 
 // CreateDictLanguage
+// @Summary Create dict language
+// @Description Create dict language
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param dict_language body model.CreateDictLanguageReq true "Dict language"
+// @Success 200 {object} model.CreateDictLanguageRes
 // @Router   /api/v1/dict/language [post]
 func (*DictApi) CreateDictLanguage(c *gin.Context) {
 
@@ -49,6 +65,14 @@ func (*DictApi) CreateDictLanguage(c *gin.Context) {
 }
 
 // DeleteDictColumn
+// @Summary Delete dict column
+// @Description Delete dict column
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Dict column id"
+// @Success 200 {object} model.DeleteDictRes
 // @Router   /api/v1/dict/column/{id} [delete]
 func (*DictApi) DeleteDictColumn(c *gin.Context) {
 	id := c.Param("id")
@@ -62,6 +86,14 @@ func (*DictApi) DeleteDictColumn(c *gin.Context) {
 }
 
 // DeleteDictLanguage
+// @Summary Delete dict language
+// @Description Delete dict language
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Dict language id"
+// @Success 200 {object} model.DeleteDictLanguageRes
 // @Router   /api/v1/dict/language/{id} [delete]
 func (*DictApi) DeleteDictLanguage(c *gin.Context) {
 	id := c.Param("id")
@@ -75,6 +107,14 @@ func (*DictApi) DeleteDictLanguage(c *gin.Context) {
 }
 
 // CreateDictColumn
+// @Summary Get dict
+// @Description Get dict
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param dict_enum body model.DictListReq true "Dict enum"
+// @Success 200 {object} model.DictListRes
 // @Router   /api/v1/dict/enum [get]
 func (*DictApi) HandleDict(c *gin.Context) {
 	var dictEnum model.DictListReq
@@ -92,7 +132,14 @@ func (*DictApi) HandleDict(c *gin.Context) {
 }
 
 // Protocol service dropdown menu query API
-// /api/v1/dict/protocol/service [get]
+// @Summary Protocol service dropdown menu query API
+// @Description Protocol service dropdown menu query API
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} model.ProtocolMenuRes
+// @Router   /api/v1/dict/protocol/service [get]
 func (*DictApi) HandleProtocolAndService(c *gin.Context) {
 	var protocolMenuReq model.ProtocolMenuReq
 	if !BindAndValidate(c, &protocolMenuReq) {
@@ -107,6 +154,14 @@ func (*DictApi) HandleProtocolAndService(c *gin.Context) {
 }
 
 // GetDictLanguage
+// @Summary Get dict language
+// @Description Get dict language
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Dict language id"
+// @Success 200 {object} model.GetDictLanguageRes
 // @Router   /api/v1/dict/language/{id} [get]
 func (*DictApi) HandleDictLanguage(c *gin.Context) {
 	id := c.Param("id")
@@ -120,6 +175,15 @@ func (*DictApi) HandleDictLanguage(c *gin.Context) {
 }
 
 // GetDictLisyByPage
+// @Summary Get dict list by page
+// @Description Get dict list by page
+// @Tags dict
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetDictLisyByPageRes
 // @Router   /api/v1/dict [get]
 func (*DictApi) HandleDictLisyByPage(c *gin.Context) {
 	var byList model.GetDictLisyByPageReq

@@ -24,11 +24,17 @@ type UpLoadApi struct{}
 const (
 	BaseUploadDir = "./files/"
 	OtaPath       = "./api/v1/ota/download/files/"
-	MaxFileSize   = 500 << 20 // 200MB
+	MaxFileSize   = 500 << 20 // 500MB
 )
 
 // UpFile handles file upload
+// @Summary File Upload
+// @Description File Upload
 // @Tags     File Upload
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/file/up [post]
 func (*UpLoadApi) UpFile(c *gin.Context) {
 	// Check if the file is empty
@@ -112,6 +118,7 @@ func generateFilePath(fileType, filename string) (string, string, error) {
 		})
 	}
 
+	// Get the absolute path of the base directory
 	absBaseDir, err := filepath.Abs(BaseUploadDir)
 	if err != nil {
 		return "", "", errcode.WithVars(errcode.CodeFilePathGenError, map[string]interface{}{

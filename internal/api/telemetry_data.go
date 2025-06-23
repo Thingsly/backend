@@ -22,6 +22,14 @@ import (
 type TelemetryDataApi struct{}
 
 // GetCurrentData
+// @Summary Get current telemetry data
+// @Description Get current telemetry data
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Device ID"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/current/{id} [get]
 func (*TelemetryDataApi) HandleCurrentData(c *gin.Context) {
 	deviceId := c.Param("id")
@@ -35,6 +43,13 @@ func (*TelemetryDataApi) HandleCurrentData(c *gin.Context) {
 }
 
 // Query telemetry current value based on device ID and key
+// @Summary Get current telemetry data by keys
+// @Description Get current telemetry data by keys
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router /api/v1/telemetry/datas/current/keys [get]
 func (*TelemetryDataApi) HandleCurrentDataKeys(c *gin.Context) {
 	var req model.GetTelemetryCurrentDataKeysReq
@@ -52,6 +67,13 @@ func (*TelemetryDataApi) HandleCurrentDataKeys(c *gin.Context) {
 }
 
 // ServeHistoryData
+// @Summary Get history telemetry data
+// @Description Get history telemetry data
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/history [get]
 func (*TelemetryDataApi) ServeHistoryData(c *gin.Context) {
 	var req model.GetTelemetryHistoryDataReq
@@ -68,6 +90,13 @@ func (*TelemetryDataApi) ServeHistoryData(c *gin.Context) {
 }
 
 // DeleteData
+// @Summary Delete telemetry data
+// @Description Delete telemetry data
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas [delete]
 func (*TelemetryDataApi) DeleteData(c *gin.Context) {
 	var req model.DeleteTelemetryDataReq
@@ -84,6 +113,14 @@ func (*TelemetryDataApi) DeleteData(c *gin.Context) {
 }
 
 // GetCurrentData Retrieve the latest telemetry data based on device ID
+// @Summary Get current telemetry data by device ID
+// @Description Get current telemetry data by device ID
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Device ID"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/current/detail/{id} [get]
 func (*TelemetryDataApi) ServeCurrentDetailData(c *gin.Context) {
 	deviceId := c.Param("id")
@@ -96,6 +133,14 @@ func (*TelemetryDataApi) ServeCurrentDetailData(c *gin.Context) {
 }
 
 // ServeHistoryData Device historical value query (pagination)
+// @Summary Get history telemetry data by device ID
+// @Description Get history telemetry data by device ID
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Device ID"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/history/pagination [get]
 func (*TelemetryDataApi) ServeHistoryDataByPage(c *gin.Context) {
 	var req model.GetTelemetryHistoryDataByPageReq
@@ -119,6 +164,14 @@ func (*TelemetryDataApi) ServeHistoryDataByPage(c *gin.Context) {
 }
 
 // ServeHistoryData Device historical value query (pagination)
+// @Summary Get history telemetry data by device ID
+// @Description Get history telemetry data by device ID
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param id path string true "Device ID"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/history/page [get]
 func (*TelemetryDataApi) ServeHistoryDataByPageV2(c *gin.Context) {
 	var req model.GetTelemetryHistoryDataByPageReq
@@ -142,6 +195,13 @@ func (*TelemetryDataApi) ServeHistoryDataByPageV2(c *gin.Context) {
 }
 
 // ServeSetLogsDataListByPage Telemetry data dispatch record query (with pagination)
+// @Summary Get telemetry data dispatch record query (with pagination)
+// @Description Get telemetry data dispatch record query (with pagination)
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/set/logs [get]
 func (*TelemetryDataApi) ServeSetLogsDataListByPage(c *gin.Context) {
 	var req model.GetTelemetrySetLogsListByPageReq
@@ -159,6 +219,13 @@ func (*TelemetryDataApi) ServeSetLogsDataListByPage(c *gin.Context) {
 }
 
 // Retrieve the echo data of telemetry sent by the simulated device
+// @Summary Get echo data of telemetry sent by the simulated device
+// @Description Get echo data of telemetry sent by the simulated device
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // /api/v1/telemetry/datas/simulation [get]
 func (*TelemetryDataApi) ServeEchoData(c *gin.Context) {
 	var req model.ServeEchoDataReq
@@ -180,6 +247,13 @@ func (*TelemetryDataApi) ServeEchoData(c *gin.Context) {
 }
 
 // Simulate device sending telemetry data
+// @Summary Simulate device sending telemetry data
+// @Description Simulate device sending telemetry data
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // /api/v1/telemetry/datas/simulation [post]
 func (*TelemetryDataApi) SimulationTelemetryData(c *gin.Context) {
 	var req model.SimulationTelemetryDataReq
@@ -195,6 +269,13 @@ func (*TelemetryDataApi) SimulationTelemetryData(c *gin.Context) {
 }
 
 // ServeCurrentDataByWS Handle real-time telemetry data from devices via WebSocket
+// @Summary Handle real-time telemetry data from devices via WebSocket
+// @Description Handle real-time telemetry data from devices via WebSocket
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/current/ws [get]
 func (*TelemetryDataApi) ServeCurrentDataByWS(c *gin.Context) {
 	// Upgrade HTTP connection to a WebSocket connection
@@ -316,6 +397,8 @@ func (*TelemetryDataApi) ServeCurrentDataByWS(c *gin.Context) {
 // @Tags         Device
 // @Accept       json
 // @Produce      json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router       /api/v1/device/online/status/ws [get]
 func (*TelemetryDataApi) ServeDeviceStatusByWS(c *gin.Context) {
 	// Upgrade to WebSocket connection
@@ -363,7 +446,7 @@ func (*TelemetryDataApi) ServeDeviceStatusByWS(c *gin.Context) {
 
 	// Subscribe to device online status
 	var mu sync.Mutex
-	logrus.Info("User SubscribeOnlineOffline")
+	logrus.Info("User Subscribe Online/Offline")
 	var mqttClient ws_subscribe.WsMqttClient
 	if err := mqttClient.SubscribeOnlineOffline(deviceID, conn, msgType, &mu); err != nil {
 		logrus.Error("Failed to subscribe to device status:", err)
@@ -412,6 +495,13 @@ func (*TelemetryDataApi) ServeDeviceStatusByWS(c *gin.Context) {
 }
 
 // ServeCurrentDataByKey Queries the current telemetry value by key
+// @Summary Queries the current telemetry value by key
+// @Description Queries the current telemetry value by key
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router /api/v1/telemetry/datas/current/keys/ws [get]
 func (*TelemetryDataApi) ServeCurrentDataByKey(c *gin.Context) {
 	// Upgrade to WebSocket connection
@@ -553,6 +643,13 @@ func (*TelemetryDataApi) ServeCurrentDataByKey(c *gin.Context) {
 }
 
 // ServeStatisticData
+// @Summary Get telemetry data statistic
+// @Description Get telemetry data statistic
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
 // @Router   /api/v1/telemetry/datas/statistic [get]
 func (*TelemetryDataApi) ServeStatisticData(c *gin.Context) {
 	var req model.GetTelemetryStatisticReq
@@ -569,7 +666,15 @@ func (*TelemetryDataApi) ServeStatisticData(c *gin.Context) {
 	c.Set("data", date)
 }
 
-// /api/v1/telemetry/datas/pub
+// TelemetryPutMessage
+// @Summary Telemetry data publish
+// @Description Telemetry data publish
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
+// @Router   /api/v1/telemetry/datas/pub [post]
 func (*TelemetryDataApi) TelemetryPutMessage(c *gin.Context) {
 	var req model.PutMessage
 	if !BindAndValidate(c, &req) {
@@ -585,7 +690,15 @@ func (*TelemetryDataApi) TelemetryPutMessage(c *gin.Context) {
 	c.Set("data", nil)
 }
 
-// /api/v1/telemetry/datas/msg/count
+// ServeMsgCountByTenant
+// @Summary Get telemetry data message count
+// @Description Get telemetry data message count
+// @Tags telemetry_data
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Success 200 {object} map[string]interface{}
+// @Router   /api/v1/telemetry/datas/msg/count [get]
 func (*TelemetryDataApi) ServeMsgCountByTenant(c *gin.Context) {
 	userClaims := c.MustGet("claims").(*utils.UserClaims)
 	if userClaims.TenantID == "" {

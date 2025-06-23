@@ -11,6 +11,15 @@ import (
 type OperationLogsApi struct{}
 
 // GetListByPage
+// @Summary Get operation log list by page
+// @Description Get operation log list by page
+// @Tags operation_log
+// @Accept json
+// @Produce json
+// @Param x-token header string true "Authentication token"
+// @Param page query int true "Page"
+// @Param page_size query int true "Page size"
+// @Success 200 {object} model.GetOperationLogListByPageRes
 // @Router   /api/v1/operation_logs [get]
 func (*OperationLogsApi) HandleListByPage(c *gin.Context) {
 	var req model.GetOperationLogListByPageReq
