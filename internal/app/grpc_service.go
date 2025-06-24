@@ -1,7 +1,7 @@
 package app
 
 import (
-	tptodb "github.com/Thingsly/backend/third_party/grpc/tptodb_client"
+	tltodb "github.com/Thingsly/backend/third_party/grpc/tltodb_client"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -36,7 +36,7 @@ func (s *GRPCService) Start() error {
 	logrus.Info("Initializing gRPC client...")
 
 	// Initialize the gRPC client
-	tptodb.GrpcTptodbInit()
+	tltodb.GrpcTltodbInit()
 
 	s.initialized = true
 	logrus.Info("gRPC client initialized")

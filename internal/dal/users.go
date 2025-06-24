@@ -80,12 +80,13 @@ func GetUserListByPage(userListReq *model.UserListReq, claims *utils.UserClaims)
 	var userList []map[string]interface{}
 	queryBuilder := q.WithContext(context.Background())
 
-	if claims.Authority == TENANT_ADMIN || claims.Authority == TENANT_USER {
+	switch claims.Authority {
+	case TENANT_ADMIN, TENANT_USER:
 		queryBuilder = queryBuilder.Where(q.TenantID.Eq(claims.TenantID))
 		queryBuilder = queryBuilder.Where(q.Authority.Eq(TENANT_USER))
-	} else if claims.Authority == SYS_ADMIN {
+	case SYS_ADMIN:
 		queryBuilder = queryBuilder.Where(q.Authority.Eq(TENANT_ADMIN))
-	} else {
+	default:
 		return count, nil, fmt.Errorf("authority exception")
 	}
 
@@ -254,6 +255,11 @@ func (UserQuery) UpdateLastVisitTime(ctx context.Context, uid string) (err error
 type UserVo struct {
 }
 
+// PoToVo is used to convert the user info to the user response.
+// Po: Persistent Object
+// Vo: Value Object
+// Po is the data object in the database, and Vo is the data object in the application layer.
+// Po is used to store data in the database, and Vo is used to transfer data between the application layer and the database.
 func (UserVo) PoToVo(userInfo *model.User) (info *model.UsersRes) {
 	info = &model.UsersRes{
 		ID:       userInfo.ID,

@@ -91,7 +91,7 @@ func UpdateSceneInfo(req model.UpdateSceneReq, claims *utils.UserClaims) (string
 	}
 	if result.RowsAffected == 0 {
 		Rollback(tx)
-		return "", errors.New("Edit failed.")
+		return "", errors.New("edit failed")
 	}
 
 	_, err = tx.SceneActionInfo.Where(query.SceneActionInfo.SceneID.Eq(req.ID)).Delete()

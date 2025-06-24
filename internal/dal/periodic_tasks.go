@@ -42,7 +42,7 @@ func DeletePeriodicTask(sceneAutomationId string, tx *query.QueryTx) error {
 func GetPeriodicTaskListWithLock(limit int) ([]*model.PeriodicTask, error) {
 	key := "irrigation-iot-platform:periodicTask"
 	if !common.AcquireLock(key, time.Second*5) {
-		return nil, errors.New("Failed to acquire the lock.")
+		return nil, errors.New("failed to acquire the lock")
 	}
 	defer common.ReleaseLock(key)
 	q := query.PeriodicTask

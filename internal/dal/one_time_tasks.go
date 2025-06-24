@@ -42,7 +42,7 @@ func DeleteOneTimeTask(sceneAutomationId string, tx *query.QueryTx) error {
 func GetOnceTaskListWithLock(limit int) ([]*model.OneTimeTask, error) {
 	key := "irrigation-iot-platform:onceTask"
 	if !common.AcquireLock(key, time.Second*5) {
-		return nil, errors.New("Failed to acquire the lock.")
+		return nil, errors.New("failed to acquire the lock")
 	}
 	defer common.ReleaseLock(key)
 	q := query.OneTimeTask

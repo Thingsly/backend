@@ -2,7 +2,6 @@ package dal
 
 import (
 	"context"
-	"encoding/json"
 	"regexp"
 	"strconv"
 	"time"
@@ -12,10 +11,6 @@ import (
 	global "github.com/Thingsly/backend/pkg/global"
 
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
-
-	tptodb "github.com/Thingsly/backend/third_party/grpc/tptodb_client"
-	pb "github.com/Thingsly/backend/third_party/grpc/tptodb_client/grpc_tptodb"
 )
 
 func CreateTelemetrData(data *model.TelemetryData) error {
@@ -45,30 +40,30 @@ func GetCurrentTelemetrData(deviceId string) ([]model.TelemetryData, error) {
 
 // Query one record by device ID, ordered by timestamp (ts) in descending order
 func GetCurrentTelemetrDetailData(deviceId string) (*model.TelemetryData, error) {
-	dbType := viper.GetString("grpc.tptodb_type")
-	if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
-		var data []model.TelemetryData
+	// dbType := viper.GetString("grpc.tptodb_type")
+	// if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
+	// 	var data []model.TelemetryData
 
-		request := &pb.GetDeviceAttributesCurrentsRequest{
-			DeviceId: deviceId,
-		}
-		request.Attribute = append(request.Attribute, "")
-		r, err := tptodb.TptodbClient.GetDeviceAttributesCurrents(context.Background(), request)
-		if err != nil {
-			logrus.Printf("err: %+v", err)
-			return nil, err
-		}
-		logrus.Printf("data: %+v", r.Data)
-		err = json.Unmarshal([]byte(r.Data), &data)
-		if err != nil {
-			logrus.Printf("err: %+v", err)
-			return nil, err
-		}
-		if len(data) > 0 {
-			return &data[0], err
-		}
-		return &model.TelemetryData{}, err
-	}
+	// 	request := &pb.GetDeviceAttributesCurrentsRequest{
+	// 		DeviceId: deviceId,
+	// 	}
+	// 	request.Attribute = append(request.Attribute, "")
+	// 	r, err := tptodb.TptodbClient.GetDeviceAttributesCurrents(context.Background(), request)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v", err)
+	// 		return nil, err
+	// 	}
+	// 	logrus.Printf("data: %+v", r.Data)
+	// 	err = json.Unmarshal([]byte(r.Data), &data)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v", err)
+	// 		return nil, err
+	// 	}
+	// 	if len(data) > 0 {
+	// 		return &data[0], err
+	// 	}
+	// 	return &model.TelemetryData{}, err
+	// }
 
 	re, err := query.TelemetryData.
 		Where(query.TelemetryData.DeviceID.Eq(deviceId)).
@@ -82,29 +77,29 @@ func GetCurrentTelemetrDetailData(deviceId string) (*model.TelemetryData, error)
 }
 
 func GetHistoryTelemetrData(deviceId, key string, startTime, endTime int64) ([]*model.TelemetryData, error) {
-	dbType := viper.GetString("grpc.tptodb_type")
-	if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
-		data := make([]*model.TelemetryData, 0)
-		request := &pb.GetDeviceHistoryRequest{
-			DeviceId:  deviceId,
-			StartTime: startTime,
-			EndTime:   endTime,
-			Key:       key,
-		}
-		r, err := tptodb.TptodbClient.GetDeviceHistory(context.Background(), request)
-		if err != nil {
-			logrus.Printf("err: %+v", err)
-			return nil, err
-		}
-		logrus.Printf("data: %+v", r.Data)
-		err = json.Unmarshal([]byte(r.Data), &data)
-		if err != nil {
-			logrus.Printf("Unmarshal err:%v", err)
-			return nil, err
-		}
+	// dbType := viper.GetString("grpc.tptodb_type")
+	// if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
+	// 	data := make([]*model.TelemetryData, 0)
+	// 	request := &pb.GetDeviceHistoryRequest{
+	// 		DeviceId:  deviceId,
+	// 		StartTime: startTime,
+	// 		EndTime:   endTime,
+	// 		Key:       key,
+	// 	}
+	// 	r, err := tptodb.TptodbClient.GetDeviceHistory(context.Background(), request)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v", err)
+	// 		return nil, err
+	// 	}
+	// 	logrus.Printf("data: %+v", r.Data)
+	// 	err = json.Unmarshal([]byte(r.Data), &data)
+	// 	if err != nil {
+	// 		logrus.Printf("Unmarshal err:%v", err)
+	// 		return nil, err
+	// 	}
 
-		return data, nil
-	}
+	// 	return data, nil
+	// }
 
 	data, err := query.TelemetryData.
 		Where(query.TelemetryData.DeviceID.Eq(deviceId)).
@@ -117,31 +112,31 @@ func GetHistoryTelemetrData(deviceId, key string, startTime, endTime int64) ([]*
 }
 
 func GetHistoryTelemetrDataByPage(p *model.GetTelemetryHistoryDataByPageReq) (int64, []*model.TelemetryData, error) {
-	dbType := viper.GetString("grpc.tptodb_type")
-	if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
-		data := make([]*model.TelemetryData, 0)
-		request := &pb.GetDeviceHistoryWithPageAndPageRequest{
-			DeviceId:  p.DeviceID,
-			StartTime: p.StartTime,
-			EndTime:   p.EndTime,
-		}
-		if len(p.Key) > 0 {
-			request.Key = p.Key
-		}
-		r, err := tptodb.TptodbClient.GetDeviceHistoryWithPageAndPage(context.Background(), request)
-		if err != nil {
-			logrus.Printf("err: %+v", err)
-			return 0, nil, err
-		}
+	// dbType := viper.GetString("grpc.tptodb_type")
+	// if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
+	// 	data := make([]*model.TelemetryData, 0)
+	// 	request := &pb.GetDeviceHistoryWithPageAndPageRequest{
+	// 		DeviceId:  p.DeviceID,
+	// 		StartTime: p.StartTime,
+	// 		EndTime:   p.EndTime,
+	// 	}
+	// 	if len(p.Key) > 0 {
+	// 		request.Key = p.Key
+	// 	}
+	// 	r, err := tptodb.TptodbClient.GetDeviceHistoryWithPageAndPage(context.Background(), request)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v", err)
+	// 		return 0, nil, err
+	// 	}
 
-		logrus.Printf("data: %+v", r.Data)
-		err = json.Unmarshal([]byte(r.Data), &data)
-		if err != nil {
-			logrus.Printf("err: %+v", err)
-			return 0, nil, err
-		}
-		return int64(len(data)), data, nil
-	}
+	// 	logrus.Printf("data: %+v", r.Data)
+	// 	err = json.Unmarshal([]byte(r.Data), &data)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v", err)
+	// 		return 0, nil, err
+	// 	}
+	// 	return int64(len(data)), data, nil
+	// }
 
 	var count int64
 	q := query.TelemetryData
@@ -247,28 +242,28 @@ func DeleteTelemetrDataByTime(t int64) error {
 }
 
 func GetTelemetrStatisticData(deviceID, key string, startTime, endTime int64) ([]map[string]interface{}, error) {
-	dbType := viper.GetString("grpc.tptodb_type")
-	if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
-		var fields []map[string]interface{}
-		request := &pb.GetDeviceKVDataWithNoAggregateRequest{
-			DeviceId:  deviceID,
-			Key:       key,
-			StartTime: startTime,
-			EndTime:   endTime,
-		}
-		r, err := tptodb.TptodbClient.GetDeviceKVDataWithNoAggregate(context.Background(), request)
-		if err != nil {
-			logrus.Printf("err: %+v\n", err)
-			return fields, err
-		}
-		logrus.Printf("data: %+v", r.Data)
-		err = json.Unmarshal([]byte(r.Data), &fields)
-		if err != nil {
-			logrus.Printf("err: %+v\n", err)
-			return nil, err
-		}
-		return fields, nil
-	}
+	// dbType := viper.GetString("grpc.tptodb_type")
+	// if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
+	// 	var fields []map[string]interface{}
+	// 	request := &pb.GetDeviceKVDataWithNoAggregateRequest{
+	// 		DeviceId:  deviceID,
+	// 		Key:       key,
+	// 		StartTime: startTime,
+	// 		EndTime:   endTime,
+	// 	}
+	// 	r, err := tptodb.TptodbClient.GetDeviceKVDataWithNoAggregate(context.Background(), request)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v\n", err)
+	// 		return fields, err
+	// 	}
+	// 	logrus.Printf("data: %+v", r.Data)
+	// 	err = json.Unmarshal([]byte(r.Data), &fields)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v\n", err)
+	// 		return nil, err
+	// 	}
+	// 	return fields, nil
+	// }
 
 	q := query.TelemetryData
 	queryBuilder := q.WithContext(context.Background())
@@ -285,29 +280,29 @@ func GetTelemetrStatisticData(deviceID, key string, startTime, endTime int64) ([
 
 func GetTelemetrStatisticaAgregationData(deviceId, key string, sTime, eTime, aggregateWindow int64, aggregateFunc string) ([]map[string]interface{}, error) {
 	var data []map[string]interface{}
-	dbType := viper.GetString("grpc.tptodb_type")
-	if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
-		request := &pb.GetDeviceKVDataWithAggregateRequest{
-			DeviceId:        deviceId,
-			Key:             key,
-			StartTime:       sTime,
-			EndTime:         eTime,
-			AggregateWindow: aggregateWindow,
-			AggregateFunc:   aggregateFunc,
-		}
-		r, err := tptodb.TptodbClient.GetDeviceKVDataWithAggregate(context.Background(), request)
-		if err != nil {
-			logrus.Printf("err: %+v\n", err)
-			return nil, err
-		}
-		logrus.Printf("data: %+v", r.Data)
-		err = json.Unmarshal([]byte(r.Data), &data)
-		if err != nil {
-			logrus.Printf("err: %+v\n", err)
-			return nil, err
-		}
-		return data, nil
-	}
+	// dbType := viper.GetString("grpc.tptodb_type")
+	// if dbType == "TSDB" || dbType == "KINGBASE" || dbType == "POLARDB" {
+	// 	request := &pb.GetDeviceKVDataWithAggregateRequest{
+	// 		DeviceId:        deviceId,
+	// 		Key:             key,
+	// 		StartTime:       sTime,
+	// 		EndTime:         eTime,
+	// 		AggregateWindow: aggregateWindow,
+	// 		AggregateFunc:   aggregateFunc,
+	// 	}
+	// 	r, err := tptodb.TptodbClient.GetDeviceKVDataWithAggregate(context.Background(), request)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v\n", err)
+	// 		return nil, err
+	// 	}
+	// 	logrus.Printf("data: %+v", r.Data)
+	// 	err = json.Unmarshal([]byte(r.Data), &data)
+	// 	if err != nil {
+	// 		logrus.Printf("err: %+v\n", err)
+	// 		return nil, err
+	// 	}
+	// 	return data, nil
+	// }
 
 	telemetryDatasAggregate := TelemetryDatasAggregate{
 		DeviceID:          deviceId,

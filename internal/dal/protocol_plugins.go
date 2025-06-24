@@ -13,17 +13,19 @@ import (
 )
 
 const (
-	DEVICE_TYPE_1 = "DRIECT_ATTACHED_PROTOCOL"
+	DEVICE_TYPE_1 = "DIRECT_ATTACHED_PROTOCOL"
 	DEVICE_TYPE_2 = "GATEWAY_PROTOCOL"
 )
 
 func CreateProtocolPluginWithDict(p *model.CreateProtocolPluginReq) (*model.ProtocolPlugin, error) {
+
 	var dictCode string
-	if p.DeviceType == 1 {
+	switch p.DeviceType {
+	case 1:
 		dictCode = DEVICE_TYPE_1
-	} else if p.DeviceType == 2 {
+	case 2:
 		dictCode = DEVICE_TYPE_2
-	} else {
+	default:
 		return nil, errors.New("deviceType is invalid")
 	}
 	logrus.Info("dictCode:", dictCode)
@@ -256,11 +258,12 @@ func GetProtocolPluginByDeviceConfigID(deviceConfigID string) (*model.ProtocolPl
 	}
 
 	var deviceType int16
-	if deviceConfig.DeviceType == "1" {
+	switch deviceConfig.DeviceType {
+	case "1":
 		deviceType = 1
-	} else if deviceConfig.DeviceType == "2" || deviceConfig.DeviceType == "3" {
+	case "2", "3":
 		deviceType = 2
-	} else {
+	default:
 		return nil, errors.New("deviceType is invalid")
 	}
 

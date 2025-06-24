@@ -13,6 +13,7 @@ func CreateDeviceTriggerCondition(d model.DeviceTriggerCondition, tx *query.Quer
 	}
 }
 
+// SwitchDeviceTriggerCondition is used to switch the enabled status of the device trigger condition.
 func SwitchDeviceTriggerCondition(sceneAutomationId, enabled string, tx *query.QueryTx) error {
 	_, err := tx.DeviceTriggerCondition.
 		Where(tx.DeviceTriggerCondition.ID.Eq(sceneAutomationId)).

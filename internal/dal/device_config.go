@@ -176,6 +176,11 @@ func (DeviceConfigQuery) Find(ctx context.Context, option ...gen.Condition) (lis
 
 type DeviceConfigVo struct{}
 
+// Convert PO (Persistent Object) to VO (Value Object)
+// PO: Persistent Object
+// VO: Value Object
+// PO is the data object in the database, and VO is the data object in the application layer.
+// PO is used to store data in the database, and VO is used to transfer data between the application layer and the database.
 func (DeviceConfigVo) PoToVo(deviceConfigInfo *model.DeviceConfig) (info *model.DeviceConfigsRes) {
 	info = &model.DeviceConfigsRes{
 		ID:         deviceConfigInfo.ID,

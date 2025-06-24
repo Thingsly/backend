@@ -17,6 +17,16 @@ type TelemetryDatasAggregate struct {
 	Key               string `json:"key"`
 }
 
+// GetTelemetryDatasAggregate is used to get the telemetry data aggregate.
+// Example:
+// aggregateFunction = "avg"
+// aggregateWindow = 10
+// sTime = 1719859200
+// eTime = 1719859200
+// key = "temperature"
+// deviceId = "123"
+// return: [{"x": 1719859200, "x2": 1719859210, "y": 20.5}, {"x": 1719859210, "x2": 1719859220, "y": 21.0}]
+
 func GetTelemetryDatasAggregate(_ context.Context, telemetryDatasAggregate TelemetryDatasAggregate) ([]map[string]interface{}, error) {
 	var data []map[string]interface{}
 	var queryString string
@@ -28,7 +38,7 @@ func GetTelemetryDatasAggregate(_ context.Context, telemetryDatasAggregate Telem
 		queryString = GetQueryString2(telemetryDatasAggregate.AggregateFunction)
 
 	default:
-		return nil, fmt.Errorf("Unsupported aggregation function: %s", telemetryDatasAggregate.AggregateFunction)
+		return nil, fmt.Errorf("unsupported aggregation function: %s", telemetryDatasAggregate.AggregateFunction)
 	}
 
 	resultData := global.DB.Raw(queryString, telemetryDatasAggregate.AggregateWindow, telemetryDatasAggregate.STime, telemetryDatasAggregate.ETime, telemetryDatasAggregate.Key, telemetryDatasAggregate.DeviceID, telemetryDatasAggregate.AggregateWindow).Scan(&data)

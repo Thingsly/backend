@@ -23,21 +23,21 @@ import (
 	"fmt"
 	"log"
 
-	pb "github.com/Thingsly/backend/third_party/grpc/tptodb_client/grpc_tptodb"
+	pb "github.com/Thingsly/backend/third_party/grpc/tltodb_client/grpc_tltodb"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var TptodbClient pb.ThingsPanelClient
+var TltodbClient pb.ThingslyClient
 
-// GrpcTptodbInit initializes the gRPC connection to the Tptodb server
-func GrpcTptodbInit() {
-	fmt.Println("Initializing gRPC connection to Tptodb...")
+// GrpcTltodbInit initializes the gRPC connection to the Tltodb server
+func GrpcTltodbInit() {
+	fmt.Println("Initializing gRPC connection to Tltodb...")
 	var conn *grpc.ClientConn
 	var err error
-	grpcHost := viper.GetString("grpc.tptodb_server") // Get the gRPC server address from configuration
+	grpcHost := viper.GetString("grpc.tltodb_server") // Get the gRPC server address from configuration
 
 	// Try to connect to the gRPC server
 	conn, err = grpc.Dial(grpcHost, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -47,5 +47,5 @@ func GrpcTptodbInit() {
 	}
 
 	// If connection is successful, initialize the gRPC client
-	TptodbClient = pb.NewThingsPanelClient(conn)
+	TltodbClient = pb.NewThingslyClient(conn)
 }

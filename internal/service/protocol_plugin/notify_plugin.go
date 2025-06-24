@@ -22,30 +22,26 @@ func DeviceConfigUpdateAndDisconnect(deviceConfigID string, protocolType string,
 		return err
 	}
 
-	if deviceType == "3" {
-
+	switch deviceType {
+	case "3":
 		deviceIDs, err := dal.GetGatewayDevicesBySubDeviceConfigID(deviceConfigID)
 		if err != nil {
 			return err
 		}
-
 		for _, deviceID := range deviceIDs {
 			DisconnectDevice(deviceID, host)
 		}
-	} else if deviceType == "1" || deviceType == "2" {
-
+	case "1", "2":
 		devices, err := dal.GetDevicesByDeviceConfigID(deviceConfigID)
 		if err != nil {
 			return err
 		}
-
 		for _, device := range devices {
 			DisconnectDevice(device.ID, host)
 		}
 		return nil
 	}
 	return nil
-
 }
 
 func DisconnectDevice(deviceID string, httpAddress string) error {

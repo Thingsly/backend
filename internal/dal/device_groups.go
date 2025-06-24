@@ -78,6 +78,14 @@ func GetDeviceGroupDetail(id string) (*model.Group, error) {
 	return d, err
 }
 
+// Using CTE (Common Table Expression) recursive query to get the group path.
+// Example:
+// id = 1
+// return: {"group_path": "Group1/Group2/Group3"}
+// id = 2
+// return: {"group_path": "Group2/Group3"}
+// id = 3
+// return: {"group_path": "Group3"}
 func GetDeviceGroupTierById(id string) (map[string]interface{}, error) {
 	r := make(map[string]interface{})
 	sql := `
