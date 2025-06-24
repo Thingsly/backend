@@ -4,7 +4,7 @@
 
 Các hàm tổng hợp (aggregate function) giúp phân tích dữ liệu cảm biến theo từng khoảng thời gian (window), rất hữu ích cho dashboard, báo cáo, và cảnh báo trong hệ thống IoT.
 
-### Ý nghĩa các hàm:
+### Ý nghĩa các hàm
 
 - **avg**: Trung bình các giá trị trong mỗi khoảng thời gian.
 - **max**: Giá trị lớn nhất trong mỗi khoảng thời gian.
