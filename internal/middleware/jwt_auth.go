@@ -75,7 +75,9 @@ func isValidJWT(c *gin.Context, token string) bool {
 	// Refresh the token expiration time
 	timeout := viper.GetInt("session.timeout")
 	logrus.Infof("Refreshed token expiration time: %d minutes", timeout)
-	logrus.Infof("token: %s", token)
+	logrus.Infof("Token: %s", token)
+	// Refresh the token expiration time
+	// This is the "sliding session" mechanism - the token is refreshed each time it is used
 	global.REDIS.Set(context.Background(), token, "1", time.Duration(timeout)*time.Minute)
 
 	// Validate the JWT token

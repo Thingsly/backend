@@ -138,7 +138,7 @@ automation_task_confg:
 
 ota:
   # Push OTA upgrade package download address to device side
-  download_address: http://demo.mitras.cloud
+  download_address: http://127.0.0.1:9999
 
 classified-protect:
   # Number of consecutive login failures that will lock the account, -1 means no limit, can try to log in indefinitely

@@ -19,10 +19,16 @@ func CheckEmpty(str string) bool {
 
 func GetMessageID() string {
 
+	// timestamp := time.Now().UnixNano() // Sử dụng nano seconds
+	// random := rand.Intn(1000)          // Thêm random
+	// return fmt.Sprintf("%d%03d", timestamp%10000000, random)
+
 	timestamp := time.Now().Unix()
 
+	// Convert timestamp to string base 10
 	timestampStr := strconv.FormatInt(timestamp, 10)
 
+	// Get the last 7 digits of the timestamp string
 	messageID := timestampStr[len(timestampStr)-7:]
 
 	return messageID
@@ -41,6 +47,7 @@ func GetErrors(err error, message string) error {
 	return errors.WithMessage(err, message)
 }
 
+// GetResponsePayload return response payload for API response
 func GetResponsePayload(method string, err error) []byte {
 	if err != nil {
 		data := map[string]interface{}{
@@ -98,7 +105,7 @@ func GetRandomNineDigits() (string, error) {
 
 	n, err := rand.Int(rand.Reader, diff)
 	if err != nil {
-		return "", fmt.Errorf("Failed to generate random number: %v", err)
+		return "", fmt.Errorf("failed to generate random number: %v", err)
 	}
 
 	n = n.Add(n, min)
@@ -108,7 +115,7 @@ func GetRandomNineDigits() (string, error) {
 
 func GenerateNumericCode(length int) (string, error) {
 	if length <= 0 {
-		return "", fmt.Errorf("Length must be greater than 0")
+		return "", fmt.Errorf("length must be greater than 0")
 	}
 
 	code := make([]byte, length)
