@@ -27,7 +27,6 @@ func (*Casbin) GetFunctionFromRole(role string) ([]string, bool) {
 func (*Casbin) RemoveRoleAndFunction(role string) bool {
 	isSuccess, _ := global.CasbinEnforcer.RemoveFilteredPolicy(0, role)
 	return isSuccess
-
 }
 
 func (*Casbin) AddRolesToUser(user string, roles []string) bool {

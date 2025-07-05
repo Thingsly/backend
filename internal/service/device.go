@@ -842,6 +842,8 @@ func (*Device) DeviceConnect(ctx context.Context, param *model.DeviceConnectForm
 				global.ResponseHandler.ErrManager.GetMessage(500003, lang): "devices/telemetry",
 				global.ResponseHandler.ErrManager.GetMessage(500004, lang): fmt.Sprintf("devices/telemetry/control/%s", device.DeviceNumber),
 				global.ResponseHandler.ErrManager.GetMessage(500005, lang): "{\"switch\":1}",
+				// global.ResponseHandler.ErrManager.GetMessage(500006, lang): "devices/attributes",
+				// global.ResponseHandler.ErrManager.GetMessage(500007, lang): "devices/events",
 			}
 		} else if deviceType == "2" {
 			remark := `{"gateway_data":{"switch":1},"sub_device_data":{"sub_device_address":{"switch":1}}`
@@ -851,6 +853,8 @@ func (*Device) DeviceConnect(ctx context.Context, param *model.DeviceConnectForm
 				global.ResponseHandler.ErrManager.GetMessage(500003, lang): "gateway/telemetry",
 				global.ResponseHandler.ErrManager.GetMessage(500004, lang): fmt.Sprintf("gateway/telemetry/control/%s", device.DeviceNumber),
 				global.ResponseHandler.ErrManager.GetMessage(500005, lang): remark,
+				// global.ResponseHandler.ErrManager.GetMessage(500006, lang): "gateway/attributes",
+				// global.ResponseHandler.ErrManager.GetMessage(500007, lang): "gateway/events",
 			}
 		}
 	} else {
@@ -1225,7 +1229,7 @@ func (*Device) GetMetrics(device_id string) ([]model.GetModelSourceATRes, error)
 
 func (*Device) GetActionByDeviceID(deviceID string) (any, error) {
 	/*
-			{
+		{
 		  "data_source_type": "telemetry",
 		  "options": [
 		    {

@@ -32,5 +32,5 @@ func FormatLangCode(acceptLanguage string) string {
 	}
 
 	// In other cases, return the default value
-	return "vi_VN"
+	return "en_US"
 }

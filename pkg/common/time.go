@@ -67,13 +67,15 @@ func GetSceneExecuteTime(taskType, condition string) (time.Time, error) {
 		now    = time.Now()
 		err    error
 	)
+
 	switch taskType {
 	case "HOUR":
+		// condition: "15:04:05-07:00"
 		minstr := condition[:2]
 		var min int
 		min, err = strconv.Atoi(minstr)
 		if err != nil || min > 59 || min < 0 {
-			return result, errors.New("Invalid time format")
+			return result, errors.New("invalid time format")
 		}
 		if min > now.Minute() {
 			result = time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), min, 0, 0, now.Location())
@@ -82,18 +84,21 @@ func GetSceneExecuteTime(taskType, condition string) (time.Time, error) {
 		}
 
 	case "DAY":
+		// condition: "15:04:05-07:00" 
 		daytime, err := time.Parse("15:04:05-07:00", condition)
 		if err != nil {
-			return result, errors.New("Invalid time format")
+			return result, errors.New("invalid time format")
 		}
 		result = time.Date(now.Year(), now.Month(), now.Day(), daytime.Hour(), daytime.Minute(), daytime.Second(), 0, now.Location())
 		if result.Before(now) {
 			result = result.Add(time.Hour * 24)
 		}
+
 	case "WEEK":
+		// condition: "1|15:04:05-07:00" 1: 1st day of the week
 		parts := strings.Split(condition, "|")
 		if len(parts) != 2 {
-			return result, errors.New("Invalid time format")
+			return result, errors.New("invalid time format")
 		}
 		// Parse weekdays
 		weekdaysStr := parts[0]
@@ -111,25 +116,26 @@ func GetSceneExecuteTime(taskType, condition string) (time.Time, error) {
 		timeStr := parts[1]
 		targetTime, err := time.Parse("15:04:05-07:00", timeStr)
 		if err != nil {
-			return result, errors.New("Invalid time format")
+			return result, errors.New("invalid time format")
 		}
 		result = GetNextTime(now, weekdays, targetTime)
 	case "MONTH":
 		// Parse time string
+		// condition: "2T15:04:05-07:00" 2T: 2nd day of the month
 		targetTime, err := time.Parse("2T15:04:05-07:00", condition)
 		if err != nil {
-			return result, errors.New("Time parsing error")
+			return result, errors.New("time parsing error")
 		}
 		result = getMonthNextTime(now, targetTime)
 	case "CRON":
 		specParser := cron.NewParser(cron.Second | cron.Minute | cron.Hour | cron.Dom | cron.Month | cron.Dow | cron.DowOptional | cron.Descriptor)
 		schedule, err := specParser.Parse(condition)
 		if err != nil {
-			return result, errors.New("Invalid cron format")
+			return result, errors.New("invalid cron format")
 		}
 		result = schedule.Next(now)
 	default:
-		return result, errors.New("Unsupported time format")
+		return result, errors.New("unsupported time format")
 	}
 
 	return result, err

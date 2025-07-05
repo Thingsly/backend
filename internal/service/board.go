@@ -252,7 +252,7 @@ func (*Board) GetDeviceByTenantID(ctx context.Context, tenantID string) (data *m
 		logrus.Error(ctx, "[GetDevice]Device count failed:", err)
 		return
 	}
-	//
+	// Get the number of devices that are online
 	on, err = db.CountByWhere(ctx, device.ActivateFlag.Eq("active"), device.TenantID.Eq(tenantID), device.IsOnline.Eq(1))
 	if err != nil {
 		logrus.Error(ctx, "[GetDevice]Device count/on failed:", err)

@@ -24,7 +24,6 @@ func BuildMosquittoPubCommand(host string, port string, username string, passwor
 	}
 	if username != "" {
 		sb.WriteString(fmt.Sprintf(" -u \"%s\"", username))
-
 	}
 	if password != "" {
 		sb.WriteString(fmt.Sprintf(" -P \"%s\"", password))

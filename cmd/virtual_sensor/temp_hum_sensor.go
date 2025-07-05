@@ -56,8 +56,8 @@ func createClient() {
 func createGatewayClient() {
 
 	opts := MqttConfig{
-		// Broker: "127.0.0.1:1883",
-		Broker: "103.124.93.210:1883",
+		Broker: "127.0.0.1:1883",
+		// Broker: "103.124.93.210:1883",
 		User:   "2ff45516-be20-1d3e-afc",
 		Pass:   "ed287f9",
 	}

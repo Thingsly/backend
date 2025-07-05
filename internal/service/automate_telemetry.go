@@ -23,7 +23,7 @@ import (
 
 type Automate struct {
 	device  *model.Device
-	formExt AutomateFromExt
+	fromExt AutomateFromExt
 	mu      sync.Mutex
 	executedSceneIDs map[string]bool
 }
@@ -85,10 +85,10 @@ func (*Automate) ErrorRecover() func() {
 func (a *Automate) Execute(deviceInfo *model.Device, fromExt AutomateFromExt) error {
 	defer a.ErrorRecover()
 	a.device = deviceInfo
-	a.formExt = fromExt
+	a.fromExt = fromExt
 	a.executedSceneIDs = make(map[string]bool)
 
-	// Single-category device t
+	// Single-category device (multiple devices)
 	if deviceInfo.DeviceConfigID != nil {
 		deviceConfigId := *deviceInfo.DeviceConfigID
 		err := a.telExecute(deviceInfo.ID, deviceConfigId, fromExt)
@@ -96,6 +96,7 @@ func (a *Automate) Execute(deviceInfo *model.Device, fromExt AutomateFromExt) er
 			logrus.Error("Automation execution failed", err)
 		}
 	}
+	// Single-device (single device)
 	return a.telExecute(deviceInfo.ID, "", fromExt)
 }
 
@@ -157,21 +158,25 @@ func (a *Automate) AutomateFilter(info initialize.AutomateExecteParams, fromExt 
 			logrus.Debugf("TriggerParam: %s", *cond.TriggerParam)
 			logrus.Debugf("fromExt.TriggerParamType: %s", fromExt.TriggerParamType)
 			switch fromExt.TriggerParamType {
-			case model.TRIGGER_PARAM_TYPE_TEL: // Telemetry (TEL or TELEMETRY)
+			// Case 1: Telemetry (TEL or TELEMETRY)
+			case model.TRIGGER_PARAM_TYPE_TEL:
 				if condTriggerParamType == model.TRIGGER_PARAM_TYPE_TEL || condTriggerParamType == model.TRIGGER_PARAM_TYPE_TELEMETRY {
 					if a.containString(fromExt.TriggerParam, *cond.TriggerParam) {
 						isExists = true
 					}
 				}
+			// Case 2: Status
 			case model.TRIGGER_PARAM_TYPE_STATUS: 
 				if condTriggerParamType == model.TRIGGER_PARAM_TYPE_STATUS {
 					isExists = true
 				}
-			case model.TRIGGER_PARAM_TYPE_EVT: // Event (EVT or EVENT)
+			// Case 3: Event (EVT or EVENT)
+			case model.TRIGGER_PARAM_TYPE_EVT:
 				if (condTriggerParamType == model.TRIGGER_PARAM_TYPE_EVT || condTriggerParamType == model.TRIGGER_PARAM_TYPE_EVENT) && a.containString(fromExt.TriggerParam, *cond.TriggerParam) {
 					isExists = true
 				}
-			case model.TRIGGER_PARAM_TYPE_ATTR: // Attribute (ATTR or ATTRIBUTE)
+			// Case 4: Attribute (ATTR or ATTRIBUTES)
+			case model.TRIGGER_PARAM_TYPE_ATTR:
 				if (condTriggerParamType == model.TRIGGER_PARAM_TYPE_ATTR || condTriggerParamType == model.TRIGGER_PARAM_TYPE_ATTRIBUTES) && a.containString(fromExt.TriggerParam, *cond.TriggerParam) {
 					isExists = true
 				}
@@ -185,6 +190,11 @@ func (a *Automate) AutomateFilter(info initialize.AutomateExecteParams, fromExt 
 	return info
 }
 
+// containString
+// @description Checks if a string exists in a slice of strings
+// @params slice []string - The slice of strings to search in
+// @params str string - The string to search for
+// @return bool - True if the string exists in the slice, false otherwise
 func (*Automate) containString(slice []string, str string) bool {
 	for _, v := range slice {
 		logrus.Info(v, str)
@@ -385,8 +395,10 @@ func (a *Automate) AutomateConditionCheckWithGroup(conditions initialize.DTCondi
 func (a *Automate) AutomateConditionCheckWithGroupOne(cond model.DeviceTriggerCondition, deviceId string) (bool, string) {
 	logrus.Debug("Condition type:", cond.TriggerConditionType)
 	switch cond.TriggerConditionType {
+	// Case 1: Time range
 	case model.DEVICE_TRIGGER_CONDITION_TYPE_TIME:
 		return a.automateConditionCheckWithTime(cond), ""
+	// Case 2: Single device or multiple devices
 	case model.DEVICE_TRIGGER_CONDITION_TYPE_ONE, model.DEVICE_TRIGGER_CONDITION_TYPE_MULTIPLE:
 		return a.automateConditionCheckWithDevice(cond, deviceId)
 	default:
@@ -404,6 +416,11 @@ func (*Automate) automateConditionCheckWithTime(cond model.DeviceTriggerConditio
 	if cond.TriggerValue == "" {
 		return false
 	}
+	// Split the trigger value into parts
+	// Format: "1234567|09:00:00|18:00:00"
+	// 1234567: Weekday (1-7)
+	// 09:00:00: Start time of the first time range
+	// 18:00:00: Start time of the second time range
 	valParts := strings.Split(cond.TriggerValue, "|")
 	if len(valParts) < 3 {
 		return false
@@ -446,8 +463,14 @@ func (*Automate) automateConditionCheckWithTime(cond model.DeviceTriggerConditio
 	return true
 }
 
+// getActualValue
+// @description  Gets the actual value of a device's telemetry, attribute, event, or status
+// @params deviceId string - The ID of the device
+// @params key string - The key of the telemetry, attribute, event, or status
+// @params triggerParamType string - The type of the trigger parameter
+// @return interface{} - The actual value of the device's telemetry, attribute, event, or status
 func (a *Automate) getActualValue(deviceId string, key string, triggerParamType string) (interface{}, error) {
-	for k, v := range a.formExt.TriggerValues {
+	for k, v := range a.fromExt.TriggerValues {
 		if key == k {
 			return v, nil
 		}
@@ -468,9 +491,7 @@ func (a *Automate) getActualValue(deviceId string, key string, triggerParamType 
 
 // automateConditionCheckWithDevice
 // @description  Validates a device condition by comparing actual device data (telemetry, attribute, event, or status)
-//
-//	against the expected trigger value using the specified operator.
-//
+// against the expected trigger value using the specified operator.
 // @params cond model.DeviceTriggerCondition - The condition to validate
 // @params deviceId string - The ID of the device
 // @return bool - True if condition is met, false otherwise
@@ -614,6 +635,7 @@ func float64Equal(a, b float64) bool {
 // @return bool - Whether the comparison passes
 func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, condValue string, actualValue float64) bool {
 	switch operator {
+	// Case 1: Equal (=)
 	case model.CONDITION_TRIGGER_OPERATOR_EQ:
 		condFloat, err := strconv.ParseFloat(condValue, 64)
 		if err != nil {
@@ -622,6 +644,7 @@ func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, cond
 		}
 		return float64Equal(condFloat, actualValue)
 
+	// Case 2: Not equal (!=)
 	case model.CONDITION_TRIGGER_OPERATOR_NEQ:
 		condFloat, err := strconv.ParseFloat(condValue, 64)
 		if err != nil {
@@ -630,6 +653,7 @@ func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, cond
 		}
 		return !float64Equal(condFloat, actualValue)
 
+	// Case 3: Greater than (>)
 	case model.CONDITION_TRIGGER_OPERATOR_GT:
 		condFloat, err := strconv.ParseFloat(condValue, 64)
 		if err != nil {
@@ -638,6 +662,7 @@ func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, cond
 		}
 		return actualValue > condFloat
 
+	// Case 4: Less than (<)
 	case model.CONDITION_TRIGGER_OPERATOR_LT:
 		condFloat, err := strconv.ParseFloat(condValue, 64)
 		if err != nil {
@@ -646,6 +671,7 @@ func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, cond
 		}
 		return actualValue < condFloat
 
+	// Case 5: Greater than or equal to (>=)
 	case model.CONDITION_TRIGGER_OPERATOR_GTE:
 		condFloat, err := strconv.ParseFloat(condValue, 64)
 		if err != nil {
@@ -654,6 +680,7 @@ func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, cond
 		}
 		return actualValue >= condFloat
 
+	// Case 6: Less than or equal to (<=)
 	case model.CONDITION_TRIGGER_OPERATOR_LTE:
 		condFloat, err := strconv.ParseFloat(condValue, 64)
 		if err != nil {
@@ -662,6 +689,7 @@ func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, cond
 		}
 		return actualValue <= condFloat
 
+	// Case 7: Between (min-max)
 	case model.CONDITION_TRIGGER_OPERATOR_BETWEEN:
 		// Format: "min-max"
 		valParts := strings.Split(condValue, "-")
@@ -675,6 +703,7 @@ func (*Automate) automateConditionCheckByOperatorWithFloat(operator string, cond
 		}
 		return actualValue >= minVal && actualValue <= maxVal
 
+	// Case 8: In (list) 
 	case model.CONDITION_TRIGGER_OPERATOR_IN:
 		// Format: "v1,v2,v3"
 		valParts := strings.Split(condValue, ",")

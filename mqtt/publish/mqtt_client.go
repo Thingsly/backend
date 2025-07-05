@@ -45,7 +45,7 @@ func CreateMqttClient() {
 	})
 
 	opts.SetConnectionLostHandler(func(_ mqtt.Client, err error) {
-		logrus.Println("mqtt connect  lost: ", err)
+		logrus.Println("mqtt connect lost: ", err)
 		mqttClient.Disconnect(250)
 
 		for {

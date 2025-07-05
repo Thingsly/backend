@@ -47,6 +47,8 @@ func (*CommandData) CommandPutMessage(ctx context.Context, userID string, param 
 		})
 	}
 
+	// Get the device type and protocol type 
+	// Default: device type is 1 (normal device), protocol type is MQTT
 	deviceType, protocolType := "1", "MQTT"
 	var deviceConfig *model.DeviceConfig
 	if deviceInfo.DeviceConfigID != nil {

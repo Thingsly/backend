@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/Thingsly/backend/initialize"
 	"github.com/Thingsly/backend/internal/dal"
 	model "github.com/Thingsly/backend/internal/model"
 	"github.com/Thingsly/backend/pkg/constant"
-	"github.com/Thingsly/backend/initialize"
 
 	"github.com/sirupsen/logrus"
 )
@@ -46,7 +46,7 @@ func AutomateActionDeviceMqttSend(deviceId string, action model.ActionInfo, tena
 		return executeMsg + " ActionParamType does not exist ", errors.New("ActionParamType does not exist")
 	}
 	if action.ActionValue == nil {
-		return executeMsg + " Action target value does not exist", errors.New("Action target value does not exist")
+		return executeMsg + " Action target value does not exist ", errors.New("action target value does not exist")
 	}
 	// if action.ActionParam == nil {
 	// 	return executeMsg + " Identifier does not exist", errors.New("Identifier does not exist")
@@ -59,6 +59,7 @@ func AutomateActionDeviceMqttSend(deviceId string, action model.ActionInfo, tena
 	operationType := strconv.Itoa(constant.Auto)
 	//var valueMap = make(map[string]string)
 	switch *action.ActionParamType {
+	// Case 1: Telemetry
 	case AUTOMATE_ACTION_PARAM_TYPE_TEL, AUTOMATE_ACTION_PARAM_TYPE_TELEMETRY, AUTOMATE_ACTION_PARAM_TYPE_C_TELEMETRY:
 		msgReq := model.PutMessage{
 			DeviceID: deviceId,
@@ -72,6 +73,7 @@ func AutomateActionDeviceMqttSend(deviceId string, action model.ActionInfo, tena
 		logrus.Warning(msgReq)
 		return executeMsg + fmt.Sprintf(" Telemetry command: %s", msgReq.Value), GroupApp.TelemetryData.TelemetryPutMessage(ctx, userId, &msgReq, operationType)
 
+	// Case 2: Attribute
 	case AUTOMATE_ACTION_PARAM_TYPE_ATTR, AUTOMATE_ACTION_PARAM_TYPE_ATTRIBUTES, AUTOMATE_ACTION_PARAM_TYPE_C_ATTRIBUTES:
 		msgReq := model.AttributePutMessage{
 			DeviceID: deviceId,
@@ -84,6 +86,7 @@ func AutomateActionDeviceMqttSend(deviceId string, action model.ActionInfo, tena
 		msgReq.Value = *action.ActionValue
 		return executeMsg + fmt.Sprintf(" Property setting: %s", msgReq.Value), GroupApp.AttributeData.AttributePutMessage(ctx, userId, &msgReq, operationType)
 
+	// Case 3: Command
 	case AUTOMATE_ACTION_PARAM_TYPE_CMD, AUTOMATE_ACTION_PARAM_TYPE_COMMAND, AUTOMATE_ACTION_PARAM_TYPE_C_COMMAND:
 		type commandInfo struct {
 			Method string      `json:"method"`
@@ -106,7 +109,7 @@ func AutomateActionDeviceMqttSend(deviceId string, action model.ActionInfo, tena
 		//	Value:    action.ActionValue,
 		//	Identify: *action.ActionParam,
 		//}
-		return executeMsg + fmt.Sprintf(" Command dispatch: %s", *msgReq.Value), GroupApp.CommandData.CommandPutMessage(ctx, userId, &msgReq, operationType)
+		return executeMsg + fmt.Sprintf("Command dispatch: %s", *msgReq.Value), GroupApp.CommandData.CommandPutMessage(ctx, userId, &msgReq, operationType)
 	default:
 
 		return executeMsg + " unsupported type", errors.New("unsupported type")
@@ -125,7 +128,7 @@ func (a *AutomateTelemetryActionOne) AutomateActionRun(action model.ActionInfo) 
 	return AutomateActionDeviceMqttSend(*action.ActionTarget, action, a.TenantID)
 }
 
-// Service 10
+// Service 10: Multiple devices execution
 type AutomateTelemetryActionMultiple struct {
 	DeviceIds []string
 	TenantID  string
@@ -148,7 +151,7 @@ func (a *AutomateTelemetryActionMultiple) AutomateActionRun(action model.ActionI
 	return "Single-type setting: " + fmt.Sprintf("%s", messages), errs
 }
 
-// Service 20
+// Service 20: Scene activation
 type AutomateTelemetryActionScene struct {
 	TenantID string
 }
@@ -166,8 +169,8 @@ func (a *AutomateTelemetryActionScene) AutomateActionRun(action model.ActionInfo
 	return fmt.Sprintf("Scene activation: %s", sceneInfo.Name), GroupApp.ActiveSceneExecute(*action.ActionTarget, a.TenantID)
 }
 
-// Service 30
-type AutomateTelemetryActionAlarm struct {}
+// Service 30: Alarm service execution
+type AutomateTelemetryActionAlarm struct{}
 
 func (*AutomateTelemetryActionAlarm) AutomateActionRun(action model.ActionInfo) (string, error) {
 
@@ -195,8 +198,8 @@ func (*AutomateTelemetryActionAlarm) AutomateActionRun(action model.ActionInfo) 
 	return fmt.Sprintf("Alarm service (%s)", alarmName), errRsp
 }
 
-// Service 40
-type AutomateTelemetryActionService struct {}
+// Service 40: Automation another service execution (to be implemented)
+type AutomateTelemetryActionService struct{}
 
 func (*AutomateTelemetryActionService) AutomateActionRun(_ model.ActionInfo) (string, error) {
 	//todo To be implemented

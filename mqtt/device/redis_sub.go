@@ -45,14 +45,14 @@ func (l *DeviceListener) Start() error {
 func (l *DeviceListener) checkRedisConfig() error {
 	config, err := l.redis.ConfigGet(l.ctx, "notify-keyspace-events").Result()
 	if err != nil {
-		return fmt.Errorf("Failed to get Redis configuration: %v", err)
+		return fmt.Errorf("failed to get Redis configuration: %v", err)
 	}
 
 	configValue := config["notify-keyspace-events"]
 	if !strings.Contains(configValue, "Ex") {
 		err = l.redis.ConfigSet(l.ctx, "notify-keyspace-events", "Ex").Err()
 		if err != nil {
-			return fmt.Errorf("Failed to set Redis configuration: %v", err)
+			return fmt.Errorf("failed to set Redis configuration: %v", err)
 		}
 		logrus.Info("Redis expiration notification configuration updated")
 	}
@@ -90,6 +90,8 @@ func (l *DeviceListener) run() {
 				return
 			}
 
+			// Only handle device status updates (heartbeat or timeout)
+			// device:deviceID:heartbeat or device:deviceID:timeout
 			if strings.HasPrefix(msg.Payload, "device:") &&
 				(strings.HasSuffix(msg.Payload, ":heartbeat") ||
 					strings.HasSuffix(msg.Payload, ":timeout")) {
@@ -141,6 +143,6 @@ func (l *DeviceListener) Stop() error {
 		logrus.Info("Device listener stopped successfully")
 		return nil
 	case <-time.After(3 * time.Second):
-		return errors.New("Device listener stop timed out")
+		return errors.New("device listener stop timed out")
 	}
 }

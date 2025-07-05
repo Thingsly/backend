@@ -18,7 +18,7 @@ func ActionAfterAlarm(actions []model.ActionInfo, actionResultErr error) error {
 	alarmCache := initialize.NewAlarmCache()
 	groupIds, err := alarmCache.GetBySceneAutomationId(scene_automation_id)
 	if err != nil {
-		return pkgerrors.Wrap(err, "Failed to get cache 1")
+		return pkgerrors.Wrap(err, "Failed to get cache by scene automation id")
 	}
 	if len(groupIds) == 0 {
 		return nil

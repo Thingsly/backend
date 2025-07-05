@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// @description GatewayAttributeMessages
+// @description Gateway device command response
 // param payload []byte
 // param topic string
 // @return error

@@ -74,7 +74,7 @@ func (ins *InstanceInfo) SendSignedRequest() {
 	signature := generateHMAC(ins.Timestamp, "1hj5b0sp9")
 
 	jsonMessage, _ := json.Marshal(ins)
-	req, err := http.NewRequest("POST", "http://stats.mitras.cloud/api/v1/c", bytes.NewBuffer(jsonMessage))
+	req, err := http.NewRequest("POST", "http://127.0.0.1:9999/api/v1/c", bytes.NewBuffer(jsonMessage))
 	if err != nil {
 		return
 	}

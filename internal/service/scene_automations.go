@@ -61,6 +61,9 @@ func (s *SceneAutomation) CreateSceneAutomation(req *model.CreateSceneAutomation
 		)
 		for _, v2 := range v {
 			switch v2.TriggerConditionsType {
+			// 10: one condition
+			// 11: multiple conditions
+			// 22: another device condition
 			case "10", "11", "22":
 				if v2.TriggerConditionsType == "10" {
 					oneCondition = true

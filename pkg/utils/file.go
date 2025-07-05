@@ -88,7 +88,6 @@ func ValidateFileType(filename, fileType string) bool {
 	case "importBatch":
 		return allowImportBatchMap[ext]
 	case "d_plugin":
-
 		return true
 	default:
 		return allowExtMap[ext]

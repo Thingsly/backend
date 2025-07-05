@@ -153,7 +153,7 @@ func (*Dict) GetDict(params *model.DictListReq, lang string) (list []model.DictL
 
 func (*Dict) GetProtocolMenu(protocolMenuReq *model.ProtocolMenuReq) (reqData []map[string]interface{}, err error) {
 	if protocolMenuReq.LanguageCode == nil {
-		protocolMenuReq.LanguageCode = StringPtr("zh")
+		protocolMenuReq.LanguageCode = StringPtr("en_US")
 	}
 	var reqDataList []map[string]interface{}
 	dict1, err := dal.GetDictLanguageByDictCodeAndLanguageCode("DRIECT_ATTACHED_PROTOCOL", *protocolMenuReq.LanguageCode)

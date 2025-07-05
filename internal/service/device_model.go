@@ -77,6 +77,7 @@ func (*DeviceModel) CreateDeviceModelGeneral(req model.CreateDeviceModelReq, wha
 		} else {
 			return deviceModel, nil
 		}
+
 	case model.DEVICE_MODEL_EVENTS:
 		var deviceModel model.DeviceModelEvent
 		deviceModel.ID = uuid.New()
@@ -98,6 +99,7 @@ func (*DeviceModel) CreateDeviceModelGeneral(req model.CreateDeviceModelReq, wha
 		} else {
 			return deviceModel, nil
 		}
+
 	case model.DEVICE_MODEL_COMMANDS:
 		var deviceModel model.DeviceModelCommand
 		deviceModel.ID = uuid.New()
@@ -158,6 +160,7 @@ func (*DeviceModel) CreateDeviceModelGeneralV2(req model.CreateDeviceModelV2Req,
 		} else {
 			return deviceModel, nil
 		}
+
 	case model.DEVICE_MODEL_COMMANDS:
 		var deviceModel model.DeviceModelCommand
 		deviceModel.ID = uuid.New()
@@ -178,7 +181,7 @@ func (*DeviceModel) CreateDeviceModelGeneralV2(req model.CreateDeviceModelV2Req,
 			return deviceModel, nil
 		}
 	default:
-		return nil, fmt.Errorf("不支持的创建类型")
+		return nil, fmt.Errorf("device model type is not supported")
 	}
 
 }

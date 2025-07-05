@@ -24,7 +24,7 @@ func validateStatus(payload []byte) (int16, error) {
 	case "1":
 		return 1, nil
 	default:
-		return 0, fmt.Errorf("The status value can only be 0 or 1, current value: %s", str)
+		return 0, fmt.Errorf("the status value can only be 0 or 1, current value: %s", str)
 	}
 }
 

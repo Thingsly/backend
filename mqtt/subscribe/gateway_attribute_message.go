@@ -85,7 +85,7 @@ func getWagewayResponse(err error, _ ...string) *model.MqttResponse {
 
 // GatewayDeviceSetAttributesResponse
 //
-// @description 平台设置属性
+// @description Gateway device set attributes response
 // param payload []byte
 // param topic string
 // @return messageId string, gatewayDeive *model.Device, respon model.GatewayResponse, err error

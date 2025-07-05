@@ -124,7 +124,7 @@ func GenerateNumericCode(length int) (string, error) {
 
 		num, err := rand.Int(rand.Reader, big.NewInt(10))
 		if err != nil {
-			return "", fmt.Errorf("Failed to generate random number: %v", err)
+			return "", fmt.Errorf("failed to generate random number: %v", err)
 		}
 
 		code[i] = byte(num.Int64() + '0')

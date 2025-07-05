@@ -14,7 +14,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// @description PublishMessage
+// @description publishMessage
 // @params topic string
 // @params qos byte
 // @params retained bool
@@ -89,7 +89,7 @@ func GatewayPublishTelemetryMessage(ctx context.Context, deviceInfo model.Device
 	if err != nil {
 		return pkgerrors.WithMessage(err, "[GatewayPublishResponseEventMessage][getGatewayPublishTopic]failed")
 	}
-	return publishMessage(topic, qos, false, payload)
+	return publishMessage(topic, qos, false, payload) // Fire and forget
 }
 
 // @description GatewayPublishSetAttributesMessage

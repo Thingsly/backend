@@ -17,6 +17,8 @@ docker exec -it backend-redis-1 redis-cli
 AUTH redis
 SELECT 1
 
+CONFIG SET notify-keyspace-events Ex
+
 # Xem số lượng keys
 DBSIZE
 
