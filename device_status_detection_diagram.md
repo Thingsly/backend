@@ -177,26 +177,26 @@ graph TD
     subgraph "Redis Configuration"
         RC1[Database: 10]
         RC2[TTL: 60 seconds]
-        RC3[Key Pattern: device:{deviceID}:heartbeat]
+        RC3["Key Pattern: device:{deviceID}:heartbeat"]
     end
     
     subgraph "MQTT Configuration"
         MC1[Broker: localhost:1883]
-        MC2[Topic: devices/status/{deviceID}]
+        MC2["Topic: devices/status/{deviceID}"]
         MC3[QoS: 1]
     end
     
     subgraph "Device Configuration"
-        DC1[online_timeout: 60]
-        DC2[heartbeat: 30]
-        DC3[status_report: manual]
+        DC1["online_timeout: 60"]
+        DC2["heartbeat: 30"]
+        DC3["status_report: manual"]
     end
     
     subgraph "Performance Metrics"
-        PM1[Memory Usage]
-        PM2[CPU Usage]
-        PM3[Network Latency]
-        PM4[Detection Accuracy]
+        PM1["Memory Usage"]
+        PM2["CPU Usage"]
+        PM3["Network Latency"]
+        PM4["Detection Accuracy"]
     end
     
     RC1 --> PM1
